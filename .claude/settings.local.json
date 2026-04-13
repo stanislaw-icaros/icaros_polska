@@ -4,7 +4,11 @@
       "Bash(brew install:*)",
       "Bash(pdftotext \"/Users/stanislawdrozniak/Downloads/ICAROS_-_Studies_20241014.pdf\" -)",
       "Bash(pdftotext \"/Users/stanislawdrozniak/Downloads/ICAROS_Produktkatalog_2026_en_klein.pdf\" -)",
-      "Bash(npx create-next-app@latest . --typescript --tailwind --eslint --app --src-dir --import-alias \"@/*\" --use-npm --no-turbopack)"
+      "Bash(npx create-next-app@latest . --typescript --tailwind --eslint --app --src-dir --import-alias \"@/*\" --use-npm --no-turbopack)",
+      "Bash(npm install:*)",
+      "Bash(ls /Users/stanislawdrozniak/strony_www/icaros_polska/*.config.* /Users/stanislawdrozniak/strony_www/icaros_polska/*.config)",
+      "Bash(npm run:*)",
+      "Bash(pkill -f \"next dev\")"
     ]
   }
 }
