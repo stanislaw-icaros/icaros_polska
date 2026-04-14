@@ -175,7 +175,7 @@ export async function POST(request: Request) {
             method: "POST",
             body: JSON.stringify({
               name: payload.company.trim(),
-              user_id: ownerId,
+              owner_id: ownerId,
             }),
           });
           orgId = createdOrg?.data?.id;
@@ -186,7 +186,7 @@ export async function POST(request: Request) {
         method: "POST",
         body: JSON.stringify({
           name,
-          user_id: ownerId,
+          owner_id: ownerId,
           org_id: orgId,
           email: [{ value: email, primary: true, label: "work" }],
           phone: payload.phone?.trim()
