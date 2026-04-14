@@ -71,7 +71,8 @@ export default function Navigation() {
             <div className="hidden lg:flex items-center">
               <a
                 href="#kontakt"
-                className="text-[13px] font-semibold text-white bg-foreground hover:bg-foreground/80 px-7 py-3 transition-all duration-500 tracking-[0.02em]"
+                className="text-[13px] font-semibold text-white px-7 py-3 transition-all duration-500 tracking-[0.02em] hover:opacity-90"
+                style={{ background: "linear-gradient(135deg, #ff6600, #ff7b1f)" }}
               >
                 Umów prezentację
               </a>
@@ -136,7 +137,8 @@ export default function Navigation() {
               <a
                 href="#kontakt"
                 onClick={() => setMobileOpen(false)}
-                className="inline-flex text-base font-semibold text-white bg-foreground px-10 py-5 tracking-[0.01em]"
+                className="inline-flex text-base font-semibold text-white px-10 py-5 tracking-[0.01em] hover:opacity-90 transition-opacity duration-500"
+                style={{ background: "linear-gradient(135deg, #ff6600, #ff7b1f)" }}
               >
                 Umów prezentację
               </a>

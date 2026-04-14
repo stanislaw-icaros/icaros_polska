@@ -12,6 +12,8 @@
   --color-accent: #0a0a0a;
   --color-accent-light: #27272a;
   --color-accent-subtle: #f4f4f5;
+  --color-brand-orange: #ff6600;
+  --color-brand-orange-light: #ff7b1f;
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
@@ -29,7 +31,7 @@ body {
 }
 
 ::selection {
-  background-color: var(--color-foreground);
+  background-color: #ff6600;
   color: white;
 }
 
@@ -96,7 +98,7 @@ input[type="range"].premium-slider::-webkit-slider-thumb {
   width: 14px;
   height: 14px;
   border-radius: 0;
-  background: #0a0a0a;
+  background: #ff6600;
   cursor: pointer;
   border: none;
   box-shadow: 0 0 0 2px #ffffff, 0 0 0 3px rgba(0, 0, 0, 0.12);
@@ -124,7 +126,7 @@ input[type="range"].premium-slider::-moz-range-thumb {
   width: 14px;
   height: 14px;
   border-radius: 0;
-  background: #0a0a0a;
+  background: #ff6600;
   cursor: pointer;
   border: none;
   box-shadow: 0 0 0 2px #ffffff, 0 0 0 3px rgba(0, 0, 0, 0.12);

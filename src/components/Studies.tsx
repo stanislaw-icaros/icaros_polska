@@ -99,7 +99,7 @@ export default function Studies() {
                     >
                       {result.metric}
                     </motion.span>
-                    <span className="text-[13px] text-foreground/35 leading-[1.5] pt-0.5 group-hover:text-white/50 transition-colors duration-500">
+                    <span className="text-[13px] text-foreground/45 leading-[1.5] pt-0.5 group-hover:text-white/50 transition-colors duration-500">
                       {result.label}
                     </span>
                   </motion.div>
@@ -122,7 +122,7 @@ export default function Studies() {
               transition={{ delay: 0.8, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
               className="w-8 h-[1px] bg-foreground/10 mx-auto mb-8 origin-left"
             />
-            <p className="text-[17px] lg:text-[19px] text-foreground/50 italic leading-[1.8] font-light">
+            <p className="text-[17px] lg:text-[19px] text-foreground/60 italic leading-[1.8] font-light">
               &ldquo;Unikalne urządzenie, które aktywuje głębokie grupy mięśniowe oraz stymuluje i&nbsp;przyspiesza koordynację.&rdquo;
             </p>
             <footer className="mt-6">

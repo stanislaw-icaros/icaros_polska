@@ -78,7 +78,7 @@ export default function ValueProposition() {
             <h2 className="mt-5 text-[clamp(1.8rem,4vw,2.8rem)] font-bold tracking-[-0.03em] text-foreground leading-[1.1]">
               Technologia, która zmienia sposób prowadzenia rehabilitacji
             </h2>
-            <p className="mt-6 text-[15px] text-foreground/40 leading-[1.8]">
+            <p className="mt-6 text-[15px] text-foreground/50 leading-[1.8]">
               ICAROS to nie kolejny sprzęt. To kompleksowy ekosystem treningowy,
               który podnosi jakość terapii, zwiększa zaangażowanie pacjentów
               i&nbsp;buduje przewagę konkurencyjną Twojej placówki.
@@ -121,7 +121,10 @@ export default function ValueProposition() {
               className="group relative p-10 lg:p-14 border-r border-b border-foreground/[0.06] cursor-default hover:bg-foreground transition-all duration-500"
             >
               <div className="flex items-start justify-between">
-                <span className="text-[12px] font-medium tracking-[0.15em] text-foreground/30 group-hover:text-white/30 transition-colors duration-500">
+                <span
+                  className="text-[12px] font-bold tracking-[0.15em] bg-clip-text text-transparent group-hover:text-white/40 transition-colors duration-500"
+                  style={{ backgroundImage: "linear-gradient(135deg, #ff6600, #ff7b1f)" }}
+                >
                   {value.number}
                 </span>
                 <div className="text-foreground/20 group-hover:text-white/60 transition-colors duration-500">
@@ -131,7 +134,7 @@ export default function ValueProposition() {
               <h3 className="mt-5 text-[20px] font-semibold text-foreground tracking-[-0.01em] group-hover:text-white transition-colors duration-500">
                 {value.title}
               </h3>
-              <p className="mt-4 text-[14px] text-foreground/40 leading-[1.8] group-hover:text-white/50 transition-colors duration-500">
+              <p className="mt-4 text-[14px] text-foreground/50 leading-[1.8] group-hover:text-white/60 transition-colors duration-500">
                 {value.description}
               </p>
             </motion.div>

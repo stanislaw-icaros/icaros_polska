@@ -24,6 +24,8 @@ export default function ContactCTA() {
     message: "",
   });
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -37,9 +39,48 @@ export default function ContactCTA() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+
+    if (isSubmitting) return;
+
+    setIsSubmitting(true);
+    setSubmitError("");
+
+    try {
+      const searchParams = new URLSearchParams(window.location.search);
+      const utm = {
+        utm_source: searchParams.get("utm_source") || undefined,
+        utm_medium: searchParams.get("utm_medium") || undefined,
+        utm_campaign: searchParams.get("utm_campaign") || undefined,
+        utm_content: searchParams.get("utm_content") || undefined,
+      };
+
+      const response = await fetch("/api/pipedrive", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...formState,
+          leadSource: "Formularz WWW",
+          formSource: "Strona główna — formularz główny",
+          page: window.location.pathname,
+          utm,
+        }),
+      });
+
+      const result = await response.json();
+      if (!response.ok || !result?.success) {
+        throw new Error(result?.error || "Nie udało się wysłać formularza.");
+      }
+
+      setSubmitted(true);
+    } catch (error: any) {
+      setSubmitError(error?.message || "Wystąpił błąd. Spróbuj ponownie.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const selectedRoleLabel = roleOptions.find((o) => o.value === formState.role)?.label;
@@ -92,9 +133,9 @@ export default function ContactCTA() {
               <p className="text-[10px] text-foreground/20 uppercase tracking-[0.2em] font-medium">
                 Lub skontaktuj się bezpośrednio
               </p>
-              <p className="text-[15px] text-foreground font-medium">
-                admin@icaros.com.pl
-              </p>
+              <a href="mailto:kontakt@icaros.com.pl" className="text-[15px] text-foreground font-medium hover:opacity-70 transition-opacity duration-300">
+                kontakt@icaros.com.pl
+              </a>
               <p className="text-[14px] text-foreground/30">
                 ICAROS Polska — Oficjalny dystrybutor
               </p>
@@ -271,10 +312,18 @@ export default function ContactCTA() {
 
                   <button
                     type="submit"
-                    className="w-full py-4 bg-foreground text-white text-[14px] font-semibold hover:bg-foreground/80 transition-all duration-500 mt-4"
+                    disabled={isSubmitting}
+                    className="w-full py-4 text-white text-[14px] font-semibold hover:opacity-90 transition-all duration-500 mt-4"
+                    style={{ background: "linear-gradient(135deg, #ff6600, #ff7b1f)" }}
                   >
-                    Wyślij zgłoszenie
+                    {isSubmitting ? "Wysyłanie..." : "Wyślij zgłoszenie"}
                   </button>
+
+                  {submitError ? (
+                    <p className="text-[12px] text-red-600 text-center leading-relaxed">
+                      {submitError}
+                    </p>
+                  ) : null}
 
                   <p className="text-[11px] text-foreground/20 text-center leading-relaxed">
                     Twoje dane są bezpieczne. Używamy ich wyłącznie w celu kontaktu

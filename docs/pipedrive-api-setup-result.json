@@ -1,0 +1,142 @@
+{
+  "pipeline": {
+    "action": "created",
+    "id": 2,
+    "name": "ICAROS Sprzedaż Polska"
+  },
+  "stages": [
+    {
+      "action": "created",
+      "id": 6,
+      "name": "Nowy Lead / Zapytanie",
+      "deal_probability": 5,
+      "rotten_days": 3
+    },
+    {
+      "action": "created",
+      "id": 7,
+      "name": "Zakwalifikowany (BANT)",
+      "deal_probability": 15,
+      "rotten_days": 7
+    },
+    {
+      "action": "created",
+      "id": 8,
+      "name": "Demo umówione",
+      "deal_probability": 25,
+      "rotten_days": 5
+    },
+    {
+      "action": "created",
+      "id": 9,
+      "name": "Trial sprzętu",
+      "deal_probability": 40,
+      "rotten_days": 14
+    },
+    {
+      "action": "created",
+      "id": 10,
+      "name": "Oferta wysłana",
+      "deal_probability": 55,
+      "rotten_days": 7
+    },
+    {
+      "action": "created",
+      "id": 11,
+      "name": "Wniosek leasingowy",
+      "deal_probability": 65,
+      "rotten_days": 10
+    },
+    {
+      "action": "created",
+      "id": 12,
+      "name": "Negocjacje / Umowa",
+      "deal_probability": 80,
+      "rotten_days": 7
+    },
+    {
+      "action": "created",
+      "id": 13,
+      "name": "Zamknięty — Wygrana",
+      "deal_probability": 100,
+      "rotten_days": null
+    }
+  ],
+  "activityTypes": [
+    {
+      "action": "created",
+      "id": 7,
+      "name": "Demo ICAROS"
+    },
+    {
+      "action": "created",
+      "id": 8,
+      "name": "Wizyta w placówce"
+    },
+    {
+      "action": "created",
+      "id": 9,
+      "name": "Trial sprzętu"
+    },
+    {
+      "action": "created",
+      "id": 10,
+      "name": "Oferta wysłana"
+    },
+    {
+      "action": "created",
+      "id": 11,
+      "name": "Wniosek leasingowy"
+    },
+    {
+      "action": "created",
+      "id": 12,
+      "name": "Negocjacje umowy"
+    },
+    {
+      "action": "created",
+      "id": 13,
+      "name": "Wizyta referencyjna"
+    },
+    {
+      "action": "created",
+      "id": 14,
+      "name": "Szkolenie"
+    },
+    {
+      "action": "created",
+      "id": 15,
+      "name": "Dostawa/Instalacja"
+    }
+  ],
+  "products": [
+    {
+      "action": "created",
+      "id": 1,
+      "name": "ICAROS Health",
+      "code": "ICR-HEALTH",
+      "price_eur": 24900
+    },
+    {
+      "action": "created",
+      "id": 2,
+      "name": "ICAROS Guardian",
+      "code": "ICR-GUARD",
+      "price_eur": null
+    },
+    {
+      "action": "created",
+      "id": 3,
+      "name": "ICAROS Cloud",
+      "code": "ICR-CLOUD",
+      "price_eur": null
+    },
+    {
+      "action": "created",
+      "id": 4,
+      "name": "ICAROS Circle (pakiet pełny)",
+      "code": "ICR-CIRCLE",
+      "price_eur": 49900
+    }
+  ]
+}

@@ -94,7 +94,10 @@ export default function UseCases() {
               <div className="p-8 lg:p-10 pt-4 lg:pt-6">
                 <div className="flex items-start justify-between gap-4">
                   <div>
-                    <span className="text-[11px] font-medium tracking-[0.2em] text-foreground/30">
+                    <span
+                      className="text-[11px] font-bold tracking-[0.2em] bg-clip-text text-transparent"
+                      style={{ backgroundImage: "linear-gradient(135deg, #ff6600, #ff7b1f)" }}
+                    >
                       {useCase.number}
                     </span>
                     <h3 className="mt-3 text-[20px] font-semibold text-foreground tracking-[-0.01em]">
@@ -109,7 +112,7 @@ export default function UseCases() {
                   </svg>
                 </div>
 
-                <p className="mt-4 text-[14px] text-foreground/40 leading-[1.8]">
+                <p className="mt-4 text-[14px] text-foreground/50 leading-[1.8]">
                   {useCase.description}
                 </p>
               </div>

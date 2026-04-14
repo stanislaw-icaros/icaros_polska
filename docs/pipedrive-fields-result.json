@@ -1,0 +1,117 @@
+{
+  "created_count": 22,
+  "existing_count": 0,
+  "created": [
+    {
+      "name": "Źródło leadu",
+      "key": "a12c8c389cd8bc0ab0d51df9a96cc45433bf8e95",
+      "id": 46
+    },
+    {
+      "name": "UTM Source",
+      "key": "016c94725916a6542315729ce8114c64a0ec0d6b",
+      "id": 47
+    },
+    {
+      "name": "UTM Medium",
+      "key": "3a0f73ea58c53ce1c590b3624eaa9d99a7f52912",
+      "id": 48
+    },
+    {
+      "name": "UTM Campaign",
+      "key": "429187d37211af402ecf38b320c1f94d12bef125",
+      "id": 49
+    },
+    {
+      "name": "UTM Content",
+      "key": "7a8830ea6d5711b21559c8009587598675e327c3",
+      "id": 50
+    },
+    {
+      "name": "Strona źródłowa",
+      "key": "2d604a46c50951a81f8785a8dcb11561016ebc3c",
+      "id": 51
+    },
+    {
+      "name": "Typ placówki",
+      "key": "d5cfe6efa2bee03a6cf4b6cc7db3e76249beb1f5",
+      "id": 52
+    },
+    {
+      "name": "Województwo",
+      "key": "ef2a5f7c1988f30ed926652a2b83104dd8e86748",
+      "id": 53
+    },
+    {
+      "name": "Liczba gabinetów",
+      "key": "5832830832c7f40a8b5d96da35de23b3cd7c16ad",
+      "id": 54
+    },
+    {
+      "name": "Szacowane przychody",
+      "key": "8828566fd19b3039cd83857d7da7b09c50c0bded",
+      "id": 55
+    },
+    {
+      "name": "Model ICAROS",
+      "key": "39a6a3f01cb8128cc3a496b6e5256969940f0f0f",
+      "id": 56
+    },
+    {
+      "name": "Rola decydenta",
+      "key": "3fdf2e0acdb94774967246d0d8bbaab5a0a60a05",
+      "id": 57
+    },
+    {
+      "name": "Status budżetu",
+      "key": "71ede10174e163ad814466065377b955f34ae09d",
+      "id": 58
+    },
+    {
+      "name": "Oczekiwana data dostawy",
+      "key": "a045eaf7931847fd2bf498636bb363bfa7df3930",
+      "id": 59
+    },
+    {
+      "name": "Źródło finansowania",
+      "key": "01946d3af43ce84a60bbe4d5f9f88c9f38a6689c",
+      "id": 60
+    },
+    {
+      "name": "Status leasingu",
+      "key": "b9f6f113cf6c07672a6dd2ba02e0903bdf472860",
+      "id": 61
+    },
+    {
+      "name": "Okres leasingu (mies.)",
+      "key": "ff66f8954a289751487699318e00e3f2335402e2",
+      "id": 62
+    },
+    {
+      "name": "Rata miesięczna (PLN)",
+      "key": "ddad11bd3b5f37d9011f216a1d3f07e779ad7793",
+      "id": 63
+    },
+    {
+      "name": "Numer wniosku PKO",
+      "key": "d359ce3ef07ae614f22366a00ec033bb029c0bd9",
+      "id": 64
+    },
+    {
+      "name": "Status konkurencji",
+      "key": "02a105e09cb3eeb4231bcf881d4cf7b3e9c2fb09",
+      "id": 65
+    },
+    {
+      "name": "Obecna technologia",
+      "key": "a5d1cc1e8e0d2e2594d4f19e66fdcc32603fac29",
+      "id": 66
+    },
+    {
+      "name": "Powód przegranej",
+      "key": "2baf440cab686930a6d6c6352ffce2a69c0870c8",
+      "id": 67
+    }
+  ],
+  "existing": []
+}

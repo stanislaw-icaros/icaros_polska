@@ -86,14 +86,14 @@ function SliderControl({
           <span className="text-[20px] font-bold text-foreground tabular-nums tracking-tight">
             {value}
           </span>
-          <span className="text-[12px] text-foreground/25">{unit}</span>
+          <span className="text-[12px] text-foreground/35">{unit}</span>
         </div>
       </div>
       <div className="relative">
         <div className="absolute top-1/2 left-0 right-0 h-[2px] -translate-y-1/2 pointer-events-none">
           <div
-            className="h-full bg-foreground/80 transition-all duration-150"
-            style={{ width: `${percentage}%` }}
+            className="h-full transition-all duration-150"
+            style={{ width: `${percentage}%`, background: "linear-gradient(90deg, #ff6600, #ff7b1f)" }}
           />
         </div>
         <input
@@ -182,9 +182,10 @@ export default function ROICalculator() {
               onClick={() => setMode("purchase")}
               className={`px-6 py-2.5 text-[12px] font-semibold tracking-[0.05em] uppercase transition-all duration-400 ${
                 mode === "purchase"
-                  ? "bg-foreground text-white"
+                  ? "text-white"
                   : "text-foreground/30 hover:text-foreground/60"
               }`}
+              style={mode === "purchase" ? { background: "linear-gradient(135deg, #ff6600, #ff7b1f)" } : undefined}
             >
               Zakup
             </button>
@@ -192,15 +193,16 @@ export default function ROICalculator() {
               onClick={() => setMode("lease")}
               className={`px-6 py-2.5 text-[12px] font-semibold tracking-[0.05em] uppercase transition-all duration-400 ${
                 mode === "lease"
-                  ? "bg-foreground text-white"
+                  ? "text-white"
                   : "text-foreground/30 hover:text-foreground/60"
               }`}
+              style={mode === "lease" ? { background: "linear-gradient(135deg, #ff6600, #ff7b1f)" } : undefined}
             >
               Leasing 60 mies.
             </button>
           </div>
           {mode === "lease" && (
-            <p className="text-[11px] text-foreground/20">
+            <p className="text-[11px] text-foreground/30">
               Szacunkowa rata netto &middot; warunki zależne od leasingodawcy
             </p>
           )}
@@ -215,24 +217,27 @@ export default function ROICalculator() {
             onClick={() => handleDeviceSelect(d.id)}
             className={`relative p-5 lg:p-6 text-left transition-all duration-500 ${
               d.id === selectedDevice
-                ? "bg-foreground text-white"
+                ? "text-white"
                 : "bg-white hover:bg-foreground/[0.02] text-foreground"
             } ${d.id !== "circle" ? "border-r border-foreground/[0.06]" : ""}`}
+            style={d.id === selectedDevice ? { background: "linear-gradient(135deg, #ff6600, #ff7b1f)" } : undefined}
           >
             <div className="flex flex-col gap-1.5">
               <span
                 className={`text-[10px] font-medium tracking-[0.15em] uppercase ${
-                  d.id === selectedDevice ? "text-white/40" : "text-foreground/20"
+                  d.id === selectedDevice ? "text-white/70" : "text-foreground/30"
                 }`}
               >
                 ICAROS
               </span>
-              <span className="text-[16px] lg:text-[18px] font-bold tracking-[-0.02em]">
+              <span className={`text-[16px] lg:text-[18px] font-bold tracking-[-0.02em] ${
+                d.id === selectedDevice ? "text-white" : ""
+              }`}>
                 {d.shortName}
               </span>
               <span
-                className={`text-[12px] font-medium mt-1 ${
-                  d.id === selectedDevice ? "text-white/50" : "text-foreground/30"
+                className={`text-[12px] font-semibold mt-1 ${
+                  d.id === selectedDevice ? "text-white/90" : "text-foreground/40"
                 }`}
               >
                 {mode === "lease"
@@ -244,7 +249,7 @@ export default function ROICalculator() {
               <span
                 className={`absolute top-3 right-3 text-[9px] font-semibold tracking-[0.1em] uppercase px-2 py-0.5 ${
                   d.id === selectedDevice
-                    ? "bg-white/10 text-white/60"
+                    ? "bg-white/20 text-white/90"
                     : "bg-foreground/[0.04] text-foreground/25"
                 }`}
               >
@@ -326,7 +331,7 @@ export default function ROICalculator() {
                 className="text-[20px] font-bold text-foreground tabular-nums tracking-tight"
               >
                 {formatPLN(results.monthlyRevenue)}{" "}
-                <span className="text-[13px] font-medium text-foreground/25">zł</span>
+                <span className="text-[13px] font-medium text-foreground/35">zł</span>
               </motion.span>
             </div>
 
@@ -337,7 +342,7 @@ export default function ROICalculator() {
                   <span className="text-[13px] text-foreground/40">Rata leasingowa</span>
                   <span className="text-[16px] font-medium text-foreground/40 tabular-nums tracking-tight">
                     -{formatPLN(results.monthlyCost)}{" "}
-                    <span className="text-[12px] text-foreground/20">zł</span>
+                    <span className="text-[12px] text-foreground/30">zł</span>
                   </span>
                 </div>
 
@@ -361,7 +366,7 @@ export default function ROICalculator() {
                 }`}
               >
                 {formatPLN(mode === "lease" ? results.monthlyProfit : results.monthlyRevenue)}{" "}
-                <span className="text-[14px] font-medium text-foreground/25">zł</span>
+                <span className="text-[14px] font-medium text-foreground/35">zł</span>
               </motion.span>
             </div>
 
@@ -377,7 +382,7 @@ export default function ROICalculator() {
                 className="text-[16px] font-medium text-foreground tabular-nums tracking-tight"
               >
                 {formatPLN(results.annualRevenue)}{" "}
-                <span className="text-[12px] text-foreground/20">zł</span>
+                <span className="text-[12px] text-foreground/30">zł</span>
               </motion.span>
             </div>
 
@@ -391,7 +396,7 @@ export default function ROICalculator() {
                   className="text-[16px] font-medium text-foreground tabular-nums tracking-tight"
                 >
                   {formatPLN(results.annualProfit)}{" "}
-                  <span className="text-[12px] text-foreground/20">zł</span>
+                  <span className="text-[12px] text-foreground/30">zł</span>
                 </motion.span>
               </div>
             )}
@@ -406,7 +411,7 @@ export default function ROICalculator() {
                   className="text-[16px] font-medium text-foreground tabular-nums tracking-tight"
                 >
                   {results.paybackMonths === Infinity ? "—" : `${results.paybackMonths}`}{" "}
-                  <span className="text-[12px] text-foreground/20">mies.</span>
+                  <span className="text-[12px] text-foreground/30">mies.</span>
                 </motion.span>
               </div>
             )}
@@ -425,7 +430,7 @@ export default function ROICalculator() {
                     }`}
                   >
                     {formatPLN(results.annualProfit)}{" "}
-                    <span className="text-[14px] font-medium text-foreground/25">zł</span>
+                    <span className="text-[14px] font-medium text-foreground/35">zł</span>
                   </motion.span>
                 </div>
               </>
@@ -436,11 +441,11 @@ export default function ROICalculator() {
 
       {/* Exchange rate note */}
       <div className="mt-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
-        <p className="text-[11px] text-foreground/15">
+        <p className="text-[11px] text-foreground/25">
           Kurs EUR/PLN: {EUR_TO_PLN.toFixed(2)} &middot; Ceny netto &middot;
           Kalkulacja ma charakter orientacyjny
         </p>
-        <p className="text-[11px] text-foreground/15">
+        <p className="text-[11px] text-foreground/25">
           Leasing: 60 mies. &middot; Warunki indywidualne
         </p>
       </div>

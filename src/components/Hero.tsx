@@ -20,22 +20,24 @@ export default function Hero() {
       <div className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-10 w-full">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-6 items-center min-h-[100svh] pt-28 pb-16 lg:pt-0 lg:pb-0">
           <div className="lg:col-span-5 flex flex-col justify-center lg:py-32">
-            <div className="w-12 h-[1px] bg-foreground/20 mb-10 hidden lg:block" />
+            <div className="w-12 h-[2px] mb-10 hidden lg:block" style={{ background: "linear-gradient(90deg, #ff6600, #ff7b1f)" }} />
 
             <p className="text-[11px] font-semibold tracking-[0.3em] uppercase text-foreground/30 mb-5">
               Oficjalny dystrybutor w Polsce
             </p>
 
             <h1 className="text-[clamp(2.6rem,6.5vw,4.5rem)] leading-[0.92] font-bold tracking-[-0.04em] text-foreground">
-              Rehabilitacja
+              Technologia, która
               <br />
-              nowej generacji
+              wyróżnia Twoją
+              <br />
+              placówkę
             </h1>
 
-            <p className="mt-7 text-[15px] lg:text-[16px] text-foreground/45 max-w-[420px] leading-[1.75]">
-              Niemiecka technologia łącząca terapię z&nbsp;grywalizacją
-              i&nbsp;wirtualną rzeczywistością. Dla placówek, które chcą
-              być o&nbsp;krok przed rynkiem.
+            <p className="mt-7 text-[15px] lg:text-[16px] text-foreground/50 max-w-[420px] leading-[1.75]">
+              Niemieckie urządzenia VR łączące rehabilitację
+              z&nbsp;grywalizacją. Dla klinik, które inwestują
+              w&nbsp;jakość i&nbsp;szukają nowych źródeł przychodów.
             </p>
 
             <div className="mt-10 flex flex-col sm:flex-row gap-4">
@@ -60,7 +62,7 @@ export default function Hero() {
               </a>
               <a
                 href="#rozwiazania"
-                className="inline-flex items-center justify-center gap-2 px-8 py-4 text-foreground text-[14px] font-semibold border border-foreground/10 hover:border-foreground/30 transition-all duration-500 tracking-[0.01em]"
+                className="inline-flex items-center justify-center gap-2 px-8 py-4 text-foreground text-[14px] font-semibold border border-brand-orange/40 hover:border-transparent hover:text-white transition-[border-color] duration-500 tracking-[0.01em] hover:[background:linear-gradient(135deg,#ff6600,#ff7b1f)]"
               >
                 Poznaj rozwiązania
               </a>

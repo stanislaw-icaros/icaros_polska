@@ -67,7 +67,10 @@ function FAQItem({
         className="w-full flex items-start justify-between gap-6 py-7 text-left group"
       >
         <div className="flex items-start gap-5">
-          <span className="text-[12px] font-medium text-foreground/30 pt-1 shrink-0 tabular-nums">
+          <span
+            className="text-[12px] font-bold pt-1 shrink-0 tabular-nums bg-clip-text text-transparent"
+            style={{ backgroundImage: "linear-gradient(135deg, #ff6600, #ff7b1f)" }}
+          >
             {String(index + 1).padStart(2, "0")}
           </span>
           <span className="text-[15px] font-medium text-foreground group-hover:text-foreground/70 transition-colors duration-500 leading-[1.5]">
@@ -100,7 +103,7 @@ function FAQItem({
             transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
             className="overflow-hidden"
           >
-            <p className="pb-7 pl-[44px] text-[14px] text-foreground/35 leading-[1.8] max-w-2xl">
+            <p className="pb-7 pl-[44px] text-[14px] text-foreground/45 leading-[1.8] max-w-2xl">
               {answer}
             </p>
           </motion.div>
@@ -130,7 +133,7 @@ export default function FAQ() {
             <h2 className="mt-5 text-[clamp(1.6rem,3vw,2.4rem)] font-bold tracking-[-0.03em] text-foreground leading-[1.1]">
               Często zadawane pytania
             </h2>
-            <p className="mt-5 text-[14px] text-foreground/35 leading-[1.8]">
+            <p className="mt-5 text-[14px] text-foreground/45 leading-[1.8]">
               Odpowiedzi na najczęstsze pytania dotyczące technologii ICAROS, wdrożenia
               i&nbsp;współpracy. Nie znalazłeś odpowiedzi?
             </p>

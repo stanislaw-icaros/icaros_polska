@@ -21,7 +21,7 @@ export default function VideoShowcase() {
           <h2 className="mt-5 text-[clamp(1.8rem,4vw,2.8rem)] font-bold tracking-[-0.03em] text-foreground leading-[1.1]">
             Technologia, która mówi sama za siebie
           </h2>
-          <p className="mt-5 text-[16px] text-foreground/40 leading-[1.8]">
+          <p className="mt-5 text-[16px] text-foreground/50 leading-[1.8]">
             Zobacz, jak ICAROS zmienia doświadczenie rehabilitacji i&nbsp;treningu
             w&nbsp;placówkach na całym świecie.
           </p>
@@ -47,7 +47,7 @@ export default function VideoShowcase() {
           </div>
 
           <div className="mt-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <p className="text-[12px] text-foreground/20">
+            <p className="text-[12px] text-foreground/30">
               ICAROS GmbH &middot; Oficjalne wideo produktowe
             </p>
             <a

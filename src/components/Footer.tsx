@@ -112,7 +112,7 @@ export default function Footer() {
               Kontakt
             </h4>
             <ul className="space-y-4">
-              <li className="text-[13px] text-white/30">admin@icaros.com.pl</li>
+              <li><a href="mailto:kontakt@icaros.com.pl" className="text-[13px] text-white/30 hover:text-white/60 transition-colors duration-300">kontakt@icaros.com.pl</a></li>
               <li className="text-[13px] text-white/30">Polska</li>
             </ul>
           </div>
