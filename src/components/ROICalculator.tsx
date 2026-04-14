@@ -176,27 +176,34 @@ export default function ROICalculator() {
     <div className="relative">
       {/* Mode toggle */}
       <div className="flex items-center justify-center mb-12">
-        <div className="inline-flex border border-foreground/[0.08] p-[3px]">
-          <button
-            onClick={() => setMode("purchase")}
-            className={`px-6 py-2.5 text-[12px] font-semibold tracking-[0.05em] uppercase transition-all duration-400 ${
-              mode === "purchase"
-                ? "bg-foreground text-white"
-                : "text-foreground/30 hover:text-foreground/60"
-            }`}
-          >
-            Zakup
-          </button>
-          <button
-            onClick={() => setMode("lease")}
-            className={`px-6 py-2.5 text-[12px] font-semibold tracking-[0.05em] uppercase transition-all duration-400 ${
-              mode === "lease"
-                ? "bg-foreground text-white"
-                : "text-foreground/30 hover:text-foreground/60"
-            }`}
-          >
-            Leasing 60 mies.
-          </button>
+        <div className="flex flex-col items-center gap-2">
+          <div className="inline-flex border border-foreground/[0.08] p-[3px]">
+            <button
+              onClick={() => setMode("purchase")}
+              className={`px-6 py-2.5 text-[12px] font-semibold tracking-[0.05em] uppercase transition-all duration-400 ${
+                mode === "purchase"
+                  ? "bg-foreground text-white"
+                  : "text-foreground/30 hover:text-foreground/60"
+              }`}
+            >
+              Zakup
+            </button>
+            <button
+              onClick={() => setMode("lease")}
+              className={`px-6 py-2.5 text-[12px] font-semibold tracking-[0.05em] uppercase transition-all duration-400 ${
+                mode === "lease"
+                  ? "bg-foreground text-white"
+                  : "text-foreground/30 hover:text-foreground/60"
+              }`}
+            >
+              Leasing 60 mies.
+            </button>
+          </div>
+          {mode === "lease" && (
+            <p className="text-[11px] text-foreground/20">
+              Szacunkowa rata netto &middot; warunki zależne od leasingodawcy
+            </p>
+          )}
         </div>
       </div>
 

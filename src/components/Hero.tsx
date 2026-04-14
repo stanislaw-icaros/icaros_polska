@@ -66,7 +66,7 @@ export default function Hero() {
               </a>
             </div>
 
-            <div className="mt-16 flex items-center gap-10 lg:gap-12">
+            <div className="mt-16 grid grid-cols-3 gap-4 sm:gap-8 lg:gap-12">
               {[
                 { value: "9+", label: "Badań klinicznych" },
                 { value: "DE", label: "Made in Germany" },
@@ -77,21 +77,17 @@ export default function Hero() {
                   initial={{ opacity: 0, y: 16 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.8 + i * 0.15, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                  className={i > 0 ? "flex items-center gap-10 lg:gap-12" : ""}
                 >
-                  {i > 0 && <div className="w-px h-8 bg-foreground/8 mr-0" />}
-                  <div>
-                    <motion.div
-                      initial={{ scale: 0.8, opacity: 0 }}
-                      animate={{ scale: 1, opacity: 1 }}
-                      transition={{ delay: 0.9 + i * 0.18, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                      className="text-[22px] font-bold tracking-tight text-foreground"
-                    >
-                      {stat.value}
-                    </motion.div>
-                    <div className="text-[10px] text-foreground/30 mt-1 tracking-[0.15em] uppercase font-medium">
-                      {stat.label}
-                    </div>
+                  <motion.div
+                    initial={{ scale: 0.8, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ delay: 0.9 + i * 0.18, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                    className="text-[22px] font-bold tracking-tight text-foreground"
+                  >
+                    {stat.value}
+                  </motion.div>
+                  <div className="text-[10px] text-foreground/30 mt-1 tracking-[0.08em] sm:tracking-[0.15em] uppercase font-medium leading-tight">
+                    {stat.label}
                   </div>
                 </motion.div>
               ))}

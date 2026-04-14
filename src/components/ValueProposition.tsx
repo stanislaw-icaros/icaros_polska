@@ -86,7 +86,7 @@ export default function ValueProposition() {
 
             <div className="mt-10 w-full h-px bg-foreground/[0.06]" />
 
-            <div className="mt-8 grid grid-cols-3 gap-6">
+            <div className="mt-8 grid grid-cols-3 gap-4 sm:gap-6">
               {stats.map((stat, i) => (
                 <motion.div
                   key={stat.value}
@@ -102,7 +102,7 @@ export default function ValueProposition() {
                   >
                     {stat.value}
                   </motion.div>
-                  <div className="text-[11px] text-foreground/25 mt-1 tracking-[0.1em] uppercase font-medium leading-tight whitespace-pre-line">
+                  <div className="text-[10px] sm:text-[11px] text-foreground/25 mt-1 tracking-[0.06em] sm:tracking-[0.1em] uppercase font-medium leading-tight whitespace-pre-line">
                     {stat.label}
                   </div>
                 </motion.div>
