@@ -2,6 +2,8 @@
 
 import { motion } from "framer-motion";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+import LegalLinks from "@/components/LegalLinks";
+import { COMPANY_ADDRESS, COMPANY_NAME, KRS, NIP } from "@/lib/legal";
 
 const footerLinks = {
   rozwiazania: {
@@ -79,6 +81,9 @@ export default function Footer() {
               rozwiązania łączące rehabilitację z&nbsp;grywalizacją i&nbsp;wirtualną
               rzeczywistością.
             </p>
+            <p className="mt-5 max-w-sm text-[12px] leading-[1.8] text-white/18">
+              {COMPANY_NAME}, {COMPANY_ADDRESS}. KRS {KRS}, NIP {NIP}.
+            </p>
             <div className="mt-6 flex items-center gap-2">
               <span className="text-[11px] text-white/15 tracking-[0.1em]">Technologia</span>
               <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-[10px] text-white/30 font-medium border border-white/[0.06]">
@@ -126,14 +131,7 @@ export default function Footer() {
               &copy; {new Date().getFullYear()} ICAROS Polska. Wszelkie prawa
               zastrzeżone.
             </p>
-            <div className="flex items-center gap-8">
-              <a href="#" className="text-[11px] text-white/15 hover:text-white/40 transition-colors duration-500">
-                Polityka prywatności
-              </a>
-              <a href="#" className="text-[11px] text-white/15 hover:text-white/40 transition-colors duration-500">
-                Regulamin
-              </a>
-            </div>
+            <LegalLinks />
           </div>
         </div>
       </div>

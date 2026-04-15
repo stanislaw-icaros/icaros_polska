@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 import LoadingScreen from "./LoadingScreen";
@@ -134,19 +134,28 @@ export default function KalkulatorPageClient() {
   const daysLabel = DAYS_OPTIONS.find((item) => item.key === answers.workingDaysBand)?.label ?? "Brak";
 
   function CountMoney({ value }: { value: number }) {
-    const [displayValue, setDisplayValue] = useState(0);
+    const [displayValue, setDisplayValue] = useState(value);
+    const fromRef = useRef(0);
+    const rafRef = useRef(0);
 
     useEffect(() => {
-      const duration = 950;
+      fromRef.current = displayValue;
+      const from = fromRef.current;
+      const duration = 400;
       const start = performance.now();
+
+      cancelAnimationFrame(rafRef.current);
 
       const update = (timestamp: number) => {
         const progress = Math.min(1, (timestamp - start) / duration);
-        setDisplayValue(Math.round(value * progress));
-        if (progress < 1) requestAnimationFrame(update);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        setDisplayValue(Math.round(from + (value - from) * eased));
+        if (progress < 1) rafRef.current = requestAnimationFrame(update);
       };
 
-      requestAnimationFrame(update);
+      rafRef.current = requestAnimationFrame(update);
+      return () => cancelAnimationFrame(rafRef.current);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [value]);
 
     return <>{formatCurrency(displayValue)}</>;

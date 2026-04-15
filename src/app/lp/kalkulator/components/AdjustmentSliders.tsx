@@ -1,5 +1,6 @@
 "use client";
 
+import { useCallback, useRef } from "react";
 import { formatCurrency } from "../lib/calculations";
 
 type AdjustmentSlidersProps = {
@@ -19,8 +20,25 @@ export default function AdjustmentSliders({
   onPriceChange,
   onDaysChange,
 }: AdjustmentSlidersProps) {
+  const dragging = useRef(false);
+
+  const lockScroll = useCallback((e: React.TouchEvent) => {
+    dragging.current = true;
+    const el = e.currentTarget as HTMLElement;
+    const prevent = (ev: TouchEvent) => { if (dragging.current) ev.preventDefault(); };
+    el.addEventListener("touchmove", prevent, { passive: false });
+    const unlock = () => {
+      dragging.current = false;
+      el.removeEventListener("touchmove", prevent);
+      el.removeEventListener("touchend", unlock);
+      el.removeEventListener("touchcancel", unlock);
+    };
+    el.addEventListener("touchend", unlock, { once: true });
+    el.addEventListener("touchcancel", unlock, { once: true });
+  }, []);
+
   return (
-    <section className="mt-12 border border-foreground/[0.08] bg-white p-6 lg:p-10">
+    <section className="mt-12 border border-foreground/[0.08] bg-white p-5 sm:p-6 lg:p-10">
       <h3 className="text-[22px] font-bold tracking-[-0.02em] text-foreground">
         Chcesz sprawdzić inne scenariusze?
       </h3>
@@ -42,7 +60,7 @@ export default function AdjustmentSliders({
             step={1}
             value={sessionsPerDay}
             onChange={(event) => onSessionsChange(Number(event.target.value))}
-            style={{ touchAction: "none" }}
+            onTouchStart={lockScroll}
           />
         </div>
 
@@ -59,7 +77,7 @@ export default function AdjustmentSliders({
             step={5}
             value={icarosSessionPrice}
             onChange={(event) => onPriceChange(Number(event.target.value))}
-            style={{ touchAction: "none" }}
+            onTouchStart={lockScroll}
           />
         </div>
 
@@ -76,11 +94,10 @@ export default function AdjustmentSliders({
             step={1}
             value={daysInMonth}
             onChange={(event) => onDaysChange(Number(event.target.value))}
-            style={{ touchAction: "none" }}
+            onTouchStart={lockScroll}
           />
         </div>
       </div>
     </section>
   );
 }
-

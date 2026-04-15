@@ -1,10 +1,25 @@
 "use client";
 
+import Link from "next/link";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+import { hasCookieConsent, readCookieConsent } from "@/lib/cookie-consent";
 
 export default function VideoShowcase() {
   const { ref, isVisible } = useScrollAnimation();
+  const [canLoadVideo, setCanLoadVideo] = useState(false);
+
+  useEffect(() => {
+    const syncConsent = () => {
+      const preferences = readCookieConsent();
+      setCanLoadVideo(Boolean(preferences?.externalMedia || hasCookieConsent("externalMedia")));
+    };
+
+    syncConsent();
+    window.addEventListener("cookie-consent-updated", syncConsent as EventListener);
+    return () => window.removeEventListener("cookie-consent-updated", syncConsent as EventListener);
+  }, []);
 
   return (
     <section ref={ref} className="py-28 lg:py-40 bg-surface relative overflow-hidden">
@@ -35,15 +50,32 @@ export default function VideoShowcase() {
         >
           <div className="bg-foreground p-3 sm:p-4 lg:p-6 shadow-[0_12px_60px_-12px_rgba(0,0,0,0.15)]">
             <div className="relative w-full" style={{ paddingBottom: "56.25%" }}>
-              <iframe
-                className="absolute inset-0 w-full h-full"
-                src="https://www.youtube.com/embed/5sSi2cPwyD0?rel=0&modestbranding=1&color=white"
-                title="ICAROS — innowacyjna rehabilitacja i trening VR"
-                loading="lazy"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                referrerPolicy="strict-origin-when-cross-origin"
-                allowFullScreen
-              />
+              {canLoadVideo ? (
+                <iframe
+                  className="absolute inset-0 h-full w-full"
+                  src="https://www.youtube.com/embed/5sSi2cPwyD0?rel=0&modestbranding=1&color=white"
+                  title="ICAROS — innowacyjna rehabilitacja i trening VR"
+                  loading="lazy"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  referrerPolicy="strict-origin-when-cross-origin"
+                  allowFullScreen
+                />
+              ) : (
+                <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-foreground px-6 text-center text-white">
+                  <p className="text-[12px] font-semibold uppercase tracking-[0.24em] text-white/35">
+                    Treść zewnętrzna
+                  </p>
+                  <p className="max-w-md text-[15px] leading-[1.8] text-white/65">
+                    Wideo z YouTube wczyta się po wyrażeniu zgody na treści zewnętrzne w ustawieniach cookies.
+                  </p>
+                  <Link
+                    href="/polityka-cookies"
+                    className="text-[13px] font-semibold text-white underline decoration-white/25 underline-offset-4"
+                  >
+                    Zobacz politykę cookies
+                  </Link>
+                </div>
+              )}
             </div>
           </div>
 

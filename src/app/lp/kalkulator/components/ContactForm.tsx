@@ -3,6 +3,8 @@
 import { useMemo, useState } from "react";
 import { formatCurrency } from "../lib/calculations";
 import type { CalculatorResult } from "../lib/types";
+import { hasCookieConsent } from "@/lib/cookie-consent";
+import LegalLinks from "@/components/LegalLinks";
 
 type ContactFormProps = {
   utm: {
@@ -39,6 +41,7 @@ export default function ContactForm({
   result,
 }: ContactFormProps) {
   const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [company, setCompany] = useState("");
   const [marketingConsent, setMarketingConsent] = useState(false);
@@ -92,6 +95,11 @@ Zgoda marketingowa: ${marketingConsent ? "TAK" : "NIE"}`,
       return;
     }
 
+    if (marketingConsent && !email.trim()) {
+      setErrorMessage("Podaj adres e-mail, aby otrzymywać materiały.");
+      return;
+    }
+
     setErrorMessage("");
     setSuccessMessage("");
     setIsSubmitting(true);
@@ -102,6 +110,7 @@ Zgoda marketingowa: ${marketingConsent ? "TAK" : "NIE"}`,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           name: name.trim(),
+          email: email.trim() || undefined,
           phone: phone.trim(),
           company: company.trim(),
           role: "Właściciel / Menedżer (Kalkulator LP)",
@@ -119,7 +128,11 @@ Zgoda marketingowa: ${marketingConsent ? "TAK" : "NIE"}`,
       }
 
       // Prepared for Meta Pixel rollout; safe no-op if pixel is not installed.
-      if (typeof window !== "undefined" && typeof window.fbq === "function") {
+      if (
+        typeof window !== "undefined" &&
+        hasCookieConsent("marketing") &&
+        typeof window.fbq === "function"
+      ) {
         window.fbq("track", "Lead", {
           source: "kalkulator_lp",
           value_estimate: result.profit60,
@@ -128,6 +141,7 @@ Zgoda marketingowa: ${marketingConsent ? "TAK" : "NIE"}`,
 
       setSuccessMessage("Dziękujemy. Oddzwonimy w ciągu 1 dnia roboczego.");
       setName("");
+      setEmail("");
       setPhone("");
       setCompany("");
       setMarketingConsent(false);
@@ -168,6 +182,19 @@ Zgoda marketingowa: ${marketingConsent ? "TAK" : "NIE"}`,
             onChange={(event) => setPhone(event.target.value)}
             className="mt-2 w-full bg-transparent border border-white/20 px-4 py-3 text-[14px] focus:border-white/45 outline-none"
             required
+          />
+        </label>
+
+        <label className="block md:col-span-2">
+          <span className="text-[12px] tracking-[0.05em] uppercase text-white/65">
+            Adres e-mail{marketingConsent ? " *" : ""}
+          </span>
+          <input
+            type="email"
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
+            className="mt-2 w-full bg-transparent border border-white/20 px-4 py-3 text-[14px] focus:border-white/45 outline-none"
+            required={marketingConsent}
           />
         </label>
 
@@ -213,6 +240,11 @@ Zgoda marketingowa: ${marketingConsent ? "TAK" : "NIE"}`,
             Oddzwaniamy w ciągu 1 dnia roboczego.
           </span>
         </div>
+
+        <LegalLinks
+          className="md:col-span-2 flex flex-wrap items-center gap-4 pt-1"
+          linkClassName="text-[12px] text-white/55 underline decoration-white/20 underline-offset-4 transition-colors hover:text-white"
+        />
       </form>
     </section>
   );

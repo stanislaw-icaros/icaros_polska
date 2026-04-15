@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+import LegalLinks from "@/components/LegalLinks";
 
 const roleOptions = [
   { value: "owner", label: "Właściciel placówki" },
@@ -329,6 +330,10 @@ export default function ContactCTA() {
                     Twoje dane są bezpieczne. Używamy ich wyłącznie w celu kontaktu
                     w&nbsp;sprawie prezentacji ICAROS.
                   </p>
+                  <LegalLinks
+                    className="flex flex-wrap items-center justify-center gap-4 pt-1"
+                    linkClassName="text-[11px] text-foreground/30 underline decoration-foreground/15 underline-offset-4 transition-colors duration-300 hover:text-foreground/60"
+                  />
                 </div>
               </form>
             )}

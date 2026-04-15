@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { formatCurrency } from "../lib/calculations";
 import type { CalculatorResult } from "../lib/types";
 
@@ -9,19 +9,28 @@ type ResultsPanelProps = {
 };
 
 function CountNumber({ value }: { value: number }) {
-  const [displayValue, setDisplayValue] = useState(0);
+  const [displayValue, setDisplayValue] = useState(value);
+  const fromRef = useRef(0);
+  const rafRef = useRef(0);
 
   useEffect(() => {
-    const duration = 900;
+    fromRef.current = displayValue;
+    const from = fromRef.current;
+    const duration = 400;
     const start = performance.now();
+
+    cancelAnimationFrame(rafRef.current);
 
     const update = (timestamp: number) => {
       const progress = Math.min(1, (timestamp - start) / duration);
-      setDisplayValue(Math.round(value * progress));
-      if (progress < 1) requestAnimationFrame(update);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setDisplayValue(Math.round(from + (value - from) * eased));
+      if (progress < 1) rafRef.current = requestAnimationFrame(update);
     };
 
-    requestAnimationFrame(update);
+    rafRef.current = requestAnimationFrame(update);
+    return () => cancelAnimationFrame(rafRef.current);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value]);
 
   return <>{formatCurrency(displayValue)}</>;
@@ -43,7 +52,7 @@ export default function ResultsPanel({ result }: ResultsPanelProps) {
         </p>
       </div>
 
-      <div className="mt-8 space-y-3 text-[15px]">
+      <div className="mt-8 space-y-3 text-[15px]" style={{ fontVariantNumeric: "tabular-nums" }}>
         <div className="flex items-center justify-between border-b border-foreground/[0.06] pb-2">
           <span className="text-foreground/50">Dodatkowy przychód</span>
           <span className="font-semibold text-foreground">
@@ -66,7 +75,7 @@ export default function ResultsPanel({ result }: ResultsPanelProps) {
         </div>
       </div>
 
-      <div className="mt-8 border border-foreground/[0.06] bg-surface p-4 lg:p-5 text-[13px]">
+      <div className="mt-8 border border-foreground/[0.06] bg-surface p-4 lg:p-5 text-[13px]" style={{ fontVariantNumeric: "tabular-nums" }}>
         <div className="grid grid-cols-3 gap-3 text-foreground/35 uppercase tracking-[0.14em] text-[10px] font-semibold">
           <span />
           <span>48 mies.</span>
