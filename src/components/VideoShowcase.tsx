@@ -39,6 +39,7 @@ export default function VideoShowcase() {
                 className="absolute inset-0 w-full h-full"
                 src="https://www.youtube.com/embed/5sSi2cPwyD0?rel=0&modestbranding=1&color=white"
                 title="ICAROS — innowacyjna rehabilitacja i trening VR"
+                loading="lazy"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 referrerPolicy="strict-origin-when-cross-origin"
                 allowFullScreen

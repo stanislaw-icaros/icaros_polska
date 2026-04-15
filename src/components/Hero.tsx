@@ -112,6 +112,7 @@ export default function Hero() {
                   alt="ICAROS Health — nowoczesna rehabilitacja z wirtualną rzeczywistością"
                   fill
                   priority
+                  fetchPriority="high"
                   className="relative z-10 object-cover object-[40%_center] scale-[1.12] transition-transform duration-700 group-hover:scale-[1.16]"
                   sizes="(max-width: 1024px) 100vw, 58vw"
                 />
