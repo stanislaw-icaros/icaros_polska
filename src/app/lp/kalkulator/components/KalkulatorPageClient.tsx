@@ -180,7 +180,7 @@ export default function KalkulatorPageClient() {
   }
 
   return (
-    <main className="bg-white min-h-screen">
+    <main className="bg-white min-h-screen overflow-x-hidden">
       {!started ? (
         <>
         <section className="grid grid-cols-1 lg:grid-cols-[45fr_55fr] min-h-[100svh]">
@@ -489,7 +489,7 @@ export default function KalkulatorPageClient() {
                     className="px-7 py-3 text-white text-[14px] font-semibold disabled:opacity-40 transition-opacity"
                     style={{ background: "linear-gradient(135deg, #ff6600, #ff7b1f)" }}
                   >
-                    Oblicz moją analizę →
+                    Pokaż mi wynik →
                   </button>
                 )}
               </div>
@@ -600,7 +600,7 @@ export default function KalkulatorPageClient() {
                       onClick={resetQuiz}
                       className="text-[13px] text-white/45 hover:text-white transition-colors"
                     >
-                      Zmień dane ↩
+                      Zmień dane
                     </button>
                   </motion.div>
                 </div>
@@ -709,7 +709,7 @@ export default function KalkulatorPageClient() {
                     src="/hero-icaros.webp"
                     alt="ICAROS w użyciu"
                     fill
-                    className="object-cover object-[70%_center] scale-[1.15]"
+                    className="object-cover object-[86%_center] sm:object-[78%_center] lg:object-[70%_center] scale-[1.12] sm:scale-[1.14] lg:scale-[1.15]"
                     sizes="(max-width: 1024px) 100vw, 50vw"
                   />
                 </div>

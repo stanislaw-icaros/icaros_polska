@@ -42,6 +42,7 @@ export default function AdjustmentSliders({
             step={1}
             value={sessionsPerDay}
             onChange={(event) => onSessionsChange(Number(event.target.value))}
+            style={{ touchAction: "none" }}
           />
         </div>
 
@@ -58,6 +59,7 @@ export default function AdjustmentSliders({
             step={5}
             value={icarosSessionPrice}
             onChange={(event) => onPriceChange(Number(event.target.value))}
+            style={{ touchAction: "none" }}
           />
         </div>
 
@@ -74,6 +76,7 @@ export default function AdjustmentSliders({
             step={1}
             value={daysInMonth}
             onChange={(event) => onDaysChange(Number(event.target.value))}
+            style={{ touchAction: "none" }}
           />
         </div>
       </div>
