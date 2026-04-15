@@ -55,11 +55,40 @@ const OWNER_A = Number(getEnv("PIPEDRIVE_OWNER_A_ID") || "25511085"); // Jarosla
 const OWNER_B = Number(getEnv("PIPEDRIVE_OWNER_B_ID") || "25511096"); // Sebastian Wilk
 const FALLBACK_OWNER = Number(getEnv("PIPEDRIVE_OWNER_FALLBACK_ID") || "25511096");
 
-async function callPipedrive(
+type PipedriveResponse<T = unknown> = {
+  success?: boolean;
+  error?: string;
+  error_info?: string;
+  data?: T;
+  additional_data?: {
+    pagination?: {
+      more_items_in_collection?: boolean;
+      next_start?: number;
+    };
+  };
+};
+
+type SearchItem = {
+  item: {
+    id: number;
+    organization?: { id: number };
+  };
+};
+
+type DealListItem = {
+  owner_id?: { id: number };
+};
+
+function toErrorMessage(error: unknown, fallback: string) {
+  if (error instanceof Error) return error.message;
+  return fallback;
+}
+
+async function callPipedrive<T = unknown>(
   endpoint: string,
   options: RequestInit = {},
   retries = 3
-) {
+): Promise<PipedriveResponse<T>> {
   if (!API_TOKEN || !DOMAIN) {
     throw new Error(
       "Missing PIPEDRIVE_API_TOKEN or PIPEDRIVE_COMPANY_DOMAIN environment variables"
@@ -86,9 +115,9 @@ async function callPipedrive(
     }
 
     const text = await response.text();
-    let json: any = null;
+    let json: PipedriveResponse<T> = {};
     try {
-      json = JSON.parse(text);
+      json = JSON.parse(text) as PipedriveResponse<T>;
     } catch {
       // keep raw text for richer errors
     }
@@ -105,8 +134,8 @@ async function callPipedrive(
   throw new Error("Pipedrive request failed after retries");
 }
 
-function getHashBasedOwner(email: string) {
-  const hash = [...email.toLowerCase()].reduce(
+function getHashBasedOwner(seed: string) {
+  const hash = [...seed.toLowerCase()].reduce(
     (acc, char) => ((acc << 5) - acc + char.charCodeAt(0)) | 0,
     0
   );
@@ -117,14 +146,14 @@ async function chooseOwnerId() {
   try {
     // Stateless round-robin: look at the most recently created deal owner
     // and alternate between two configured owners.
-    const recentDeals = await callPipedrive(
+    const recentDeals = await callPipedrive<DealListItem[]>(
       `/deals?limit=20&sort=add_time DESC`
     );
 
-    const deals = Array.isArray(recentDeals?.data) ? recentDeals.data : [];
-    const lastAssigned = deals.find(
-      (deal: any) => deal?.owner_id?.id === OWNER_A || deal?.owner_id?.id === OWNER_B
-    );
+    const deals = Array.isArray(recentDeals?.data)
+      ? (recentDeals.data as DealListItem[])
+      : [];
+    const lastAssigned = deals.find((deal) => deal?.owner_id?.id === OWNER_A || deal?.owner_id?.id === OWNER_B);
 
     if (lastAssigned?.owner_id?.id === OWNER_A) return OWNER_B;
     if (lastAssigned?.owner_id?.id === OWNER_B) return OWNER_A;
@@ -140,38 +169,49 @@ export async function POST(request: Request) {
     const payload = (await request.json()) as ContactPayload;
     const name = payload.name?.trim();
     const email = payload.email?.trim().toLowerCase();
+    const phone = payload.phone?.trim();
+    const ownerSeed = email || phone || name || "";
 
-    if (!name || !email) {
+    if (!name || (!email && !phone)) {
       return NextResponse.json(
-        { success: false, error: "Name and email are required." },
+        { success: false, error: "Name and at least one contact field (email or phone) are required." },
         { status: 400 }
       );
     }
 
     let personId: number | undefined;
     let orgId: number | undefined;
-    const ownerId = (await chooseOwnerId()) || getHashBasedOwner(email) || FALLBACK_OWNER;
+    const ownerId = (await chooseOwnerId()) || getHashBasedOwner(ownerSeed) || FALLBACK_OWNER;
 
-    const personSearch = await callPipedrive(
-      `/persons/search?term=${encodeURIComponent(email)}&fields=email&exact_match=true&limit=1`
-    );
+    let personSearch: PipedriveResponse<{ items?: SearchItem[] }> | null = null;
+    if (email) {
+      personSearch = await callPipedrive(
+        `/persons/search?term=${encodeURIComponent(email)}&fields=email&exact_match=true&limit=1`
+      );
+    } else if (phone) {
+      personSearch = await callPipedrive(
+        `/persons/search?term=${encodeURIComponent(phone)}&fields=phone&exact_match=true&limit=1`
+      );
+    }
 
-    if (personSearch?.data?.items?.length > 0) {
-      const existingPerson = personSearch.data.items[0].item;
+    const personItems = personSearch?.data?.items ?? [];
+    if (personItems.length > 0) {
+      const existingPerson = personItems[0].item;
       personId = existingPerson.id;
       orgId = existingPerson.organization?.id;
     } else {
       if (payload.company?.trim()) {
-        const orgSearch = await callPipedrive(
+        const orgSearch = await callPipedrive<{ items?: SearchItem[] }>(
           `/organizations/search?term=${encodeURIComponent(
             payload.company.trim()
           )}&fields=name&exact_match=true&limit=1`
         );
 
-        if (orgSearch?.data?.items?.length > 0) {
-          orgId = orgSearch.data.items[0].item.id;
+        const orgItems = orgSearch.data?.items ?? [];
+        if (orgItems.length > 0) {
+          orgId = orgItems[0].item.id;
         } else {
-          const createdOrg = await callPipedrive("/organizations", {
+          const createdOrg = await callPipedrive<{ id: number }>("/organizations", {
             method: "POST",
             body: JSON.stringify({
               name: payload.company.trim(),
@@ -182,16 +222,14 @@ export async function POST(request: Request) {
         }
       }
 
-      const createdPerson = await callPipedrive("/persons", {
+      const createdPerson = await callPipedrive<{ id: number }>("/persons", {
         method: "POST",
         body: JSON.stringify({
           name,
           owner_id: ownerId,
           org_id: orgId,
-          email: [{ value: email, primary: true, label: "work" }],
-          phone: payload.phone?.trim()
-            ? [{ value: payload.phone.trim(), primary: true, label: "work" }]
-            : undefined,
+          email: email ? [{ value: email, primary: true, label: "work" }] : undefined,
+          phone: phone ? [{ value: phone, primary: true, label: "work" }] : undefined,
         }),
       });
       personId = createdPerson?.data?.id;
@@ -231,7 +269,7 @@ export async function POST(request: Request) {
       ? `ICAROS — ${payload.company.trim()}`
       : `ICAROS — ${name}`;
 
-    const createdDeal = await callPipedrive("/deals", {
+    const createdDeal = await callPipedrive<{ id: number }>("/deals", {
       method: "POST",
       body: JSON.stringify({
         title: dealTitle,
@@ -249,8 +287,8 @@ export async function POST(request: Request) {
       "NOWE ZGLOSZENIE Z FORMULARZA",
       "",
       `Imie i nazwisko: ${name}`,
-      `Email: ${email}`,
-      payload.phone ? `Telefon: ${payload.phone}` : "",
+      email ? `Email: ${email}` : "",
+      phone ? `Telefon: ${phone}` : "",
       payload.company ? `Placowka / firma: ${payload.company}` : "",
       payload.nip ? `NIP: ${payload.nip}` : "",
       payload.role ? `Rola: ${payload.role}` : "",
@@ -260,11 +298,12 @@ export async function POST(request: Request) {
       `Zrodlo formularza: ${formSource}`,
     ].filter(Boolean);
 
-    if (createdDeal?.data?.id) {
+    if (createdDeal?.data && typeof createdDeal.data === "object" && "id" in createdDeal.data) {
+      const dealId = (createdDeal.data as { id: number }).id;
       await callPipedrive("/notes", {
         method: "POST",
         body: JSON.stringify({
-          deal_id: createdDeal.data.id,
+          deal_id: dealId,
           content: noteLines.join("\n"),
           pinned_to_deal_flag: true,
         }),
@@ -274,16 +313,19 @@ export async function POST(request: Request) {
     return NextResponse.json(
       {
         success: true,
-        dealId: createdDeal?.data?.id,
+        dealId:
+          createdDeal?.data && typeof createdDeal.data === "object" && "id" in createdDeal.data
+            ? (createdDeal.data as { id: number }).id
+            : undefined,
         ownerId,
       },
       { status: 201 }
     );
-  } catch (error: any) {
+  } catch (error: unknown) {
     return NextResponse.json(
       {
         success: false,
-        error: error?.message || "Unexpected server error",
+        error: toErrorMessage(error, "Unexpected server error"),
       },
       { status: 500 }
     );

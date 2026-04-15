@@ -76,8 +76,8 @@ export default function ContactCTA() {
       }
 
       setSubmitted(true);
-    } catch (error: any) {
-      setSubmitError(error?.message || "Wystąpił błąd. Spróbuj ponownie.");
+    } catch (error: unknown) {
+      setSubmitError(error instanceof Error ? error.message : "Wystąpił błąd. Spróbuj ponownie.");
     } finally {
       setIsSubmitting(false);
     }
