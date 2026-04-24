@@ -14,15 +14,6 @@ const studyResults = [
     ],
   },
   {
-    device: "ICAROS Guardian",
-    results: [
-      { metric: "↑↑", label: "Istotna poprawa siły nóg" },
-      { metric: "↑", label: "Widoczna poprawa mobilności" },
-      { metric: "↑", label: "Szybkość chodu u seniorów" },
-      { metric: "↑", label: "Funkcje poznawcze i dual-task" },
-    ],
-  },
-  {
     device: "ICAROS Cloud",
     results: [
       { metric: "+15.85%", label: "Wzrost siły core po 5 tygodniach" },
@@ -45,19 +36,19 @@ export default function Studies() {
           transition={{ duration: 0.8 }}
           className="text-center max-w-2xl mx-auto"
         >
-          <p className="text-[11px] font-semibold tracking-[0.3em] uppercase text-foreground/30">
+          <p className="text-[11px] font-semibold tracking-[0.3em] uppercase text-foreground/55">
             Badania naukowe
           </p>
           <h2 className="mt-5 text-[clamp(1.8rem,4vw,2.8rem)] font-bold tracking-[-0.03em] text-foreground leading-[1.1]">
             Skuteczność potwierdzona naukowo
           </h2>
-          <p className="mt-5 text-[16px] text-foreground/40 leading-[1.8]">
+          <p className="mt-5 text-[16px] text-foreground/70 leading-[1.8]">
             Ponad 9 badań klinicznych przeprowadzonych we współpracy z&nbsp;czołowymi
             europejskimi uniwersytetami. Realne wyniki, nie obietnice.
           </p>
         </motion.div>
 
-        <div className="mt-20 grid grid-cols-1 lg:grid-cols-3 gap-0 border border-foreground/[0.06]">
+        <div className="mt-20 grid grid-cols-1 lg:grid-cols-2 gap-0 border border-foreground/[0.06]">
           {studyResults.map((study, i) => (
             <motion.div
               key={study.device}
@@ -99,7 +90,7 @@ export default function Studies() {
                     >
                       {result.metric}
                     </motion.span>
-                    <span className="text-[13px] text-foreground/45 leading-[1.5] pt-0.5 group-hover:text-white/50 transition-colors duration-500">
+                    <span className="text-[13px] text-foreground/70 leading-[1.5] pt-0.5 group-hover:text-white/80 transition-colors duration-500">
                       {result.label}
                     </span>
                   </motion.div>

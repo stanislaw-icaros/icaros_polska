@@ -5,6 +5,7 @@ import { formatCurrency } from "../lib/calculations";
 import type { CalculatorResult } from "../lib/types";
 import { hasCookieConsent } from "@/lib/cookie-consent";
 import LegalLinks from "@/components/LegalLinks";
+import { DISCLAIMER_MEDICAL_DEVICES } from "@/lib/legal";
 
 type ContactFormProps = {
   utm: {
@@ -230,7 +231,7 @@ Zgoda marketingowa: ${marketingConsent ? "TAK" : "NIE"}`,
         {errorMessage ? <p className="md:col-span-2 text-[13px] text-red-300">{errorMessage}</p> : null}
         {successMessage ? <p className="md:col-span-2 text-[13px] text-emerald-300">{successMessage}</p> : null}
 
-        <div className="md:col-span-2 flex flex-col sm:flex-row sm:flex-wrap items-start sm:items-center gap-3 sm:gap-5 text-[12px] text-white/50">
+        <div className="md:col-span-2 flex flex-col sm:flex-row sm:flex-wrap items-start sm:items-center gap-3 sm:gap-5 text-[12px] text-white/80">
           <span className="inline-flex items-center gap-2">
             <svg className="w-3.5 h-3.5 text-white/40" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" /></svg>
             Twoje dane są bezpieczne. Nie spamujemy.
@@ -240,10 +241,13 @@ Zgoda marketingowa: ${marketingConsent ? "TAK" : "NIE"}`,
             Oddzwaniamy w ciągu 1 dnia roboczego.
           </span>
         </div>
+        <p className="md:col-span-2 text-[12px] text-white/80 leading-[1.8]">
+          {DISCLAIMER_MEDICAL_DEVICES}
+        </p>
 
         <LegalLinks
           className="md:col-span-2 flex flex-wrap items-center gap-4 pt-1"
-          linkClassName="text-[12px] text-white/55 underline decoration-white/20 underline-offset-4 transition-colors hover:text-white"
+          linkClassName="text-[12px] text-white/80 underline decoration-white/25 underline-offset-4 transition-colors hover:text-white"
         />
       </form>
     </section>

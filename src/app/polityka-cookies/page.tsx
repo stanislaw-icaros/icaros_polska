@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import LegalPageLayout from "@/components/LegalPageLayout";
-import { COMPANY_EMAIL, COMPANY_NAME, LAST_UPDATED } from "@/lib/legal";
+import { COMPANY_EMAIL, COMPANY_NAME, DISCLAIMER_COOKIES, LAST_UPDATED } from "@/lib/legal";
 
 export const metadata: Metadata = {
   title: "Polityka cookies | ICAROS Polska",
@@ -22,6 +22,9 @@ export default function CookiesPolicyPage() {
         <p>
           Serwis prowadzony przez <strong>{COMPANY_NAME}</strong> może używać plików cookies, local storage,
           identyfikatorów urządzeń, pikseli pomiarowych oraz skryptów analitycznych i marketingowych.
+        </p>
+        <p>
+          <strong>Ważne:</strong> {DISCLAIMER_COOKIES}
         </p>
       </section>
 

@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import LegalLinks from "@/components/LegalLinks";
-import { COMPANY_ADDRESS, COMPANY_NAME, KRS, NIP } from "@/lib/legal";
+import { COMPANY_ADDRESS, COMPANY_NAME, DISCLAIMER_MEDICAL_DEVICES, KRS, NIP } from "@/lib/legal";
 
 const footerLinks = {
   rozwiazania: {
@@ -50,7 +50,7 @@ export default function Footer() {
               <h3 className="text-[clamp(1.5rem,3vw,2.2rem)] font-bold tracking-[-0.03em]">
                 Gotowy na nowoczesną rehabilitację?
               </h3>
-              <p className="mt-3 text-white/30 text-[15px]">
+              <p className="mt-3 text-white/75 text-[15px]">
                 Umów bezpłatną prezentację i zobacz, jak ICAROS zmienia zasady gry.
               </p>
             </div>
@@ -72,11 +72,11 @@ export default function Footer() {
           <div className="lg:col-span-4">
             <div className="flex items-center gap-3">
               <span className="text-[18px] font-bold tracking-[0.15em]">ICAROS</span>
-              <span className="text-[9px] font-medium tracking-[0.2em] text-white/25 uppercase mt-0.5">
+              <span className="text-[9px] font-medium tracking-[0.2em] text-white/70 uppercase mt-0.5">
                 Polska
               </span>
             </div>
-            <p className="mt-5 text-[13px] text-white/25 leading-[1.8] max-w-xs">
+            <p className="mt-5 text-[13px] text-white/75 leading-[1.8] max-w-xs">
               Oficjalny dystrybutor technologii ICAROS w&nbsp;Polsce. Nowoczesne
               rozwiązania łączące rehabilitację z&nbsp;grywalizacją i&nbsp;wirtualną
               rzeczywistością.
@@ -84,9 +84,12 @@ export default function Footer() {
             <p className="mt-5 max-w-sm text-[12px] leading-[1.8] text-white/18">
               {COMPANY_NAME}, {COMPANY_ADDRESS}. KRS {KRS}, NIP {NIP}.
             </p>
+            <p className="mt-4 max-w-md text-[12px] leading-[1.8] text-white/70">
+              {DISCLAIMER_MEDICAL_DEVICES}
+            </p>
             <div className="mt-6 flex items-center gap-2">
-              <span className="text-[11px] text-white/15 tracking-[0.1em]">Technologia</span>
-              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-[10px] text-white/30 font-medium border border-white/[0.06]">
+              <span className="text-[11px] text-white/60 tracking-[0.1em]">Technologia</span>
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-[10px] text-white/75 font-medium border border-white/[0.10]">
                 Made in Germany
               </span>
             </div>
@@ -94,7 +97,7 @@ export default function Footer() {
 
           {Object.values(footerLinks).map((section) => (
             <div key={section.title} className="lg:col-span-2">
-              <h4 className="text-[10px] font-semibold tracking-[0.2em] uppercase text-white/20 mb-6">
+              <h4 className="text-[10px] font-semibold tracking-[0.2em] uppercase text-white/60 mb-6">
                 {section.title}
               </h4>
               <ul className="space-y-4">
@@ -102,7 +105,7 @@ export default function Footer() {
                   <li key={link.label}>
                     <a
                       href={link.href}
-                      className="text-[13px] text-white/30 hover:text-white/70 transition-colors duration-500"
+                      className="text-[13px] text-white/75 hover:text-white transition-colors duration-500"
                     >
                       {link.label}
                     </a>
@@ -113,12 +116,12 @@ export default function Footer() {
           ))}
 
           <div className="lg:col-span-2">
-            <h4 className="text-[10px] font-semibold tracking-[0.2em] uppercase text-white/20 mb-6">
+            <h4 className="text-[10px] font-semibold tracking-[0.2em] uppercase text-white/60 mb-6">
               Kontakt
             </h4>
             <ul className="space-y-4">
-              <li><a href="mailto:kontakt@icaros.com.pl" className="text-[13px] text-white/30 hover:text-white/60 transition-colors duration-300">kontakt@icaros.com.pl</a></li>
-              <li className="text-[13px] text-white/30">Polska</li>
+              <li><a href="mailto:kontakt@icaros.com.pl" className="text-[13px] text-white/80 hover:text-white transition-colors duration-300">kontakt@icaros.com.pl</a></li>
+              <li className="text-[13px] text-white/75">Polska</li>
             </ul>
           </div>
         </div>
@@ -127,7 +130,7 @@ export default function Footer() {
       <div className="border-t border-white/[0.04]">
         <div className="max-w-[1400px] mx-auto px-6 lg:px-10 py-6">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <p className="text-[11px] text-white/15">
+            <p className="text-[11px] text-white/55">
               &copy; {new Date().getFullYear()} ICAROS Polska. Wszelkie prawa
               zastrzeżone.
             </p>

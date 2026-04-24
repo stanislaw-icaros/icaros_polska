@@ -13,7 +13,7 @@ const faqs = [
   {
     question: "Ile kosztuje system ICAROS i czy to się opłaca?",
     answer:
-      "ICAROS Circle (kompletny ekosystem trzech urządzeń) to inwestycja rzędu 49 900 € netto. Przy zaledwie 15 użytkownikach dziennie i stawce 25 € za sesję, system zwraca się w niecałe 5 miesięcy i generuje ponad 55 000 € zysku w pierwszym roku. Dostępny jest również leasing od 799 € miesięcznie. Chętnie przygotujemy kalkulację dopasowaną do Twojej placówki.",
+      "ICAROS Circle (kompletny ekosystem trzech urządzeń: Health, Guardian i Cloud) to inwestycja rzędu 49 900 € netto. Przy zaledwie 15 użytkownikach dziennie i stawce 25 € za sesję, system zwraca się w niecałe 5 miesięcy i generuje ponad 55 000 € zysku w pierwszym roku. Dostępny jest również leasing od 799 € miesięcznie. Chętnie przygotujemy kalkulację dopasowaną do Twojej placówki.",
   },
   {
     question: "Czy potrzebuję specjalistycznego personelu do obsługi?",
@@ -103,7 +103,7 @@ function FAQItem({
             transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
             className="overflow-hidden"
           >
-            <p className="pb-7 pl-[44px] text-[14px] text-foreground/45 leading-[1.8] max-w-2xl">
+            <p className="pb-7 pl-[44px] text-[14px] text-foreground/70 leading-[1.8] max-w-2xl">
               {answer}
             </p>
           </motion.div>
@@ -127,19 +127,19 @@ export default function FAQ() {
             transition={{ duration: 0.8 }}
             className="lg:col-span-4"
           >
-            <p className="text-[11px] font-semibold tracking-[0.3em] uppercase text-foreground/30">
+            <p className="text-[11px] font-semibold tracking-[0.3em] uppercase text-foreground/55">
               FAQ
             </p>
             <h2 className="mt-5 text-[clamp(1.6rem,3vw,2.4rem)] font-bold tracking-[-0.03em] text-foreground leading-[1.1]">
               Często zadawane pytania
             </h2>
-            <p className="mt-5 text-[14px] text-foreground/45 leading-[1.8]">
+            <p className="mt-5 text-[14px] text-foreground/70 leading-[1.8]">
               Odpowiedzi na najczęstsze pytania dotyczące technologii ICAROS, wdrożenia
               i&nbsp;współpracy. Nie znalazłeś odpowiedzi?
             </p>
             <a
               href="#kontakt"
-              className="group inline-flex items-center gap-3 mt-6 text-[13px] font-semibold text-foreground/40 hover:text-foreground transition-colors duration-500 tracking-[0.02em]"
+              className="group inline-flex items-center gap-3 mt-6 text-[13px] font-semibold text-foreground/70 hover:text-foreground transition-colors duration-500 tracking-[0.02em]"
             >
               Skontaktuj się z nami
               <svg className="w-4 h-4 transition-transform duration-500 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>

@@ -4,7 +4,18 @@ import { motion } from "framer-motion";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import Image from "next/image";
 
-const products = [
+type Product = {
+  step: string;
+  name: string;
+  category: string;
+  description: string;
+  position: string;
+  indications: string;
+  image: string;
+  imageAlt: string;
+};
+
+const products: Product[] = [
   {
     step: "01",
     name: "ICAROS Health",
@@ -32,11 +43,11 @@ const products = [
     name: "ICAROS Cloud",
     category: "Trening pełnego ciała",
     description:
-      "Wszechstronny trening post-rehabilitacyjny całego ciała. Lekki, kompaktowy — idealny na końcowym etapie rehabilitacji i w przygotowaniu motorycznym.",
+      "Cyfrowy trening całego ciała łączący skuteczność z angażującymi exergames. Sterowanie przez smartfon lub tablet — w domu, butikowym studio lub na sali treningowej.",
     position: "Wertykalna — wolnostojąca",
-    indications: "Post-rehabilitacja, trening wydolnościowy",
-    image: "/Icaros-24_0428.webp",
-    imageAlt: "Kobieta trenująca na platformie ICAROS Cloud z ekranem wyświetlającym grę",
+    indications: "Fitness, zajęcia grupowe, równowaga i stabilizacja",
+    image: "/icaros_cloud_7.webp",
+    imageAlt: "ICAROS Cloud — kompaktowe urządzenie do cyfrowego treningu całego ciała",
   },
 ];
 
@@ -63,13 +74,13 @@ export default function ProductEcosystem() {
           transition={{ duration: 0.8 }}
           className="text-center max-w-3xl mx-auto"
         >
-          <p className="text-[11px] font-semibold tracking-[0.3em] uppercase text-white/40">
+          <p className="text-[11px] font-semibold tracking-[0.3em] uppercase text-white/75">
             ICAROS Circle
           </p>
           <h2 className="mt-5 text-[clamp(1.8rem,4vw,2.8rem)] font-bold tracking-[-0.03em] text-white leading-[1.1]">
             Kompletny ekosystem treningowy
           </h2>
-          <p className="mt-5 text-[16px] text-white/45 leading-[1.8]">
+          <p className="mt-5 text-[16px] text-white/80 leading-[1.8]">
             Trzy zaawansowane urządzenia. Jeden zintegrowany system. Pełna ścieżka
             terapeutyczna — od pierwszych ćwiczeń wspomaganych po intensywny trening
             całego ciała.
@@ -117,7 +128,7 @@ export default function ProductEcosystem() {
                 </span>
 
                 <div className="mt-4">
-                  <span className="text-[10px] font-semibold tracking-[0.2em] uppercase text-white/40">
+                  <span className="text-[10px] font-semibold tracking-[0.2em] uppercase text-white/70">
                     {product.category}
                   </span>
 
@@ -125,18 +136,16 @@ export default function ProductEcosystem() {
                     {product.name}
                   </h3>
 
-                  <p className="mt-1 text-[12px] text-white/35 font-medium">
+                  <p className="mt-1 text-[12px] text-white/75 font-medium">
                     {product.position}
                   </p>
 
-                  <p className="mt-5 text-[14px] text-white/50 leading-[1.8]">
+                  <p className="mt-5 text-[14px] text-white/85 leading-[1.8]">
                     {product.description}
                   </p>
 
-                  <div className="mt-6 pt-5 border-t border-white/[0.06]">
-                    <p className="text-[13px] text-white/45">
-                      {product.indications}
-                    </p>
+                  <div className="mt-6 pt-5 border-t border-white/[0.06] space-y-4">
+                    <p className="text-[13px] text-white/80">{product.indications}</p>
                   </div>
                 </div>
               </div>
@@ -152,7 +161,7 @@ export default function ProductEcosystem() {
         >
           <a
             href="#kontakt"
-            className="group inline-flex items-center gap-3 text-[13px] font-semibold text-white/50 hover:text-white transition-colors duration-500 tracking-[0.02em]"
+            className="group inline-flex items-center gap-3 text-[13px] font-semibold text-white/85 hover:text-white transition-colors duration-500 tracking-[0.02em]"
           >
             Dowiedz się więcej o ICAROS Circle
             <svg className="w-4 h-4 transition-transform duration-500 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>

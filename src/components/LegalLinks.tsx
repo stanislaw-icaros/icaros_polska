@@ -7,7 +7,7 @@ type LegalLinksProps = {
 
 export default function LegalLinks({
   className = "flex items-center gap-8",
-  linkClassName = "text-[11px] text-white/15 hover:text-white/40 transition-colors duration-500",
+  linkClassName = "text-[11px] text-white/65 hover:text-white transition-colors duration-500",
 }: LegalLinksProps) {
   return (
     <div className={className}>

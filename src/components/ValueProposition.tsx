@@ -72,13 +72,13 @@ export default function ValueProposition() {
             transition={{ duration: 0.8 }}
             className="order-1 lg:order-2"
           >
-            <p className="text-[11px] font-semibold tracking-[0.3em] uppercase text-foreground/30">
+            <p className="text-[11px] font-semibold tracking-[0.3em] uppercase text-foreground/55">
               Dlaczego ICAROS
             </p>
             <h2 className="mt-5 text-[clamp(1.8rem,4vw,2.8rem)] font-bold tracking-[-0.03em] text-foreground leading-[1.1]">
               Technologia, która zmienia sposób prowadzenia rehabilitacji
             </h2>
-            <p className="mt-6 text-[15px] text-foreground/50 leading-[1.8]">
+            <p className="mt-6 text-[15px] text-foreground/70 leading-[1.8]">
               ICAROS to nie kolejny sprzęt. To kompleksowy ekosystem treningowy,
               który podnosi jakość terapii, zwiększa zaangażowanie pacjentów
               i&nbsp;buduje przewagę konkurencyjną Twojej placówki.
@@ -102,7 +102,7 @@ export default function ValueProposition() {
                   >
                     {stat.value}
                   </motion.div>
-                  <div className="text-[10px] sm:text-[11px] text-foreground/25 mt-1 tracking-[0.06em] sm:tracking-[0.1em] uppercase font-medium leading-tight whitespace-pre-line">
+                  <div className="text-[10px] sm:text-[11px] text-foreground/55 mt-1 tracking-[0.06em] sm:tracking-[0.1em] uppercase font-medium leading-tight whitespace-pre-line">
                     {stat.label}
                   </div>
                 </motion.div>
@@ -134,7 +134,7 @@ export default function ValueProposition() {
               <h3 className="mt-5 text-[20px] font-semibold text-foreground tracking-[-0.01em] group-hover:text-white transition-colors duration-500">
                 {value.title}
               </h3>
-              <p className="mt-4 text-[14px] text-foreground/50 leading-[1.8] group-hover:text-white/60 transition-colors duration-500">
+              <p className="mt-4 text-[14px] text-foreground/70 leading-[1.8] group-hover:text-white/80 transition-colors duration-500">
                 {value.description}
               </p>
             </motion.div>

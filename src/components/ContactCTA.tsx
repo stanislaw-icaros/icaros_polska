@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import LegalLinks from "@/components/LegalLinks";
+import { DISCLAIMER_MEDICAL_DEVICES } from "@/lib/legal";
 
 const roleOptions = [
   { value: "owner", label: "Właściciel placówki" },
@@ -95,14 +96,14 @@ export default function ContactCTA() {
             animate={isVisible ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8 }}
           >
-            <p className="text-[11px] font-semibold tracking-[0.3em] uppercase text-foreground/30">
+            <p className="text-[11px] font-semibold tracking-[0.3em] uppercase text-foreground/55">
               Kontakt
             </p>
             <h2 className="mt-5 text-[clamp(1.8rem,4vw,2.8rem)] font-bold tracking-[-0.03em] text-foreground leading-[1.1]">
               Porozmawiajmy
               <br />o Twojej placówce
             </h2>
-            <p className="mt-5 text-[16px] text-foreground/40 leading-[1.8]">
+            <p className="mt-5 text-[16px] text-foreground/70 leading-[1.8]">
               Umów bezpłatną prezentację online lub rozmowę konsultacyjną.
               Pokażemy Ci, jak ICAROS może wzmocnić Twoją ofertę terapeutyczną
               i&nbsp;wygenerować nowe źródło przychodów.
@@ -125,19 +126,19 @@ export default function ContactCTA() {
                   <div className="w-5 h-5 flex items-center justify-center shrink-0">
                     <div className="w-1.5 h-1.5 bg-foreground/20 rounded-full" />
                   </div>
-                  <span className="text-[14px] text-foreground/40">{benefit}</span>
+                  <span className="text-[14px] text-foreground/70">{benefit}</span>
                 </motion.div>
               ))}
             </div>
 
             <div className="mt-14 pt-8 border-t border-foreground/[0.06] space-y-4">
-              <p className="text-[10px] text-foreground/20 uppercase tracking-[0.2em] font-medium">
+              <p className="text-[10px] text-foreground/55 uppercase tracking-[0.2em] font-medium">
                 Lub skontaktuj się bezpośrednio
               </p>
               <a href="mailto:kontakt@icaros.com.pl" className="text-[15px] text-foreground font-medium hover:opacity-70 transition-opacity duration-300">
                 kontakt@icaros.com.pl
               </a>
-              <p className="text-[14px] text-foreground/30">
+              <p className="text-[14px] text-foreground/65">
                 ICAROS Polska — Oficjalny dystrybutor
               </p>
             </div>
@@ -156,7 +157,7 @@ export default function ContactCTA() {
                   </svg>
                 </div>
                 <h3 className="text-[22px] font-bold text-foreground tracking-[-0.02em]">Dziękujemy</h3>
-                <p className="mt-3 text-[14px] text-foreground/35 leading-[1.7]">
+                <p className="mt-3 text-[14px] text-foreground/70 leading-[1.7]">
                   Otrzymaliśmy Twoje zgłoszenie. Odezwiemy się w ciągu 24 godzin.
                 </p>
               </div>
@@ -168,7 +169,7 @@ export default function ContactCTA() {
                 <h3 className="text-[20px] font-bold text-foreground tracking-[-0.02em] mb-1">
                   Umów prezentację
                 </h3>
-                <p className="text-[13px] text-foreground/30 mb-10">
+                <p className="text-[13px] text-foreground/65 mb-10">
                   Wypełnij formularz, a odezwiemy się w ciągu 24 godzin.
                 </p>
 
@@ -326,13 +327,16 @@ export default function ContactCTA() {
                     </p>
                   ) : null}
 
-                  <p className="text-[11px] text-foreground/20 text-center leading-relaxed">
+                  <p className="text-[11px] text-foreground/60 text-center leading-relaxed">
                     Twoje dane są bezpieczne. Używamy ich wyłącznie w celu kontaktu
                     w&nbsp;sprawie prezentacji ICAROS.
                   </p>
+                  <p className="text-[11px] text-foreground/65 text-center leading-relaxed">
+                    {DISCLAIMER_MEDICAL_DEVICES}
+                  </p>
                   <LegalLinks
                     className="flex flex-wrap items-center justify-center gap-4 pt-1"
-                    linkClassName="text-[11px] text-foreground/30 underline decoration-foreground/15 underline-offset-4 transition-colors duration-300 hover:text-foreground/60"
+                    linkClassName="text-[11px] text-foreground/65 underline decoration-foreground/20 underline-offset-4 transition-colors duration-300 hover:text-foreground"
                   />
                 </div>
               </form>

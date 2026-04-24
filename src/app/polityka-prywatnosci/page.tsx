@@ -5,6 +5,7 @@ import {
   COMPANY_ADDRESS,
   COMPANY_EMAIL,
   COMPANY_NAME,
+  DISCLAIMER_MEDICAL_DEVICES,
   KRS,
   LAST_UPDATED,
   NIP,
@@ -27,6 +28,9 @@ export default function PrivacyPolicyPage() {
       <section>
         <p>
           <strong>Data ostatniej aktualizacji:</strong> {LAST_UPDATED}
+        </p>
+        <p>
+          <strong>Informacja o wyrobach medycznych:</strong> {DISCLAIMER_MEDICAL_DEVICES}
         </p>
       </section>
 

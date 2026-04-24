@@ -201,7 +201,7 @@ export default function KalkulatorPageClient() {
                 transition={{ duration: 0.6, delay: 0.1 }}
               >
                 <div className="w-12 h-[2px] mb-8 hidden lg:block" style={{ background: "linear-gradient(90deg, #ff6600, #ff7b1f)" }} />
-                <p className="text-[10px] font-semibold tracking-[0.3em] uppercase text-white/35">
+                <p className="text-[10px] font-semibold tracking-[0.3em] uppercase text-white/75">
                   Kalkulator ROI
                 </p>
               </motion.div>
@@ -227,7 +227,7 @@ export default function KalkulatorPageClient() {
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.5 }}
-                className="mt-6 text-[14px] leading-[1.75] text-white/55 max-w-[420px]"
+                className="mt-6 text-[14px] leading-[1.75] text-white/85 max-w-[420px]"
               >
                 5 pytań. 2 minuty. Wynik dopasowany do Twojej placówki.
               </motion.p>
@@ -277,7 +277,7 @@ export default function KalkulatorPageClient() {
                     <div className="text-[22px] font-bold tracking-tight text-white">
                       {stat.value}
                     </div>
-                    <div className="text-[10px] text-white/30 mt-1 tracking-[0.08em] sm:tracking-[0.15em] uppercase font-medium leading-tight">
+                    <div className="text-[10px] text-white/75 mt-1 tracking-[0.08em] sm:tracking-[0.15em] uppercase font-medium leading-tight">
                       {stat.label}
                     </div>
                   </motion.div>
@@ -326,7 +326,7 @@ export default function KalkulatorPageClient() {
               transition={{ duration: 0.5 }}
               className="mb-6"
             >
-              <p className="text-[10px] font-semibold tracking-[0.3em] uppercase text-white/30">
+              <p className="text-[10px] font-semibold tracking-[0.3em] uppercase text-white/75">
                 Krok {step} z 5
               </p>
               <div className="mt-3 h-[2px] w-full bg-white/10">

@@ -33,7 +33,7 @@ const useCases = [
     number: "04",
     title: "Centra sportowe i trenerskie",
     description:
-      "Zaawansowany trening koordynacji, siły core i wydolności. ICAROS Cloud to idealne uzupełnienie przygotowania motorycznego sportowców na każdym poziomie.",
+      "Trening fitness i przygotowanie motoryczne w formie angażujących exergames. ICAROS Cloud wzmacnia core, nogi i górę ciała, poprawia koordynację oraz równowagę — w klubach fitness, na zajęciach grupowych i w treningu sportowców.",
     image: "/Icaros-24_0428.webp",
     imageAlt: "Sportsmenka trenująca na platformie ICAROS Cloud",
   },
@@ -51,13 +51,13 @@ export default function UseCases() {
           transition={{ duration: 0.8 }}
           className="max-w-2xl mx-auto text-center"
         >
-          <p className="text-[11px] font-semibold tracking-[0.3em] uppercase text-foreground/30">
+          <p className="text-[11px] font-semibold tracking-[0.3em] uppercase text-foreground/55">
             Zastosowania
           </p>
           <h2 className="mt-5 text-[clamp(1.8rem,4vw,2.8rem)] font-bold tracking-[-0.03em] text-foreground leading-[1.1]">
             Dla kogo jest ICAROS?
           </h2>
-          <p className="mt-5 text-[16px] text-foreground/40 leading-[1.8]">
+          <p className="mt-5 text-[16px] text-foreground/70 leading-[1.8]">
             Nasze rozwiązania wspierają placówki, które stawiają na nowoczesną
             rehabilitację, jakość usług i&nbsp;przewagę konkurencyjną.
           </p>

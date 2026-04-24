@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import LegalLinks from "@/components/LegalLinks";
+import { DISCLAIMER_COOKIES } from "@/lib/legal";
 import {
   defaultCookieConsent,
   persistCookieConsent,
@@ -51,14 +52,17 @@ export default function CookieConsentGate() {
     <div className="fixed inset-0 z-[120] flex items-end justify-center bg-black/32 backdrop-blur-[2px] p-4 sm:items-center sm:p-6">
       <div className="w-full max-w-[680px] border border-white/12 bg-[#0b0b0b]/96 text-white shadow-[0_20px_80px_-32px_rgba(0,0,0,0.75)]">
         <div className="border-b border-white/10 px-5 py-4 sm:px-6 sm:py-5">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-white/35">Prywatność i cookies</p>
+          <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-white/75">Prywatność i cookies</p>
           <h2 className="mt-2.5 text-[clamp(1.25rem,2.5vw,1.9rem)] font-bold tracking-[-0.03em] leading-[1.1]">
             Zanim wejdziesz dalej, wybierz zgodę na cookies
           </h2>
-          <p className="mt-3 max-w-2xl text-[13px] leading-[1.7] text-white/62">
+          <p className="mt-3 max-w-2xl text-[13px] leading-[1.7] text-white/85">
             Korzystamy z cookies niezbędnych do działania serwisu oraz z narzędzi analitycznych, marketingowych i
             zewnętrznych treści, takich jak Google Analytics, Meta Pixel, Vercel Analytics czy osadzone wideo YouTube.
             Domyślnie zaznaczyliśmy pełną zgodę, ale możesz ją dostosować przed wejściem do serwisu.
+          </p>
+          <p className="mt-3 max-w-2xl text-[12px] leading-[1.7] text-white/75">
+            {DISCLAIMER_COOKIES}
           </p>
         </div>
 
@@ -67,7 +71,7 @@ export default function CookieConsentGate() {
             <input type="checkbox" checked disabled className="mt-1 accent-brand-orange" />
             <span>
               <span className="block text-[13px] font-semibold">Niezbędne</span>
-              <span className="mt-1 block text-[12px] leading-[1.6] text-white/55">
+              <span className="mt-1 block text-[12px] leading-[1.6] text-white/80">
                 Zawsze aktywne. Odpowiadają za bezpieczeństwo, działanie strony i zapamiętanie ustawień zgody.
               </span>
             </span>
@@ -82,7 +86,7 @@ export default function CookieConsentGate() {
             />
             <span>
               <span className="block text-[13px] font-semibold">Analityczne</span>
-              <span className="mt-1 block text-[12px] leading-[1.6] text-white/55">
+              <span className="mt-1 block text-[12px] leading-[1.6] text-white/80">
                 Pomiar ruchu, wydajności serwisu i zachowań użytkowników, m.in. przez Google Analytics i Vercel
                 Analytics.
               </span>
@@ -98,7 +102,7 @@ export default function CookieConsentGate() {
             />
             <span>
               <span className="block text-[13px] font-semibold">Marketingowe</span>
-              <span className="mt-1 block text-[12px] leading-[1.6] text-white/55">
+              <span className="mt-1 block text-[12px] leading-[1.6] text-white/80">
                 Pomiar skuteczności kampanii, konwersji i remarketingu, w tym Meta Pixel, gdy będzie aktywny.
               </span>
             </span>
@@ -113,7 +117,7 @@ export default function CookieConsentGate() {
             />
             <span>
               <span className="block text-[13px] font-semibold">Treści zewnętrzne</span>
-              <span className="mt-1 block text-[12px] leading-[1.6] text-white/55">
+              <span className="mt-1 block text-[12px] leading-[1.6] text-white/80">
                 Materiały osadzane z usług zewnętrznych, np. filmy YouTube, które mogą ustawiać własne cookies.
               </span>
             </span>
@@ -124,7 +128,7 @@ export default function CookieConsentGate() {
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <LegalLinks
               className="flex flex-wrap items-center gap-5"
-              linkClassName="text-[12px] text-white/50 underline decoration-white/20 underline-offset-4 transition-colors hover:text-white"
+              linkClassName="text-[12px] text-white/75 underline decoration-white/25 underline-offset-4 transition-colors hover:text-white"
             />
             <div className="flex flex-col gap-3 sm:flex-row">
               <button
