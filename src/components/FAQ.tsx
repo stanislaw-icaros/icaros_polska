@@ -13,7 +13,7 @@ const faqs = [
   {
     question: "Ile kosztuje system ICAROS i czy to się opłaca?",
     answer:
-      "ICAROS Circle (kompletny ekosystem trzech urządzeń: Health, Guardian i Cloud) to inwestycja rzędu 49 900 € netto. Przy zaledwie 15 użytkownikach dziennie i stawce 25 € za sesję, system zwraca się w niecałe 5 miesięcy i generuje ponad 55 000 € zysku w pierwszym roku. Dostępny jest również leasing od 799 € miesięcznie. Chętnie przygotujemy kalkulację dopasowaną do Twojej placówki.",
+      "ICAROS Circle (kompletny ekosystem czterech urządzeń: Health, I.S.T. Board, Guardian i Cloud) to inwestycja rzędu 49 900 € netto. Przy zaledwie 15 użytkownikach dziennie i stawce 25 € za sesję, system zwraca się w niecałe 5 miesięcy i generuje ponad 55 000 € zysku w pierwszym roku. Dostępny jest również leasing od 799 € miesięcznie. Chętnie przygotujemy kalkulację dopasowaną do Twojej placówki.",
   },
   {
     question: "Czy potrzebuję specjalistycznego personelu do obsługi?",
@@ -23,7 +23,7 @@ const faqs = [
   {
     question: "Czy ICAROS jest certyfikowanym wyrobem medycznym?",
     answer:
-      "Tak. ICAROS Health i ICAROS Guardian są certyfikowanymi wyrobami medycznymi klasy I. Sprzęt jest produkowany w Niemczech i spełnia europejskie standardy jakości i bezpieczeństwa.",
+      "ICAROS Health i ICAROS Guardian są certyfikowanymi wyrobami medycznymi klasy I i spełniają wymagania MDR. ICAROS Cloud oraz ICAROS I.S.T. Board to rozwiązania treningowe oparte o ekosystem ICAROS (w tym aplikację) — nie są wyrobami medycznymi w rozumieniu MDR, o ile dokumentacja producenta dla danej wersji produktu nie stanowi inaczej.",
   },
   {
     question: "Dla jakich pacjentów i wskazań jest ICAROS?",

@@ -72,7 +72,7 @@ export default function Hero() {
               {[
                 { value: "9+", label: "Badań klinicznych" },
                 { value: "DE", label: "Made in Germany" },
-                { value: "3", label: "Urządzenia w systemie" },
+                { value: "4", label: "Urządzenia w systemie" },
               ].map((stat, i) => (
                 <motion.div
                   key={stat.value}

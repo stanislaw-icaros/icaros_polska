@@ -29,6 +29,17 @@ const products: Product[] = [
   },
   {
     step: "02",
+    name: "ICAROS I.S.T. Board",
+    category: "Aktywacja i mobilność",
+    description:
+      "Foot-controlled trening ICAROS do terapii i aktywacji: ultralekki, gotowy do użycia od razu. Balans, reakcja i koordynacja prowadzone przez aplikację — w sesjach indywidualnych lub w grupie.",
+    position: "Siedząca — mobilna",
+    indications: "Terapia, profilaktyka, aktywacja grupowa · Ultralekki i kompaktowy · Aplikacja ICAROS",
+    image: "/icaros_ist_hero_1.webp",
+    imageAlt: "ICAROS I.S.T. Board — trening stóp i nóg sterowany ruchem",
+  },
+  {
+    step: "03",
     name: "ICAROS Guardian",
     category: "Trening stabilności",
     description:
@@ -39,7 +50,7 @@ const products: Product[] = [
     imageAlt: "Senior ćwiczący na ICAROS Guardian z interaktywną grą na ekranie",
   },
   {
-    step: "03",
+    step: "04",
     name: "ICAROS Cloud",
     category: "Trening pełnego ciała",
     description:
@@ -81,9 +92,9 @@ export default function ProductEcosystem() {
             Kompletny ekosystem treningowy
           </h2>
           <p className="mt-5 text-[16px] text-white/80 leading-[1.8]">
-            Trzy zaawansowane urządzenia. Jeden zintegrowany system. Pełna ścieżka
-            terapeutyczna — od pierwszych ćwiczeń wspomaganych po intensywny trening
-            całego ciała.
+            Cztery zaawansowane urządzenia. Jeden zintegrowany system. Pełna ścieżka
+            terapeutyczna — od wspomaganego treningu i szybkiej aktywacji, przez stabilizację
+            pionową, aż po intensywny trening całego ciała.
           </p>
         </motion.div>
 

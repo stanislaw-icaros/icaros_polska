@@ -11,6 +11,7 @@ const footerLinks = {
     links: [
       { label: "ICAROS Circle", href: "#produkty" },
       { label: "ICAROS Health", href: "#produkty" },
+      { label: "ICAROS I.S.T. Board", href: "#produkty" },
       { label: "ICAROS Guardian", href: "#produkty" },
       { label: "ICAROS Cloud", href: "#produkty" },
     ],

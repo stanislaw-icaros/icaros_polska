@@ -13,16 +13,17 @@ const FAQ_ITEMS: FaqItem[] = [
     answer: (
       <>
         <p>
-          ICAROS Circle to kompletny system trzech osobnych urządzeń treningowych i rehabilitacyjnych, działających razem jako jedna spójna ścieżka terapeutyczna. Każde urządzenie obsługuje inny etap rehabilitacji lub treningu — od pierwszych ćwiczeń wspomaganych, aż po samodzielny trening całego ciała.
+          ICAROS Circle to kompletny system czterech urządzeń treningowych i rehabilitacyjnych, działających razem jako jedna spójna ścieżka terapeutyczna. Każde urządzenie wspiera inny etap pracy z pacjentem — od wspomaganego treningu i szybkiej aktywacji, przez stabilizację pionową, aż po bardziej intensywny trening całego ciała.
         </p>
         <p className="mt-3">W skład systemu wchodzą:</p>
         <ul className="mt-2 space-y-3 pl-4">
           <li><strong>ICAROS Health</strong> — urządzenie do treningu w pozycji horyzontalnej (wspomaganej). Przeznaczone dla pacjentów neurologicznych i ortopedycznych, którzy ćwiczą mięśnie core, koordynację i równowagę w pozycji leżącej z pełnym wsparciem ciała. Certyfikowany wyrób medyczny klasy I. W zestawie: komputer, gogle VR.</li>
+          <li><strong>ICAROS I.S.T. Board</strong> — kompaktowe, mobilne urządzenie do treningu w pozycji siedzącej, sterowane ruchami stóp i nóg, z exergames w aplikacji ICAROS. Świetne do aktywacji, pracy z osobami o ograniczonej mobilności oraz zajęć o wyższej przepustowości.</li>
           <li><strong>ICAROS Guardian</strong> — urządzenie do treningu pionowego z podparciem. Poprawia kontrolę posturalną, równowagę i mobilność w pozycji stojącej. Minimalne wymagania personelu — idealne dla seniorów i pacjentów w średnim etapie rehabilitacji. W zestawie: iPad, Apple TV, ekran.</li>
-          <li><strong>ICAROS Cloud</strong> — platforma do swobodnego treningu całego ciała w pozycji pionowej, bez podpórek. Przeznaczona dla pacjentów w końcowej fazie rehabilitacji oraz do treningu wydolnościowego i motorycznego.</li>
+          <li><strong>ICAROS Cloud</strong> — platforma do treningu całego ciała w pozycji pionowej (niestabilna powierzchnia + exergames), sterowana smartfonem lub tabletem. Dobry wybór w końcowej fazie rehabilitacji oraz w ścieżkach fitness i motorycznych.</li>
         </ul>
         <p className="mt-3">
-          Pacjent może przejść przez wszystkie trzy urządzenia w jednej sesji — dostępne formaty to 15, 30 lub 45 minut (po 5, 10 lub 15 minut na każdym urządzeniu).
+          W praktyce możesz łączyć urządzenia w jednej wizycie — dokładny podział czasu zależy od protokołu placówki i możliwości pacjenta. Typowe formaty sesji to 15, 30 lub 45 minut.
         </p>
       </>
     ),
@@ -30,7 +31,7 @@ const FAQ_ITEMS: FaqItem[] = [
   {
     question: "Czy ICAROS Circle to zarejestrowany sprzęt medyczny?",
     answer:
-      "Tak. ICAROS Health i Guardian to certyfikowane wyroby medyczne klasy I, zgodne z europejskim rozporządzeniem MDR. ICAROS Cloud to certyfikowany sprzęt do treningu i fitnessu.",
+      "ICAROS Health i ICAROS Guardian to certyfikowane wyroby medyczne klasy I, zgodne z europejskim rozporządzeniem MDR. ICAROS Cloud oraz ICAROS I.S.T. Board to rozwiązania treningowe oparte o aplikację ICAROS — nie są wyrobami medycznymi w rozumieniu MDR, o ile nie wskazano inaczej w dokumentacji producenta dla konkretnej wersji produktu.",
   },
   {
     question: "Czy potrzebuję specjalnych uprawnień, żeby korzystać ze sprzętu?",
