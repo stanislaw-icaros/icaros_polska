@@ -9,6 +9,7 @@ const geistSans = Geist({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://icaros.com.pl"),
   title: "ICAROS Polska — Nowoczesna technologia rehabilitacji i terapii",
   description:
     "Oficjalny dystrybutor ICAROS w Polsce. Niemiecka technologia łącząca rehabilitację z grywalizacją i VR. Rozwiązania dla klinik, centrów rehabilitacyjnych i obiektów premium.",
@@ -24,13 +25,42 @@ export const metadata: Metadata = {
     "nowoczesna rehabilitacja",
     "technologia medyczna",
   ],
+  manifest: "/site.webmanifest",
+  icons: {
+    icon: [
+      { url: "/favicon.ico" },
+      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/favicon-96x96.png", sizes: "96x96", type: "image/png" },
+    ],
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
+  },
   openGraph: {
     title: "ICAROS Polska — Nowoczesna technologia rehabilitacji i terapii",
     description:
       "Niemiecka technologia łącząca rehabilitację z grywalizacją i VR. Rozwiązania dla klinik i centrów rehabilitacyjnych.",
     locale: "pl_PL",
     type: "website",
+    url: "/",
+    images: [
+      {
+        url: "/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "ICAROS Polska — nowoczesna technologia rehabilitacji i terapii",
+      },
+    ],
   },
+  twitter: {
+    card: "summary",
+    title: "ICAROS Polska — Nowoczesna technologia rehabilitacji i terapii",
+    description:
+      "Oficjalny dystrybutor ICAROS w Polsce. Niemiecka technologia łącząca rehabilitację z grywalizacją i VR.",
+    images: ["/og-image.jpg"],
+  },
+};
+
+export const viewport = {
+  themeColor: "#ffffff",
 };
 
 export default function RootLayout({
