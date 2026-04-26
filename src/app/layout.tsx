@@ -8,6 +8,11 @@ const geistSans = Geist({
   subsets: ["latin", "latin-ext"],
 });
 
+/** Bump when replacing `public/og-image.jpg` so social crawlers refetch (FB/WhatsApp cache hard). */
+const OG_IMAGE_CACHE = "2";
+
+const ogImageUrl = `/og-image.jpg?v=${OG_IMAGE_CACHE}` as const;
+
 export const metadata: Metadata = {
   metadataBase: new URL("https://icaros.com.pl"),
   title: "ICAROS Polska — Nowoczesna technologia rehabilitacji i terapii",
@@ -49,7 +54,7 @@ export const metadata: Metadata = {
     url: "/",
     images: [
       {
-        url: "/og-image.jpg",
+        url: ogImageUrl,
         width: 1200,
         height: 630,
         alt: "ICAROS Polska — nowoczesna technologia rehabilitacji i terapii",
@@ -57,11 +62,11 @@ export const metadata: Metadata = {
     ],
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
     title: "ICAROS Polska — Nowoczesna technologia rehabilitacji i terapii",
     description:
       "Oficjalny dystrybutor ICAROS w Polsce. Niemiecka technologia łącząca rehabilitację z grywalizacją i VR.",
-    images: ["/og-image.jpg"],
+    images: [ogImageUrl],
   },
 };
 
