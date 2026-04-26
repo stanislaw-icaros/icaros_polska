@@ -1,0 +1,12 @@
+# Allow social / SEO crawlers (Meta Sharing Debugger expects HTTP 200 + explicit rules)
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: Facebot
+Allow: /
+
+User-agent: *
+Allow: /
+Disallow: /api/
+
+Sitemap: https://www.icaros.com.pl/sitemap.xml
