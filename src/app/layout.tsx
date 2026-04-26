@@ -9,12 +9,13 @@ const geistSans = Geist({
 });
 
 /** Bump when replacing `public/og-image.jpg` so social crawlers refetch (FB/WhatsApp cache hard). */
-const OG_IMAGE_CACHE = "2";
+const OG_IMAGE_CACHE = "3";
 
 const ogImageUrl = `/og-image.jpg?v=${OG_IMAGE_CACHE}` as const;
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://icaros.com.pl"),
+  // Use www so og:image/twitter absolute URLs are 200 without apex→www redirect (Meta often drops image otherwise).
+  metadataBase: new URL("https://www.icaros.com.pl"),
   title: "ICAROS Polska — Nowoczesna technologia rehabilitacji i terapii",
   description:
     "Oficjalny dystrybutor ICAROS w Polsce. Niemiecka technologia łącząca rehabilitację z grywalizacją i VR. Rozwiązania dla klinik, centrów rehabilitacyjnych i obiektów premium.",
