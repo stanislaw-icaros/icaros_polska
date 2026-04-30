@@ -25,9 +25,9 @@ const devices: DeviceConfig[] = [
     shortName: "Health",
     purchaseEUR: 24900,
     purchasePLN: 106000,
-    leaseMonthlyEUR: 610,
-    leaseMonthlyPLN: 2600,
-    leasePeriodMonths: 60,
+    leaseMonthlyEUR: 567,
+    leaseMonthlyPLN: 2410.05,
+    leasePeriodMonths: 48,
   },
   {
     id: "guardian",
@@ -35,9 +35,9 @@ const devices: DeviceConfig[] = [
     shortName: "Guardian",
     purchaseEUR: 14900,
     purchasePLN: 63500,
-    leaseMonthlyEUR: 355,
-    leaseMonthlyPLN: 1500,
-    leasePeriodMonths: 60,
+    leaseMonthlyEUR: 340,
+    leaseMonthlyPLN: 1443.75,
+    leasePeriodMonths: 48,
   },
   {
     id: "circle",
@@ -45,9 +45,9 @@ const devices: DeviceConfig[] = [
     shortName: "Circle",
     purchaseEUR: 49900,
     purchasePLN: 212000,
-    leaseMonthlyEUR: 990,
-    leaseMonthlyPLN: 4200,
-    leasePeriodMonths: 60,
+    leaseMonthlyEUR: 1134,
+    leaseMonthlyPLN: 4820.09,
+    leasePeriodMonths: 48,
   },
 ];
 
@@ -55,8 +55,11 @@ const DEFAULT_SESSIONS_PER_DAY = 10;
 const DEFAULT_WORKING_DAYS = 22;
 const DEFAULT_PRICE_PER_SESSION = 100;
 
-function formatPLN(value: number): string {
-  return value.toLocaleString("pl-PL");
+function formatPLN(value: number, fractionDigits = 0): string {
+  return value.toLocaleString("pl-PL", {
+    minimumFractionDigits: fractionDigits,
+    maximumFractionDigits: fractionDigits,
+  });
 }
 
 function SliderControl({
@@ -198,12 +201,13 @@ export default function ROICalculator() {
               }`}
               style={mode === "lease" ? { background: "linear-gradient(135deg, #ff6600, #ff7b1f)" } : undefined}
             >
-              Leasing 60 mies.
+              Leasing 48 mies.
             </button>
           </div>
           {mode === "lease" && (
-            <p className="text-[11px] text-foreground/30">
-              Szacunkowa rata netto &middot; warunki zależne od leasingodawcy
+            <p className="text-[11px] text-foreground/30 max-w-md text-center leading-relaxed">
+              Szacunkowe raty netto: 48 rat, wpłata wstępna 10%, wykup 1%, przedmiot wyrób medyczny (rok prod.
+              2026). Ostateczna oferta zależy od leasingodawcy i weryfikacji Twojej firmy.
             </p>
           )}
         </div>
@@ -241,7 +245,7 @@ export default function ROICalculator() {
                 }`}
               >
                 {mode === "lease"
-                  ? `${formatPLN(d.leaseMonthlyPLN)} zł / mies.`
+                  ? `${formatPLN(d.leaseMonthlyPLN, 2)} zł / mies.`
                   : `${formatPLN(d.purchasePLN)} zł netto`}
               </span>
             </div>
@@ -341,7 +345,7 @@ export default function ROICalculator() {
                 <div className="flex items-baseline justify-between">
                   <span className="text-[13px] text-foreground/40">Rata leasingowa</span>
                   <span className="text-[16px] font-medium text-foreground/40 tabular-nums tracking-tight">
-                    -{formatPLN(results.monthlyCost)}{" "}
+                    -{formatPLN(results.monthlyCost, 2)}{" "}
                     <span className="text-[12px] text-foreground/30">zł</span>
                   </span>
                 </div>
@@ -365,7 +369,7 @@ export default function ROICalculator() {
                     : "text-foreground/30"
                 }`}
               >
-                {formatPLN(mode === "lease" ? results.monthlyProfit : results.monthlyRevenue)}{" "}
+                {formatPLN(mode === "lease" ? Math.round(results.monthlyProfit) : results.monthlyRevenue)}{" "}
                 <span className="text-[14px] font-medium text-foreground/35">zł</span>
               </motion.span>
             </div>
@@ -445,8 +449,8 @@ export default function ROICalculator() {
           Kurs EUR/PLN: {EUR_TO_PLN.toFixed(2)} &middot; Ceny netto &middot;
           Kalkulacja ma charakter orientacyjny
         </p>
-        <p className="text-[11px] text-foreground/25">
-          Leasing: 60 mies. &middot; Warunki indywidualne
+        <p className="text-[11px] text-foreground/25 max-w-md text-right leading-relaxed">
+          Leasing: 48 mies., 10% wpłata, 1% wykup (netto, szacunek) &middot; warunki potwierdza leasingodawca
         </p>
       </div>
     </div>

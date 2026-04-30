@@ -23,12 +23,10 @@ export type CalculatorResult = {
   sessionsPerDay: number;
   icarosSessionPrice: number;
   monthlyRevenue: number;
-  leasing48: number;
-  leasing60: number;
-  profit48: number;
-  profit60: number;
-  yearlyProfit48: number;
-  yearlyProfit60: number;
+  /** ICAROS Circle — szacunkowa rata netto, 48 rat, 10% wpłata, 1% wykup */
+  leasingMonthlyNet: number;
+  profitMonthlyNet: number;
+  yearlyProfitNet: number;
   mappedHours: number;
   mappedStaff: number;
   mappedDays: number;

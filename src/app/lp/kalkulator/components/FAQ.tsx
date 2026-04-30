@@ -51,12 +51,12 @@ const FAQ_ITEMS: FaqItem[] = [
   {
     question: "Jak wygląda finansowanie? Czy muszę płacić całość od razu?",
     answer:
-      "Nie. Urządzenie jest dostępne w leasingu operacyjnym. Współpracujemy z PKO Leasing. Możliwe jest też finansowanie ze środków UE lub kredytu inwestycyjnego.",
+      "Nie. Urządzenie jest dostępne w leasingu operacyjnym. Współpracujemy z PKO Leasing. Na stronie kalkulatora stosujemy szacunkowe raty przy 48 miesiącach, 10% wpłacie wstępnej i 1% wykupie (kwoty netto, wyrób medyczny, rok prod. 2026) — ostateczne warunki potwierdza leasingodawca. Możliwe jest też finansowanie ze środków UE lub kredytu inwestycyjnego.",
   },
   {
     question: "Czy kalkulacja jest wiążąca?",
     answer:
-      "Nie. To szacunek edukacyjny oparty na Twoich danych i uśrednionych stawkach rynkowych. Rzeczywiste wyniki zależą od ceny sesji, lokalnego rynku i zapełnienia kalendarza.",
+      "Nie. To szacunek edukacyjny oparty na Twoich danych, uśrednionych stawkach rynkowych oraz orientacyjnych warunkach leasingu (48 rat, 10% wpłaty, 1% wykupu, netto). Rzeczywiste wyniki zależą od ceny sesji, lokalnego rynku, zapełnienia kalendarza i decyzji leasingodawcy.",
   },
   {
     question: "Ile trwa dostawa i instalacja?",

@@ -13,7 +13,7 @@ const faqs = [
   {
     question: "Ile kosztuje system ICAROS i czy to się opłaca?",
     answer:
-      "ICAROS Circle (kompletny ekosystem czterech urządzeń: Health, I.S.T. Board, Guardian i Cloud) to inwestycja rzędu 49 900 € netto. Przy zaledwie 15 użytkownikach dziennie i stawce 25 € za sesję, system zwraca się w niecałe 5 miesięcy i generuje ponad 55 000 € zysku w pierwszym roku. Dostępny jest również leasing od 799 € miesięcznie. Chętnie przygotujemy kalkulację dopasowaną do Twojej placówki.",
+      "ICAROS Circle (kompletny ekosystem czterech urządzeń: Health, I.S.T. Board, Guardian i Cloud) to inwestycja rzędu 49 900 € netto. Przy zaledwie 15 użytkownikach dziennie i stawce 25 € za sesję, system zwraca się w niecałe 5 miesięcy i generuje ponad 55 000 € zysku w pierwszym roku. Leasing szacunkowo od ok. 340 € do ok. 1 134 € netto miesięcznie (48 rat, 10% wpłaty wstępnej, 1% wykupu — kurs przeliczeniowy jak w kalkulatorze, ok. 4,25 PLN/EUR). To wyłącznie orientacyjne wyliczenie; chętnie przygotujemy kalkulację dopasowaną do Twojej placówki.",
   },
   {
     question: "Czy potrzebuję specjalistycznego personelu do obsługi?",

@@ -5,7 +5,7 @@ import KalkulatorPageClient from "./components/KalkulatorPageClient";
 export const metadata: Metadata = {
   title: "Kalkulator ROI ICAROS Circle | ICAROS Polska",
   description:
-    "Sprawdź szacowany dodatkowy przychód dla Twojej placówki dzięki wdrożeniu ICAROS Circle.",
+    "Sprawdź szacowany dodatkowy przychód dla Twojej placówki: scenariusz ICAROS Circle z orientacyjną ratą leasingu (48 mies., 10% wpłaty, 1% wykupu, netto).",
   robots: {
     index: false,
     follow: false,

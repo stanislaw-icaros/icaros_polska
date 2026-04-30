@@ -1,8 +1,14 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { formatCurrency } from "../lib/calculations";
+import { formatCurrency, LEASING_RATES_48M_NET_PLN } from "../lib/calculations";
 import type { CalculatorResult } from "../lib/types";
+
+const LEASING_VARIANTS = [
+  { label: "ICAROS Guardian", netValue: 63_500, rate: LEASING_RATES_48M_NET_PLN.guardian },
+  { label: "ICAROS Health", netValue: 106_000, rate: LEASING_RATES_48M_NET_PLN.health },
+  { label: "ICAROS Circle", netValue: 212_000, rate: LEASING_RATES_48M_NET_PLN.circle },
+] as const;
 
 type ResultsPanelProps = {
   result: CalculatorResult;
@@ -60,51 +66,78 @@ export default function ResultsPanel({ result }: ResultsPanelProps) {
           </span>
         </div>
         <div className="flex items-center justify-between border-b border-foreground/[0.06] pb-2">
-          <span className="text-foreground/50">Rata leasingowa (60 mies.)</span>
-          <span className="font-semibold text-foreground">- {formatCurrency(result.leasing60)} zł / mies.</span>
+          <span className="text-foreground/50">Rata leasingowa Circle (48 mies.)</span>
+          <span className="font-semibold text-foreground">
+            -{" "}
+            {formatCurrency(result.leasingMonthlyNet, {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })}{" "}
+            zł / mies.
+          </span>
         </div>
         <div className="flex items-center justify-between pt-1">
           <span className="text-foreground/60 font-medium">Szacowany zysk netto</span>
           <span
             className={`text-[22px] font-bold tracking-[-0.02em] ${
-              result.profit60 >= 0 ? "text-emerald-600" : "text-red-600"
+              result.profitMonthlyNet >= 0 ? "text-emerald-600" : "text-red-600"
             }`}
           >
-            <CountNumber value={result.profit60} /> zł / mies.
+            <CountNumber value={Math.round(result.profitMonthlyNet)} /> zł / mies.
           </span>
         </div>
       </div>
 
       <div className="mt-8 border border-foreground/[0.06] bg-surface p-4 lg:p-5 text-[13px]" style={{ fontVariantNumeric: "tabular-nums" }}>
-        <div className="grid grid-cols-3 gap-3 text-foreground/35 uppercase tracking-[0.14em] text-[10px] font-semibold">
-          <span />
-          <span>48 mies.</span>
-          <span>60 mies.</span>
+        <p className="text-[11px] text-foreground/45 leading-relaxed mb-4">
+          Szacunkowe raty netto przy 48 ratach, 10% wpłacie wstępnej i 1% wykupie końcowym (wyrób medyczny,
+          rok prod. 2026). Ostateczna oferta zależy od leasingodawcy.
+        </p>
+        <div className="grid grid-cols-[1.2fr_0.9fr_0.9fr] gap-x-3 gap-y-2 text-[10px] uppercase tracking-[0.12em] font-semibold text-foreground/35 border-b border-foreground/[0.06] pb-2">
+          <span>Wariant</span>
+          <span className="text-right">Wartość netto</span>
+          <span className="text-right">Rata / mies.</span>
         </div>
-        <div className="mt-3 space-y-2 text-foreground/70">
-          <div className="grid grid-cols-3 gap-3">
-            <span>Rata netto</span>
-            <span>{formatCurrency(result.leasing48)} zł</span>
-            <span>{formatCurrency(result.leasing60)} zł</span>
+        <div className="mt-3 space-y-2.5 text-foreground/70">
+          {LEASING_VARIANTS.map((row) => (
+            <div key={row.label} className="grid grid-cols-[1.2fr_0.9fr_0.9fr] gap-x-3 items-baseline">
+              <span className="text-[13px]">{row.label}</span>
+              <span className="text-right tabular-nums">{formatCurrency(row.netValue)} zł</span>
+              <span className="text-right tabular-nums">
+                {formatCurrency(row.rate, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} zł
+              </span>
+            </div>
+          ))}
+        </div>
+        <div className="mt-4 pt-3 border-t border-foreground/[0.06] grid grid-cols-2 gap-3 text-[13px]">
+          <div>
+            <span className="text-foreground/45">Szac. zysk / mies. (Circle)</span>
+            <div
+              className={`mt-1 font-semibold tabular-nums ${
+                result.profitMonthlyNet >= 0 ? "text-emerald-600" : "text-red-600"
+              }`}
+            >
+              {formatCurrency(Math.round(result.profitMonthlyNet))} zł
+            </div>
           </div>
-          <div className="grid grid-cols-3 gap-3">
-            <span>Szac. zysk/mies.</span>
-            <span>{formatCurrency(result.profit48)} zł</span>
-            <span>{formatCurrency(result.profit60)} zł</span>
-          </div>
-          <div className="grid grid-cols-3 gap-3">
-            <span>Szac. zysk/rok</span>
-            <span>{formatCurrency(result.yearlyProfit48)} zł</span>
-            <span>{formatCurrency(result.yearlyProfit60)} zł</span>
+          <div>
+            <span className="text-foreground/45">Szac. zysk / rok (Circle)</span>
+            <div
+              className={`mt-1 font-semibold tabular-nums ${
+                result.yearlyProfitNet >= 0 ? "text-emerald-600" : "text-red-600"
+              }`}
+            >
+              {formatCurrency(Math.round(result.yearlyProfitNet))} zł
+            </div>
           </div>
         </div>
       </div>
 
       <p className="mt-6 text-[11px] text-foreground/35 leading-relaxed">
-        Kwoty netto. Kalkulacja szacunkowa na podstawie podanych danych. Warunki leasingu zależą od
-        leasingodawcy i sytuacji finansowej firmy.
+        Kwoty netto. Kalkulator pokazuje wyłącznie szacunki edukacyjne przy powyższych założeniach leasingu
+        (m.in. 10% wpłaty i 48 rat). Wynik zależy także od Twojej ceny sesji i zapełnienia — nie zastępuje oferty
+        leasingodawcy.
       </p>
     </section>
   );
 }
-

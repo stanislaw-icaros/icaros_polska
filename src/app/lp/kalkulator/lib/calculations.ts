@@ -28,8 +28,15 @@ export const DAYS_MAP: Record<WorkingDaysBandKey, number> = {
   pow22: 23,
 };
 
-export const LEASING_48 = 5100;
-export const LEASING_60 = 4200;
+/** Szacunkowe raty netto / mies., 48 rat, wpłata wstępna 10%, wykup 1%, przedmiot: wyrób medyczny, rok prod. 2026 */
+export const LEASING_RATES_48M_NET_PLN = {
+  guardian: 1443.75,
+  health: 2410.05,
+  circle: 4820.09,
+} as const;
+
+/** Kalkulator LP (ICAROS Circle) — odjęcie od przychodu */
+export const LEASING_CIRCLE_MONTHLY_NET_PLN = LEASING_RATES_48M_NET_PLN.circle;
 
 type SimulationInput = {
   mappedHours: number;
@@ -60,19 +67,15 @@ export function runSimulation({
   const daysInMonth = daysOverride ?? mappedDays;
 
   const monthlyRevenue = sessionsPerDay * daysInMonth * icarosSessionPrice;
-  const profit48 = monthlyRevenue - LEASING_48;
-  const profit60 = monthlyRevenue - LEASING_60;
+  const profitMonthlyNet = monthlyRevenue - LEASING_CIRCLE_MONTHLY_NET_PLN;
 
   return {
     sessionsPerDay,
     icarosSessionPrice,
     monthlyRevenue,
-    leasing48: LEASING_48,
-    leasing60: LEASING_60,
-    profit48,
-    profit60,
-    yearlyProfit48: profit48 * 12,
-    yearlyProfit60: profit60 * 12,
+    leasingMonthlyNet: LEASING_CIRCLE_MONTHLY_NET_PLN,
+    profitMonthlyNet,
+    yearlyProfitNet: profitMonthlyNet * 12,
     mappedHours,
     mappedStaff,
     mappedDays: daysInMonth,
@@ -97,9 +100,13 @@ export function calculateFromAnswers(answers: QuizAnswers): CalculatorResult | n
   });
 }
 
-export function formatCurrency(value: number) {
+export function formatCurrency(
+  value: number,
+  options?: { minimumFractionDigits?: number; maximumFractionDigits?: number }
+) {
   return new Intl.NumberFormat("pl-PL", {
-    maximumFractionDigits: 0,
+    minimumFractionDigits: options?.minimumFractionDigits ?? 0,
+    maximumFractionDigits: options?.maximumFractionDigits ?? 0,
   }).format(value);
 }
 

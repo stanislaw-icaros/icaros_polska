@@ -66,7 +66,7 @@ Dni/mies.: ${daysLabel}
 WYNIKI:
 Szac. sesje ICAROS/dzień: ${result.sessionsPerDay}
 Szac. przychód ICAROS/mies.: ${formatCurrency(result.monthlyRevenue)} PLN
-Szac. zysk netto (60m): ${formatCurrency(result.profit60)} PLN/mies.
+Szac. zysk netto (Circle, 48 rat — szac.): ${formatCurrency(Math.round(result.profitMonthlyNet))} PLN/mies.
 Zgoda marketingowa: ${marketingConsent ? "TAK" : "NIE"}`,
     [
       daysLabel,
@@ -75,7 +75,7 @@ Zgoda marketingowa: ${marketingConsent ? "TAK" : "NIE"}`,
       marketingConsent,
       pricePerSession,
       result.monthlyRevenue,
-      result.profit60,
+      result.profitMonthlyNet,
       result.sessionsPerDay,
       staffLabel,
     ]
@@ -136,7 +136,7 @@ Zgoda marketingowa: ${marketingConsent ? "TAK" : "NIE"}`,
       ) {
         window.fbq("track", "Lead", {
           source: "kalkulator_lp",
-          value_estimate: result.profit60,
+          value_estimate: Math.round(result.profitMonthlyNet),
         });
       }
 

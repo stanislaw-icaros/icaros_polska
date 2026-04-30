@@ -543,14 +543,15 @@ export default function KalkulatorPageClient() {
                         className="text-[clamp(3.1rem,10vw,6.5rem)] font-bold tracking-[-0.04em] leading-none"
                         style={{ background: "linear-gradient(135deg, #ffffff 0%, #ff7b1f 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}
                       >
-                        <CountMoney value={result.profit60} />
+                        <CountMoney value={Math.round(result.profitMonthlyNet)} />
                       </span>
                       <span className="text-[clamp(1.2rem,2.5vw,2rem)] font-bold text-white/60 tracking-tight">
                         zł / mies.
                       </span>
                     </div>
-                    <p className="mt-2 text-[12px] text-white/40">
-                      po odjęciu raty leasingowej (60 mies.) · przy 50% zapełnienia
+                    <p className="mt-2 text-[12px] text-white/40 max-w-[520px] leading-relaxed">
+                      po odjęciu szacunkowej raty ICAROS Circle (48 mies., 10% wpłaty, 1% wykupu — kwoty netto) ·
+                      przy 50% zapełnienia
                     </p>
                   </motion.div>
 
@@ -563,7 +564,15 @@ export default function KalkulatorPageClient() {
                     {[
                       { label: "Sesje ICAROS / dzień", value: String(result.sessionsPerDay), sub: "Konserwatywnie, 50% zapełnienia" },
                       { label: "Dodatkowy przychód", value: null, money: result.monthlyRevenue, sub: "Przychód brutto / miesiąc" },
-                      { label: "Rata leasingowa", value: formatCurrency(result.leasing60) + " zł", sub: "Netto / miesiąc (60 mies.)" },
+                      {
+                        label: "Rata leasingowa (Circle)",
+                        value:
+                          formatCurrency(result.leasingMonthlyNet, {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                          }) + " zł",
+                        sub: "Szacunek netto / mies., 48 rat · 10% wpłata · 1% wykup",
+                      },
                     ].map((card) => (
                       <div key={card.label} className="bg-foreground p-5 lg:p-6">
                         <div className="text-[10px] uppercase tracking-[0.18em] text-white/30 font-medium">
@@ -748,7 +757,9 @@ export default function KalkulatorPageClient() {
             >
               <div className="hidden sm:block">
                 <span className="text-[13px] text-white/50">Szacowany zysk netto: </span>
-                <span className="text-[15px] font-bold text-white">{formatCurrency(result.profit60)} zł / mies.</span>
+                <span className="text-[15px] font-bold text-white">
+                  {formatCurrency(Math.round(result.profitMonthlyNet))} zł / mies.
+                </span>
               </div>
               <a
                 href="#kontakt-kalkulator"
