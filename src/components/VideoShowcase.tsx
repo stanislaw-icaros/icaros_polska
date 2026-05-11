@@ -53,7 +53,7 @@ export default function VideoShowcase() {
               {canLoadVideo ? (
                 <iframe
                   className="absolute inset-0 h-full w-full"
-                  src="https://www.youtube.com/embed/5sSi2cPwyD0?rel=0&modestbranding=1&color=white"
+                  src="https://www.youtube.com/embed/XSf0H6LhRLo?rel=0&modestbranding=1&color=white"
                   title="ICAROS — innowacyjna rehabilitacja i trening VR"
                   loading="lazy"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
