@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import fs from "node:fs";
 import path from "node:path";
+import { sendContactConfirmationEmail } from "@/lib/email/contactConfirmation";
 
 type ContactPayload = {
   name?: string;
@@ -308,6 +309,21 @@ export async function POST(request: Request) {
           pinned_to_deal_flag: true,
         }),
       });
+    }
+
+    if (email) {
+      try {
+        await sendContactConfirmationEmail({
+          to: email,
+          recipientName: name,
+          company: payload.company,
+        });
+      } catch (confirmationError: unknown) {
+        console.error(
+          "Contact confirmation email (Resend) failed:",
+          confirmationError instanceof Error ? confirmationError.message : confirmationError
+        );
+      }
     }
 
     return NextResponse.json(
