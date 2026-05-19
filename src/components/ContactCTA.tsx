@@ -6,6 +6,7 @@ import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import LegalLinks from "@/components/LegalLinks";
 import ConsentFields from "@/components/ConsentFields";
 import { DISCLAIMER_MEDICAL_DEVICES } from "@/lib/legal";
+import { trackMetaEvent } from "@/lib/meta/track";
 
 const roleOptions = [
   { value: "owner", label: "Właściciel placówki" },
@@ -87,6 +88,10 @@ export default function ContactCTA() {
       }
 
       setSubmitted(true);
+      trackMetaEvent("CompleteRegistration", {
+        email: formState.email.trim() || undefined,
+        phone: formState.phone.trim() || undefined,
+      });
     } catch (error: unknown) {
       setSubmitError(error instanceof Error ? error.message : "Wystąpił błąd. Spróbuj ponownie.");
     } finally {

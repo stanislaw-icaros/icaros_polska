@@ -3,10 +3,10 @@
 import { useMemo, useState } from "react";
 import { formatCurrency } from "../lib/calculations";
 import type { CalculatorResult } from "../lib/types";
-import { hasCookieConsent } from "@/lib/cookie-consent";
 import LegalLinks from "@/components/LegalLinks";
 import ConsentFields from "@/components/ConsentFields";
 import { DISCLAIMER_MEDICAL_DEVICES } from "@/lib/legal";
+import { trackMetaEvent } from "@/lib/meta/track";
 
 type ContactFormProps = {
   utm: {
@@ -22,12 +22,6 @@ type ContactFormProps = {
   pricePerSession: number;
   result: CalculatorResult;
 };
-
-declare global {
-  interface Window {
-    fbq?: (...args: unknown[]) => void;
-  }
-}
 
 function getDigitsOnly(value: string) {
   return value.replace(/\D/g, "");
@@ -136,17 +130,10 @@ Zgoda marketingowa: ${marketingConsent ? "TAK" : "NIE"}`,
         throw new Error(payload?.error || "Nie udało się wysłać formularza.");
       }
 
-      // Prepared for Meta Pixel rollout; safe no-op if pixel is not installed.
-      if (
-        typeof window !== "undefined" &&
-        hasCookieConsent("marketing") &&
-        typeof window.fbq === "function"
-      ) {
-        window.fbq("track", "Lead", {
-          source: "kalkulator_lp",
-          value_estimate: Math.round(result.profitMonthlyNet),
-        });
-      }
+      trackMetaEvent("CompleteRegistration", {
+        email: email.trim() || undefined,
+        phone: phone.trim(),
+      });
 
       setSuccessMessage("Dziękujemy. Oddzwonimy w ciągu 1 dnia roboczego.");
       setName("");

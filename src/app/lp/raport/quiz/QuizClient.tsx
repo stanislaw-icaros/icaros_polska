@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import LegalLinks from "@/components/LegalLinks";
 import ConsentFields from "@/components/ConsentFields";
 import { DISCLAIMER_MEDICAL_DEVICES } from "@/lib/legal";
-import { hasCookieConsent } from "@/lib/cookie-consent";
+import { trackMetaEvent } from "@/lib/meta/track";
 import {
   FACILITY_OPTIONS,
   PATIENTS_OPTIONS,
@@ -22,12 +22,6 @@ import {
   type QuizAnswers,
   type TechInterest,
 } from "../lib/quiz";
-
-declare global {
-  interface Window {
-    fbq?: (...args: unknown[]) => void;
-  }
-}
 
 const TOTAL_STEPS = 3;
 
@@ -140,13 +134,6 @@ export default function QuizClient() {
   function selectTech(value: TechInterest) {
     setAnswers((prev) => ({ ...prev, techInterest: value }));
     setPhase("calculating");
-    if (
-      typeof window !== "undefined" &&
-      hasCookieConsent("marketing") &&
-      typeof window.fbq === "function"
-    ) {
-      window.fbq("trackCustom", "QuizComplete");
-    }
     window.setTimeout(() => {
       setPhase("result");
       window.scrollTo({ top: 0, behavior: "auto" });
@@ -230,14 +217,10 @@ export default function QuizClient() {
         throw new Error(payload?.error || "Nie udało się wysłać zgłoszenia.");
       }
 
-      if (
-        typeof window !== "undefined" &&
-        hasCookieConsent("marketing") &&
-        typeof window.fbq === "function"
-      ) {
-        window.fbq("trackCustom", "HotLeadQuiz");
-        window.fbq("track", "Contact");
-      }
+      trackMetaEvent("CompleteRegistration", {
+        email: email || undefined,
+        phone: phone.trim(),
+      });
 
       setSuccessMessage(
         "Dziękujemy. Skontaktujemy się z Tobą w ciągu 1 dnia roboczego."

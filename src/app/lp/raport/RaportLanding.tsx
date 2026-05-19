@@ -1,20 +1,14 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 import LegalLinks from "@/components/LegalLinks";
 import ConsentFields from "@/components/ConsentFields";
 import { DISCLAIMER_MEDICAL_DEVICES } from "@/lib/legal";
-import { hasCookieConsent } from "@/lib/cookie-consent";
+import { trackMetaEvent } from "@/lib/meta/track";
 import { LEAD_STORAGE_KEY } from "./lib/quiz";
-
-declare global {
-  interface Window {
-    fbq?: (...args: unknown[]) => void;
-  }
-}
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -45,6 +39,10 @@ export default function RaportLanding() {
     }),
     [searchParams]
   );
+
+  useEffect(() => {
+    trackMetaEvent("ViewContent");
+  }, []);
 
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
@@ -106,13 +104,7 @@ export default function RaportLanding() {
         // sessionStorage niedostępne - quiz dalej zadziała bez przeniesionych danych
       }
 
-      if (
-        typeof window !== "undefined" &&
-        hasCookieConsent("marketing") &&
-        typeof window.fbq === "function"
-      ) {
-        window.fbq("track", "Lead", { content_name: "lead-magnet-raport" });
-      }
+      trackMetaEvent("Contact", { email: cleanEmail });
 
       router.push("/lp/raport/quiz");
     } catch (error: unknown) {
