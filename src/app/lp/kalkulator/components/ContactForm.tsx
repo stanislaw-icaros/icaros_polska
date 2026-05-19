@@ -5,6 +5,7 @@ import { formatCurrency } from "../lib/calculations";
 import type { CalculatorResult } from "../lib/types";
 import { hasCookieConsent } from "@/lib/cookie-consent";
 import LegalLinks from "@/components/LegalLinks";
+import ConsentFields from "@/components/ConsentFields";
 import { DISCLAIMER_MEDICAL_DEVICES } from "@/lib/legal";
 
 type ContactFormProps = {
@@ -45,6 +46,7 @@ export default function ContactForm({
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [company, setCompany] = useState("");
+  const [dataConsent, setDataConsent] = useState(false);
   const [marketingConsent, setMarketingConsent] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
@@ -96,6 +98,11 @@ Zgoda marketingowa: ${marketingConsent ? "TAK" : "NIE"}`,
       return;
     }
 
+    if (!dataConsent) {
+      setErrorMessage("Zaznacz zgodę na przetwarzanie danych.");
+      return;
+    }
+
     if (marketingConsent && !email.trim()) {
       setErrorMessage("Podaj adres e-mail, aby otrzymywać materiały.");
       return;
@@ -116,6 +123,7 @@ Zgoda marketingowa: ${marketingConsent ? "TAK" : "NIE"}`,
           company: company.trim(),
           role: "Właściciel / Menedżer (Kalkulator LP)",
           message: calculatorMessage,
+          marketingConsent,
           leadSource: "Kalkulator LP",
           formSource: "LP kalkulator — formularz wyników",
           page: "/lp/kalkulator",
@@ -210,15 +218,14 @@ Zgoda marketingowa: ${marketingConsent ? "TAK" : "NIE"}`,
           />
         </label>
 
-        <label className="md:col-span-2 flex items-start gap-3 text-[13px] text-white/70">
-          <input
-            type="checkbox"
-            checked={marketingConsent}
-            onChange={(event) => setMarketingConsent(event.target.checked)}
-            className="mt-[2px] accent-brand-orange"
-          />
-          <span>Chcę otrzymywać materiały edukacyjne i nowości ze świata nowoczesnej rehabilitacji.</span>
-        </label>
+        <ConsentFields
+          className="md:col-span-2"
+          tone="dark"
+          dataConsent={dataConsent}
+          marketingConsent={marketingConsent}
+          onDataConsentChange={setDataConsent}
+          onMarketingConsentChange={setMarketingConsent}
+        />
 
         <button
           type="submit"

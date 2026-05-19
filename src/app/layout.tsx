@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import CookieConsentGate from "@/components/CookieConsentGate";
+import MetaPixel from "@/components/MetaPixel";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -87,6 +88,7 @@ export default function RootLayout({
           {children}
         </div>
         <CookieConsentGate />
+        <MetaPixel />
       </body>
     </html>
   );

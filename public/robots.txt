@@ -8,5 +8,6 @@ Allow: /
 User-agent: *
 Allow: /
 Disallow: /api/
+Disallow: /lp/
 
 Sitemap: https://www.icaros.com.pl/sitemap.xml

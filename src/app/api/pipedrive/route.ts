@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import fs from "node:fs";
 import path from "node:path";
 import { sendContactConfirmationEmail } from "@/lib/email/contactConfirmation";
+import { sendLeadNotificationEmail } from "@/lib/email/leadNotification";
+import { addContactToAudience } from "@/lib/email/audience";
 
 type ContactPayload = {
   name?: string;
@@ -14,6 +16,7 @@ type ContactPayload = {
   page?: string;
   formSource?: string;
   leadSource?: string;
+  marketingConsent?: boolean;
   utm?: {
     utm_source?: string;
     utm_medium?: string;
@@ -56,6 +59,14 @@ const OWNER_A = Number(getEnv("PIPEDRIVE_OWNER_A_ID") || "25511085"); // Jarosla
 const OWNER_B = Number(getEnv("PIPEDRIVE_OWNER_B_ID") || "25511096"); // Sebastian Wilk
 const FALLBACK_OWNER = Number(getEnv("PIPEDRIVE_OWNER_FALLBACK_ID") || "25511096");
 
+/** Adresy zawsze powiadamiane o nowym leadzie (oprócz przypisanego handlowca). */
+const ALWAYS_NOTIFY_EMAILS = (
+  getEnv("LEAD_NOTIFY_EMAILS") || "stanislaw.drozniak@icaros.com.pl"
+)
+  .split(",")
+  .map((address) => address.trim().toLowerCase())
+  .filter(Boolean);
+
 type PipedriveResponse<T = unknown> = {
   success?: boolean;
   error?: string;
@@ -80,9 +91,25 @@ type DealListItem = {
   owner_id?: { id: number };
 };
 
+type PipedriveUser = {
+  id: number;
+  name?: string;
+  email?: string;
+};
+
 function toErrorMessage(error: unknown, fallback: string) {
   if (error instanceof Error) return error.message;
   return fallback;
+}
+
+/** Nastepny dzien roboczy w formacie YYYY-MM-DD (pomija sobote i niedziele). */
+function nextBusinessDay(): string {
+  const date = new Date();
+  date.setDate(date.getDate() + 1);
+  const weekday = date.getDay();
+  if (weekday === 6) date.setDate(date.getDate() + 2);
+  else if (weekday === 0) date.setDate(date.getDate() + 1);
+  return date.toISOString().slice(0, 10);
 }
 
 async function callPipedrive<T = unknown>(
@@ -184,6 +211,32 @@ export async function POST(request: Request) {
     let orgId: number | undefined;
     const ownerId = (await chooseOwnerId()) || getHashBasedOwner(ownerSeed) || FALLBACK_OWNER;
 
+    // 1) Resolve the organization first, independently of the person. This way the
+    // deal is always linked to the placówka, also when the person already exists.
+    const companyName = payload.company?.trim();
+    if (companyName) {
+      const orgSearch = await callPipedrive<{ items?: SearchItem[] }>(
+        `/organizations/search?term=${encodeURIComponent(
+          companyName
+        )}&fields=name&exact_match=true&limit=1`
+      );
+
+      const orgItems = orgSearch.data?.items ?? [];
+      if (orgItems.length > 0) {
+        orgId = orgItems[0].item.id;
+      } else {
+        const createdOrg = await callPipedrive<{ id: number }>("/organizations", {
+          method: "POST",
+          body: JSON.stringify({
+            name: companyName,
+            owner_id: ownerId,
+          }),
+        });
+        orgId = createdOrg?.data?.id;
+      }
+    }
+
+    // 2) Resolve the person — reuse an existing record or create a new one.
     let personSearch: PipedriveResponse<{ items?: SearchItem[] }> | null = null;
     if (email) {
       personSearch = await callPipedrive(
@@ -199,30 +252,18 @@ export async function POST(request: Request) {
     if (personItems.length > 0) {
       const existingPerson = personItems[0].item;
       personId = existingPerson.id;
-      orgId = existingPerson.organization?.id;
-    } else {
-      if (payload.company?.trim()) {
-        const orgSearch = await callPipedrive<{ items?: SearchItem[] }>(
-          `/organizations/search?term=${encodeURIComponent(
-            payload.company.trim()
-          )}&fields=name&exact_match=true&limit=1`
-        );
 
-        const orgItems = orgSearch.data?.items ?? [];
-        if (orgItems.length > 0) {
-          orgId = orgItems[0].item.id;
-        } else {
-          const createdOrg = await callPipedrive<{ id: number }>("/organizations", {
-            method: "POST",
-            body: JSON.stringify({
-              name: payload.company.trim(),
-              owner_id: ownerId,
-            }),
-          });
-          orgId = createdOrg?.data?.id;
-        }
+      if (!orgId) {
+        // No company on this submission — fall back to the person's existing org.
+        orgId = existingPerson.organization?.id;
+      } else if (!existingPerson.organization?.id) {
+        // Person exists without an org — link them to the resolved placówka.
+        await callPipedrive(`/persons/${personId}`, {
+          method: "PUT",
+          body: JSON.stringify({ org_id: orgId }),
+        });
       }
-
+    } else {
       const createdPerson = await callPipedrive<{ id: number }>("/persons", {
         method: "POST",
         body: JSON.stringify({
@@ -297,10 +338,14 @@ export async function POST(request: Request) {
       payload.message ? `Wiadomosc: ${payload.message}` : "",
       payload.page ? `Strona: ${payload.page}` : "",
       `Zrodlo formularza: ${formSource}`,
+      typeof payload.marketingConsent === "boolean"
+        ? `Zgoda marketingowa: ${payload.marketingConsent ? "TAK" : "NIE"}`
+        : "",
     ].filter(Boolean);
 
     if (createdDeal?.data && typeof createdDeal.data === "object" && "id" in createdDeal.data) {
       const dealId = (createdDeal.data as { id: number }).id;
+
       await callPipedrive("/notes", {
         method: "POST",
         body: JSON.stringify({
@@ -309,6 +354,73 @@ export async function POST(request: Request) {
           pinned_to_deal_flag: true,
         }),
       });
+
+      // Zadanie "oddzwoń" powiazane z dealem / osoba / organizacja i przypisane
+      // do wlasciciela deala. Telefon trafia tez do tresci, zeby handlowiec widzial
+      // od razu na liscie zadan, do kogo i na jaki numer dzwonic.
+      try {
+        const activityNote = [
+          "Oddzwoń do nowego leada (najlepiej w ciągu 24h).",
+          name ? `Osoba: ${name}` : "",
+          phone ? `Telefon: ${phone}` : "",
+          email ? `Email: ${email}` : "",
+          payload.company?.trim() ? `Placówka: ${payload.company.trim()}` : "",
+          `Zrodlo: ${formSource}`,
+        ]
+          .filter(Boolean)
+          .join("\n");
+
+        await callPipedrive("/activities", {
+          method: "POST",
+          body: JSON.stringify({
+            subject: `Oddzwoń do leada - ${payload.company?.trim() || name}`,
+            type: "call",
+            deal_id: dealId,
+            person_id: personId,
+            org_id: orgId,
+            user_id: ownerId,
+            due_date: nextBusinessDay(),
+            note: activityNote,
+          }),
+        });
+      } catch (activityError: unknown) {
+        console.error(
+          "Pipedrive activity creation failed:",
+          activityError instanceof Error ? activityError.message : activityError
+        );
+      }
+
+      // Powiadomienie e-mail do zespołu sprzedaży — trafia do obu handlowców,
+      // z wyraźnym oznaczeniem, kto obsługuje tego leada (round-robin).
+      try {
+        const usersResp = await callPipedrive<PipedriveUser[]>("/users");
+        const users = Array.isArray(usersResp?.data) ? usersResp.data : [];
+        const ownerUser = users.find((user) => user.id === ownerId);
+        const ownerEmails = [OWNER_A, OWNER_B]
+          .map((id) => users.find((user) => user.id === id)?.email)
+          .filter((value): value is string => Boolean(value))
+          .map((address) => address.toLowerCase());
+        const recipients = [...new Set([...ownerEmails, ...ALWAYS_NOTIFY_EMAILS])];
+
+        await sendLeadNotificationEmail({
+          to: recipients,
+          ownerName: ownerUser?.name || "Zespół ICAROS",
+          leadName: name,
+          phone,
+          email,
+          company: payload.company,
+          nip: payload.nip,
+          role: payload.role,
+          message: payload.message,
+          formSource,
+          dealUrl: DOMAIN ? `https://${DOMAIN}.pipedrive.com/deal/${dealId}` : undefined,
+        });
+      } catch (notifyError: unknown) {
+        console.error(
+          "Lead notification email failed:",
+          notifyError instanceof Error ? notifyError.message : notifyError
+        );
+      }
     }
 
     if (email) {
@@ -323,6 +435,18 @@ export async function POST(request: Request) {
           "Contact confirmation email (Resend) failed:",
           confirmationError instanceof Error ? confirmationError.message : confirmationError
         );
+      }
+
+      // Do listy nurture trafiają wyłącznie osoby ze zgodą marketingową.
+      if (payload.marketingConsent === true) {
+        try {
+          await addContactToAudience(email);
+        } catch (audienceError: unknown) {
+          console.error(
+            "Resend audience add failed:",
+            audienceError instanceof Error ? audienceError.message : audienceError
+          );
+        }
       }
     }
 

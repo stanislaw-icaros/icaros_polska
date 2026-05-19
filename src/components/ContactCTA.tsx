@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import LegalLinks from "@/components/LegalLinks";
+import ConsentFields from "@/components/ConsentFields";
 import { DISCLAIMER_MEDICAL_DEVICES } from "@/lib/legal";
 
 const roleOptions = [
@@ -25,6 +26,8 @@ export default function ContactCTA() {
     role: "",
     message: "",
   });
+  const [dataConsent, setDataConsent] = useState(false);
+  const [marketingConsent, setMarketingConsent] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
@@ -46,6 +49,11 @@ export default function ContactCTA() {
 
     if (isSubmitting) return;
 
+    if (!dataConsent) {
+      setSubmitError("Zaznacz zgodę na przetwarzanie danych, abyśmy mogli obsłużyć zgłoszenie.");
+      return;
+    }
+
     setIsSubmitting(true);
     setSubmitError("");
 
@@ -65,6 +73,7 @@ export default function ContactCTA() {
         },
         body: JSON.stringify({
           ...formState,
+          marketingConsent,
           leadSource: "Formularz WWW",
           formSource: "Strona główna — formularz główny",
           page: window.location.pathname,
@@ -311,6 +320,14 @@ export default function ContactCTA() {
                       placeholder="Powiedz nam więcej o swojej placówce i potrzebach..."
                     />
                   </div>
+
+                  <ConsentFields
+                    tone="light"
+                    dataConsent={dataConsent}
+                    marketingConsent={marketingConsent}
+                    onDataConsentChange={setDataConsent}
+                    onMarketingConsentChange={setMarketingConsent}
+                  />
 
                   <button
                     type="submit"

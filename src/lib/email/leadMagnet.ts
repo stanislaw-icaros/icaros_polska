@@ -3,10 +3,22 @@ import { Resend } from "resend";
 const BRAND_ORANGE = "#ff6600";
 const BRAND_ORANGE_SOFT = "#ff7b1f";
 
+/** Publiczny adres raportu PDF (plik w /public). Nadpisywalny przez env. */
+const REPORT_PDF_URL =
+  process.env.LEAD_MAGNET_PDF_URL?.trim() ||
+  "https://www.icaros.com.pl/raport-vr-rehabilitacja.pdf";
+
+const UNSUBSCRIBE_MAILTO =
+  "mailto:kontakt@icaros.com.pl?subject=Rezygnacja%20z%20materia%C5%82%C3%B3w%20ICAROS";
+
 const FONT_STACK =
   "-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif";
 
-const CALCULATOR_URL = "https://www.icaros.com.pl/lp/kalkulator";
+const REPORT_HIGHLIGHTS = [
+  "Realne dane finansowe i modele leasingu dla placówek",
+  "Wyniki 9 badań klinicznych nad terapią w VR",
+  "Doświadczenia 100+ klinik rehabilitacyjnych w Europie",
+];
 
 function escapeHtml(text: string): string {
   return text
@@ -16,19 +28,13 @@ function escapeHtml(text: string): string {
     .replace(/"/g, "&quot;");
 }
 
-function firstNameFromFullName(fullName: string): string {
-  const trimmed = fullName.trim();
-  if (!trimmed) return "";
-  return trimmed.split(/\s+/)[0] || trimmed;
-}
-
-export function buildContactConfirmationEmailHtml(options: {
-  recipientName: string;
+export function buildLeadMagnetEmailHtml(options: {
   company?: string;
+  firstName?: string;
 }): string {
-  const greetingName = escapeHtml(
-    firstNameFromFullName(options.recipientName) || options.recipientName.trim()
-  );
+  const greeting = options.firstName?.trim()
+    ? `, ${escapeHtml(options.firstName.trim())}`
+    : "";
   const companyLine = options.company?.trim()
     ? `<tr>
             <td style="padding:18px 40px 0 40px;font-family:${FONT_STACK};">
@@ -41,6 +47,17 @@ export function buildContactConfirmationEmailHtml(options: {
           </tr>`
     : "";
 
+  const highlightRows = REPORT_HIGHLIGHTS.map(
+    (item) => `<tr>
+                  <td width="22" valign="top" style="padding:5px 0;font-family:${FONT_STACK};">
+                    <div style="width:6px;height:6px;margin-top:7px;background:${BRAND_ORANGE};"></div>
+                  </td>
+                  <td valign="top" class="email-text" style="padding:5px 0;font-family:${FONT_STACK};font-size:14px;line-height:1.6;color:#3f3f46;">
+                    ${escapeHtml(item)}
+                  </td>
+                </tr>`
+  ).join("");
+
   return `<!DOCTYPE html>
 <html lang="pl" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
 <head>
@@ -49,7 +66,7 @@ export function buildContactConfirmationEmailHtml(options: {
   <meta name="x-apple-disable-message-reformatting" />
   <meta name="color-scheme" content="light dark" />
   <meta name="supported-color-schemes" content="light dark" />
-  <title>Dziękujemy za zgłoszenie · ICAROS Polska</title>
+  <title>Twój raport jest gotowy · ICAROS Polska</title>
   <!--[if mso]>
   <noscript>
     <xml>
@@ -72,13 +89,13 @@ export function buildContactConfirmationEmailHtml(options: {
       .email-brand { color: #ff8c42 !important; }
       .email-link { color: #ff8c42 !important; }
       .email-copyright { color: #5c5c63 !important; }
-      .email-box { background-color: rgba(255,102,0,0.10) !important; border-color: rgba(255,102,0,0.28) !important; }
+      .email-highlights { background-color: rgba(255,102,0,0.10) !important; border-color: rgba(255,102,0,0.28) !important; }
     }
   </style>
 </head>
 <body class="email-body" style="margin:0;padding:0;background-color:#f4f4f5;-webkit-font-smoothing:antialiased;">
   <div style="display:none;max-height:0;overflow:hidden;mso-hide:all;">
-    Otrzymaliśmy Twoje zgłoszenie - odezwiemy się wkrótce.
+    Twój raport o VR w rehabilitacji jest gotowy do pobrania.
   </div>
   <table role="presentation" class="email-body" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#f4f4f5;margin:0;padding:32px 16px;">
     <tr>
@@ -90,34 +107,50 @@ export function buildContactConfirmationEmailHtml(options: {
           <tr>
             <td style="padding:38px 40px 0 40px;font-family:${FONT_STACK};">
               <p class="email-brand" style="margin:0;font-size:11px;font-weight:700;letter-spacing:0.28em;text-transform:uppercase;color:${BRAND_ORANGE};">ICAROS POLSKA</p>
-              <p class="email-eyebrow" style="margin:7px 0 0 0;font-size:11px;font-weight:600;letter-spacing:0.24em;text-transform:uppercase;color:#a1a1aa;">Potwierdzenie zgłoszenia</p>
+              <p class="email-eyebrow" style="margin:7px 0 0 0;font-size:11px;font-weight:600;letter-spacing:0.24em;text-transform:uppercase;color:#a1a1aa;">Bezpłatny raport</p>
             </td>
           </tr>
           <tr>
             <td class="email-heading" style="padding:14px 40px 0 40px;font-family:${FONT_STACK};font-size:27px;font-weight:700;letter-spacing:-0.03em;line-height:1.15;color:#0a0a0a;">
-              Dziękujemy, ${greetingName}
+              Twój raport jest gotowy${greeting}
             </td>
           </tr>
           <tr>
             <td class="email-text" style="padding:13px 40px 0 40px;font-family:${FONT_STACK};font-size:16px;line-height:1.65;color:#3f3f46;">
-              Otrzymaliśmy Twoje zgłoszenie i wszystko dotarło poprawnie. Odezwiemy się tak szybko, jak to możliwe - zwykle w ciągu jednego dnia roboczego.
+              Dziękujemy za zainteresowanie. Raport „Jak technologia VR zmienia rehabilitację w Europie” pobierzesz jednym kliknięciem poniżej. To konkretne dane z rynku europejskiego, z krajów, gdzie technologia VR ma już szersze zastosowanie.
             </td>
           </tr>
           ${companyLine}
           <tr>
-            <td style="padding:26px 40px 0 40px;">
-              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" class="email-box" style="background-color:rgba(255,102,0,0.05);border:1px solid rgba(255,102,0,0.18);border-radius:12px;">
+            <td align="center" style="padding:30px 40px 6px 40px;">
+              <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:0 auto;">
                 <tr>
-                  <td style="padding:20px 22px;font-family:${FONT_STACK};">
-                    <p class="email-brand" style="margin:0 0 8px 0;font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:${BRAND_ORANGE};">W międzyczasie</p>
-                    <p class="email-text" style="margin:0;font-size:14px;line-height:1.6;color:#3f3f46;">
-                      Możesz wstępnie sprawdzić, ile dodatkowego przychodu ICAROS może wygenerować w placówce takiej jak Twoja.
-                    </p>
-                    <p style="margin:14px 0 0 0;">
-                      <a href="${CALCULATOR_URL}" target="_blank" class="email-link" style="font-size:14px;font-weight:700;color:${BRAND_ORANGE};text-decoration:underline;">
-                        Otwórz kalkulator ROI &rarr;
-                      </a>
-                    </p>
+                  <td align="center" style="background-color:${BRAND_ORANGE};background-image:linear-gradient(135deg, ${BRAND_ORANGE} 0%, ${BRAND_ORANGE_SOFT} 100%);">
+                    <a href="${REPORT_PDF_URL}" target="_blank" style="display:block;padding:18px 46px;font-family:${FONT_STACK};font-size:15px;font-weight:700;letter-spacing:0.02em;color:#ffffff;text-decoration:none;">
+                      Pobierz raport (PDF)
+                    </a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:14px 40px 0 40px;font-family:${FONT_STACK};">
+              <p class="email-muted" style="margin:0;font-size:12px;line-height:1.6;color:#a1a1aa;text-align:center;">
+                Gdyby przycisk nie działał,
+                <a href="${REPORT_PDF_URL}" target="_blank" class="email-link" style="color:${BRAND_ORANGE};text-decoration:underline;font-weight:600;">otwórz raport tutaj</a>.
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:26px 40px 0 40px;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" class="email-highlights" style="background-color:rgba(255,102,0,0.05);border:1px solid rgba(255,102,0,0.18);border-radius:12px;">
+                <tr>
+                  <td style="padding:18px 22px;font-family:${FONT_STACK};">
+                    <p class="email-brand" style="margin:0 0 10px 0;font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:${BRAND_ORANGE};">Co znajdziesz w środku</p>
+                    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                      ${highlightRows}
+                    </table>
                   </td>
                 </tr>
               </table>
@@ -125,15 +158,17 @@ export function buildContactConfirmationEmailHtml(options: {
           </tr>
           <tr>
             <td class="email-text" style="padding:26px 40px 0 40px;font-family:${FONT_STACK};font-size:15px;line-height:1.65;color:#52525b;">
-              Masz dodatkowe pytania? Napisz na
+              Masz pytania o wdrożenie ICAROS u siebie? Napisz na
               <a href="mailto:kontakt@icaros.com.pl" class="email-link" style="color:${BRAND_ORANGE};text-decoration:none;font-weight:600;">kontakt@icaros.com.pl</a>
-              - chętnie pomożemy.
+              - odpowiemy konkretnie.
             </td>
           </tr>
           <tr>
             <td class="email-foot" style="padding:30px 40px 36px 40px;font-family:${FONT_STACK};font-size:12px;line-height:1.65;color:#8a8a93;border-top:1px solid rgba(10,10,10,0.06);">
               ICAROS Polska - oficjalny dystrybutor ICAROS w Polsce.<br />
-              Ta wiadomość jest automatycznym potwierdzeniem Twojego zgłoszenia; nie musisz na nią odpowiadać.
+              Otrzymujesz tę wiadomość, ponieważ poprosiłeś o raport na stronie icaros.com.pl.<br />
+              Nie chcesz otrzymywać od nas materiałów?
+              <a href="${UNSUBSCRIBE_MAILTO}" class="email-link" style="color:${BRAND_ORANGE};text-decoration:underline;">Wypisz się</a>.
             </td>
           </tr>
         </table>
@@ -147,15 +182,10 @@ export function buildContactConfirmationEmailHtml(options: {
 </html>`;
 }
 
-export function buildContactConfirmationSubject(recipientName: string): string {
-  const name = firstNameFromFullName(recipientName) || recipientName.trim() || "Państwo";
-  return `Dziękujemy za zgłoszenie, ${name} · ICAROS Polska`;
-}
-
-export async function sendContactConfirmationEmail(params: {
+export async function sendLeadMagnetEmail(params: {
   to: string;
-  recipientName: string;
   company?: string;
+  firstName?: string;
 }): Promise<void> {
   const apiKey = process.env.RESEND_API_KEY?.trim();
   const from = process.env.RESEND_FROM?.trim();
@@ -164,17 +194,17 @@ export async function sendContactConfirmationEmail(params: {
   }
 
   const resend = new Resend(apiKey);
-  const html = buildContactConfirmationEmailHtml({
-    recipientName: params.recipientName,
-    company: params.company,
-  });
-  const subject = buildContactConfirmationSubject(params.recipientName);
-
   await resend.emails.send({
     from,
     to: params.to,
-    subject,
-    html,
+    subject: "Twój raport o VR w rehabilitacji · ICAROS Polska",
+    html: buildLeadMagnetEmailHtml({
+      company: params.company,
+      firstName: params.firstName,
+    }),
     replyTo: "kontakt@icaros.com.pl",
+    headers: {
+      "List-Unsubscribe": `<${UNSUBSCRIBE_MAILTO}>`,
+    },
   });
 }
