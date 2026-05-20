@@ -86,40 +86,39 @@ export default function CookieConsentGate() {
 
               {!showDetails ? (
                 <>
-                  <p className="mt-2.5 text-[13.5px] leading-[1.6] text-white/85">
-                    Używamy plików cookies do pomiaru skuteczności reklam (Meta Pixel)
-                    oraz osadzania filmów z YouTube. Możesz zaakceptować wszystkie
-                    albo odrzucić opcjonalne.
-                  </p>
-                  <p className="mt-2 text-[11.5px] leading-[1.55] text-white/55">
-                    Serwis prezentuje wyroby medyczne kierowane do podmiotów
-                    profesjonalnych.{" "}
+                  <p className="mt-2 text-[13px] leading-[1.55] text-white/80">
+                    Używamy cookies do pomiaru reklam (Meta Pixel) i osadzonych
+                    filmów z YouTube.{" "}
                     <Link
                       href="/polityka-cookies"
-                      className="text-white/75 underline decoration-white/25 underline-offset-2 transition-colors hover:text-white"
+                      className="text-white/65 underline decoration-white/25 underline-offset-2 transition-colors hover:text-white"
                     >
                       Polityka cookies
                     </Link>
                   </p>
-                  <div className="mt-4 flex flex-col-reverse gap-2 sm:flex-row sm:items-center">
+                  <p className="mt-1.5 text-[10.5px] leading-[1.5] text-white/40">
+                    Część prezentowanych wyrobów to certyfikowane wyroby medyczne
+                    kierowane do podmiotów profesjonalnych.
+                  </p>
+                  <div className="mt-3.5 grid grid-cols-2 gap-2 sm:flex sm:items-center sm:gap-3">
                     <button
                       type="button"
                       onClick={() => setShowDetails(true)}
-                      className="text-[12px] text-white/60 underline decoration-white/20 underline-offset-4 transition-colors hover:text-white sm:mr-auto"
+                      className="col-span-2 order-3 text-center text-[12px] text-white/55 underline decoration-white/20 underline-offset-4 transition-colors hover:text-white sm:col-auto sm:order-none sm:mr-auto sm:text-left"
                     >
                       Ustawienia
                     </button>
                     <button
                       type="button"
                       onClick={() => save(NECESSARY_ONLY)}
-                      className="px-4 py-2.5 text-[12.5px] font-semibold text-white/85 border border-white/15 transition-colors hover:bg-white/[0.04] hover:text-white"
+                      className="order-1 px-4 py-2.5 text-[12.5px] font-semibold text-white/85 border border-white/15 transition-colors hover:bg-white/[0.04] hover:text-white sm:order-none"
                     >
                       Odrzuć opcjonalne
                     </button>
                     <button
                       type="button"
                       onClick={() => save(defaultCookieConsent)}
-                      className="px-5 py-2.5 text-[12.5px] font-semibold text-white transition-opacity hover:opacity-90"
+                      className="order-2 px-5 py-2.5 text-[12.5px] font-semibold text-white transition-opacity hover:opacity-90 sm:order-none"
                       style={{
                         background: "linear-gradient(135deg, #ff6600, #ff7b1f)",
                       }}
