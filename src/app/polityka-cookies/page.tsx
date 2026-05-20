@@ -48,8 +48,8 @@ export default function CookiesPolicyPage() {
         <h3>Analityczne</h3>
         <p>
           Umożliwiają mierzenie ruchu, źródeł odwiedzin, zachowań użytkowników, jakości treści oraz wydajności strony.
-          Do tej kategorii mogą należeć m.in. <strong>Google Analytics</strong> oraz{" "}
-          <strong>Vercel Analytics</strong>.
+          Obecnie nie korzystamy z narzędzi z tej kategorii; jeżeli zostaną wdrożone w przyszłości, ich użycie będzie
+          uzależnione od Twojej zgody.
         </p>
 
         <h3>Marketingowe</h3>
@@ -82,15 +82,8 @@ export default function CookiesPolicyPage() {
         <h2>4. Narzędzia, które mogą zapisywać lub odczytywać dane</h2>
         <ul>
           <li>
-            <strong>Google Analytics</strong> - analiza ruchu, statystyk odwiedzin, źródeł wejścia i zachowań na
-            stronie;
-          </li>
-          <li>
-            <strong>Meta Pixel</strong> - pomiar konwersji, remarketing, analiza skuteczności działań reklamowych w
-            ekosystemie Meta;
-          </li>
-          <li>
-            <strong>Vercel Analytics</strong> - agregowane statystyki ruchu i wydajności serwisu;
+            <strong>Meta Pixel</strong> oraz <strong>Conversions API</strong> - pomiar konwersji, remarketing
+            i analiza skuteczności działań reklamowych w ekosystemie Meta;
           </li>
           <li>
             <strong>YouTube</strong> - odtwarzanie osadzonych materiałów wideo, co może wiązać się z zapisem cookies
@@ -110,9 +103,9 @@ export default function CookiesPolicyPage() {
           obsługę zapytania i ocenę skuteczności działań marketingowych.
         </p>
         <p>
-          Jeżeli użytkownik wyrazi zgodę marketingową, dane kontaktowe mogą zostać wykorzystane również w systemach do
-          komunikacji e-mail, takich jak <strong>MailerLite</strong>, a wiadomości techniczne lub potwierdzające mogą
-          być wysyłane z wykorzystaniem <strong>Resend</strong>.
+          Jeżeli użytkownik wyrazi zgodę marketingową, dane kontaktowe mogą zostać dopisane do listy mailingowej
+          prowadzonej w <strong>Resend</strong>, który obsługuje również wysyłkę wiadomości technicznych i
+          potwierdzających.
         </p>
       </section>
 

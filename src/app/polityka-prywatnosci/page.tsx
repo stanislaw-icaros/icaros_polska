@@ -141,21 +141,12 @@ export default function PrivacyPolicyPage() {
             organizacji procesu handlowego;
           </li>
           <li>
-            <strong>MailerLite</strong> - narzędzie do wysyłki wiadomości e-mail, newsletterów oraz treści edukacyjnych,
-            jeżeli użytkownik wyrazi zgodę na taki kontakt;
+            <strong>Resend</strong> - infrastruktura wysyłki wiadomości transakcyjnych, potwierdzeń e-mail
+            oraz prowadzenia listy mailingowej (przy zgodzie marketingowej);
           </li>
           <li>
-            <strong>Resend</strong> - infrastruktura wysyłki wiadomości transakcyjnych i potwierdzeń e-mail;
-          </li>
-          <li>
-            <strong>Google Analytics</strong> - narzędzie analityczne do badania ruchu i zachowań użytkowników;
-          </li>
-          <li>
-            <strong>Meta Pixel</strong> - narzędzie marketingowe służące do pomiaru skuteczności kampanii reklamowych,
-            remarketingu i atrybucji konwersji;
-          </li>
-          <li>
-            <strong>Vercel Analytics</strong> - rozwiązanie do analizy ruchu i wydajności serwisu;
+            <strong>Meta Pixel</strong> oraz <strong>Conversions API</strong> - narzędzia marketingowe służące do
+            pomiaru skuteczności kampanii reklamowych, remarketingu i atrybucji konwersji w ekosystemie Meta;
           </li>
           <li>
             <strong>YouTube</strong> - dostawca osadzonych materiałów wideo;

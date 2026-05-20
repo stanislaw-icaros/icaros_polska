@@ -30,12 +30,6 @@ export async function POST(request: Request) {
         { status: 400 }
       );
     }
-    if (!company) {
-      return NextResponse.json(
-        { success: false, error: "Podaj nazwę placówki." },
-        { status: 400 }
-      );
-    }
 
     // Wysyłka raportu PDF - nie blokuje odpowiedzi, użytkownik i tak pobierze go na stronie quizu.
     try {

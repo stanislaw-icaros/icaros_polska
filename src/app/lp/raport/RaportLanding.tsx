@@ -60,10 +60,6 @@ export default function RaportLanding() {
       setErrorMessage("Podaj prawidłowy adres e-mail.");
       return;
     }
-    if (!cleanCompany) {
-      setErrorMessage("Podaj nazwę placówki.");
-      return;
-    }
     if (!dataConsent) {
       setErrorMessage("Zaznacz zgodę na przetwarzanie danych - bez niej nie wyślemy raportu.");
       return;
@@ -248,11 +244,10 @@ export default function RaportLanding() {
                     type="text"
                     value={company}
                     onChange={(event) => setCompany(event.target.value)}
-                    placeholder="Nazwa Twojej placówki"
+                    placeholder="Nazwa placówki (opcjonalnie)"
                     aria-label="Nazwa placówki"
                     autoComplete="organization"
                     className="w-full border border-white/15 bg-white/[0.04] px-4 py-3.5 text-[15px] text-white outline-none transition-colors placeholder:text-white/30 focus:border-brand-orange"
-                    required
                   />
                   <ConsentFields
                     tone="dark"
