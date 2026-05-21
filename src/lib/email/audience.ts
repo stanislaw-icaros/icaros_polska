@@ -5,9 +5,17 @@ import { Resend } from "resend";
  * Wywoływać wyłącznie dla osób, które wyraziły zgodę marketingową.
  * Bez RESEND_API_KEY / RESEND_AUDIENCE_ID działa jako no-op.
  */
+/**
+ * Dodaje kontakt do listy w Resend.
+ * `unsubscribed: true` oznacza, że kontakt jest widoczny na liście, ale nie
+ * dostanie broadcastów - używamy tego dla osób bez zgody marketingowej,
+ * żeby zachować widoczność lead-a w jednym miejscu (Resend automatycznie
+ * pomija unsubscribed przy wysyłce kampanii).
+ */
 export async function addContactToAudience(
   email: string,
-  firstName?: string
+  firstName?: string,
+  options?: { unsubscribed?: boolean }
 ): Promise<void> {
   const apiKey = process.env.RESEND_API_KEY?.trim();
   const audienceId = process.env.RESEND_AUDIENCE_ID?.trim();
@@ -18,6 +26,6 @@ export async function addContactToAudience(
     email,
     firstName: firstName?.trim() || undefined,
     audienceId,
-    unsubscribed: false,
+    unsubscribed: options?.unsubscribed ?? false,
   });
 }

@@ -41,16 +41,17 @@ export async function POST(request: Request) {
       );
     }
 
-    // Do listy nurture trafiają wyłącznie osoby, które wyraziły zgodę marketingową.
-    if (payload.marketingConsent === true) {
-      try {
-        await addContactToAudience(email, firstName);
-      } catch (audienceError: unknown) {
-        console.error(
-          "Resend audience add failed:",
-          audienceError instanceof Error ? audienceError.message : audienceError
-        );
-      }
+    // Wszyscy lądują w Resend Audience dla widoczności w CRM, ale tylko ci ze
+    // zgodą marketingową mają unsubscribed=false (czyli dostają broadcasty).
+    try {
+      await addContactToAudience(email, firstName, {
+        unsubscribed: payload.marketingConsent !== true,
+      });
+    } catch (audienceError: unknown) {
+      console.error(
+        "Resend audience add failed:",
+        audienceError instanceof Error ? audienceError.message : audienceError
+      );
     }
 
     return NextResponse.json({ success: true }, { status: 201 });

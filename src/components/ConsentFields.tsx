@@ -43,14 +43,13 @@ export default function ConsentFields({
           className="mt-[2px] shrink-0 accent-brand-orange"
         />
         <span>
-          Wyrażam zgodę na przetwarzanie moich danych przez ICAROS Polska w celu
-          obsługi zgłoszenia. Zapoznałem się z{" "}
+          Wyrażam zgodę na przetwarzanie danych.{" "}
           <Link
             href="/polityka-prywatnosci"
             target="_blank"
             className={`underline underline-offset-2 transition-colors ${linkClass}`}
           >
-            Polityką prywatności
+            Polityka prywatności
           </Link>
           . <span className={mutedClass}>(wymagane)</span>
         </span>
@@ -64,9 +63,7 @@ export default function ConsentFields({
             className="mt-[2px] shrink-0 accent-brand-orange"
           />
           <span>
-            Chcę otrzymywać od ICAROS Polska materiały edukacyjne i informacje
-            o rozwiązaniach dla rehabilitacji e-mailem. Zgodę mogę wycofać
-            w każdej chwili.
+            Chcę dostawać od ICAROS materiały edukacyjne e-mailem.
           </span>
         </label>
       ) : null}
