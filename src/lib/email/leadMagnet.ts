@@ -8,9 +8,6 @@ const REPORT_PDF_URL =
   process.env.LEAD_MAGNET_PDF_URL?.trim() ||
   "https://www.icaros.com.pl/raport-vr-rehabilitacja.pdf";
 
-const UNSUBSCRIBE_MAILTO =
-  "mailto:kontakt@icaros.com.pl?subject=Rezygnacja%20z%20materia%C5%82%C3%B3w%20ICAROS";
-
 const FONT_STACK =
   "-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif";
 
@@ -166,9 +163,7 @@ export function buildLeadMagnetEmailHtml(options: {
           <tr>
             <td class="email-foot" style="padding:30px 40px 36px 40px;font-family:${FONT_STACK};font-size:12px;line-height:1.65;color:#8a8a93;border-top:1px solid rgba(10,10,10,0.06);">
               ICAROS Polska - oficjalny dystrybutor ICAROS w Polsce.<br />
-              Otrzymujesz tę wiadomość, ponieważ poprosiłeś o raport na stronie icaros.com.pl.<br />
-              Nie chcesz otrzymywać od nas materiałów?
-              <a href="${UNSUBSCRIBE_MAILTO}" class="email-link" style="color:${BRAND_ORANGE};text-decoration:underline;">Wypisz się</a>.
+              Otrzymujesz tę wiadomość, ponieważ poprosiłeś o raport na stronie icaros.com.pl.
             </td>
           </tr>
         </table>
@@ -203,8 +198,5 @@ export async function sendLeadMagnetEmail(params: {
       firstName: params.firstName,
     }),
     replyTo: "kontakt@icaros.com.pl",
-    headers: {
-      "List-Unsubscribe": `<${UNSUBSCRIBE_MAILTO}>`,
-    },
   });
 }
