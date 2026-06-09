@@ -5,7 +5,7 @@ type ConsentFieldsProps = {
   onDataConsentChange: (value: boolean) => void;
   marketingConsent?: boolean;
   onMarketingConsentChange?: (value: boolean) => void;
-  /** Ukryj zgodę marketingową — np. w krokach lejka, gdzie nie zbieramy adresu e-mail. */
+  /** Ukryj zgodę marketingową - np. w krokach lejka, gdzie nie zbieramy adresu e-mail. */
   showMarketing?: boolean;
   tone?: "light" | "dark";
   className?: string;

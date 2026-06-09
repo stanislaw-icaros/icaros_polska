@@ -76,7 +76,7 @@ export default function ContactCTA() {
           ...formState,
           marketingConsent,
           leadSource: "Formularz WWW",
-          formSource: "Strona główna — formularz główny",
+          formSource: "Strona główna - formularz główny",
           page: window.location.pathname,
           utm,
         }),
@@ -127,7 +127,7 @@ export default function ContactCTA() {
               {[
                 "Prezentacja dopasowana do Twojego profilu",
                 "Kalkulacja zwrotu z inwestycji",
-                "Bez zobowiązań — zerowy koszt",
+                "Bez zobowiązań - zerowy koszt",
                 "Odpowiedzi na wszystkie pytania techniczne",
               ].map((benefit, i) => (
                 <motion.div
@@ -153,7 +153,7 @@ export default function ContactCTA() {
                 kontakt@icaros.com.pl
               </a>
               <p className="text-[14px] text-foreground/65">
-                ICAROS Polska — Oficjalny dystrybutor
+                ICAROS Polska - Oficjalny dystrybutor
               </p>
             </div>
           </motion.div>

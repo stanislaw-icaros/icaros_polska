@@ -33,7 +33,7 @@ const useCases = [
     number: "04",
     title: "Centra sportowe i trenerskie",
     description:
-      "Trening fitness i przygotowanie motoryczne w formie angażujących exergames. ICAROS Cloud wzmacnia core, nogi i górę ciała, poprawia koordynację oraz równowagę — w klubach fitness, na zajęciach grupowych i w treningu sportowców.",
+      "Trening fitness i przygotowanie motoryczne w formie angażujących exergames. ICAROS Cloud wzmacnia core, nogi i górę ciała, poprawia koordynację oraz równowagę - w klubach fitness, na zajęciach grupowych i w treningu sportowców.",
     image: "/Icaros-24_0428.webp",
     imageAlt: "Sportsmenka trenująca na platformie ICAROS Cloud",
   },

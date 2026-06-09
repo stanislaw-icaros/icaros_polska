@@ -26,12 +26,12 @@ export function trackMetaEvent(
       : `${Date.now()}-${Math.random().toString(16).slice(2)}`;
   const sourceUrl = window.location.href;
 
-  // Client-side Pixel — eventID powiązuje to zdarzenie ze zdarzeniem CAPI.
+  // Client-side Pixel - eventID powiązuje to zdarzenie ze zdarzeniem CAPI.
   if (typeof window.fbq === "function") {
     window.fbq("track", eventName, {}, { eventID: eventId });
   }
 
-  // Server-side Conversions API — fire-and-forget, nie może blokować UX.
+  // Server-side Conversions API - fire-and-forget, nie może blokować UX.
   void fetch("/api/meta-events", {
     method: "POST",
     headers: { "Content-Type": "application/json" },

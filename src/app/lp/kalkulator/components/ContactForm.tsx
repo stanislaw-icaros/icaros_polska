@@ -62,7 +62,7 @@ Dni/mies.: ${daysLabel}
 WYNIKI:
 Szac. sesje ICAROS/dzień: ${result.sessionsPerDay}
 Szac. przychód ICAROS/mies.: ${formatCurrency(result.monthlyRevenue)} PLN
-Szac. zysk netto (Circle, 48 rat — szac.): ${formatCurrency(Math.round(result.profitMonthlyNet))} PLN/mies.
+Szac. zysk netto (Circle, 48 rat - szac.): ${formatCurrency(Math.round(result.profitMonthlyNet))} PLN/mies.
 Zgoda marketingowa: ${marketingConsent ? "TAK" : "NIE"}`,
     [
       daysLabel,
@@ -119,7 +119,7 @@ Zgoda marketingowa: ${marketingConsent ? "TAK" : "NIE"}`,
           message: calculatorMessage,
           marketingConsent,
           leadSource: "Kalkulator LP",
-          formSource: "LP kalkulator — formularz wyników",
+          formSource: "LP kalkulator - formularz wyników",
           page: "/lp/kalkulator",
           utm,
         }),

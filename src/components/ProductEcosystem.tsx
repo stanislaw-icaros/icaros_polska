@@ -21,8 +21,8 @@ const products: Product[] = [
     name: "ICAROS Health",
     category: "Rehabilitacja",
     description:
-      "Wspomagany trening w pozycji horyzontalnej. Certyfikowany wyrób medyczny klasy I — idealne rozwiązanie dla pacjentów neurologicznych i ortopedycznych.",
-    position: "Horyzontalna — wspomagana",
+      "Wspomagany trening w pozycji horyzontalnej. Certyfikowany wyrób medyczny klasy I - idealne rozwiązanie dla pacjentów neurologicznych i ortopedycznych.",
+    position: "Horyzontalna - wspomagana",
     indications: "Bóle kręgosłupa, wskazania neurologiczne",
     image: "/Icaros-24_0544.webp",
     imageAlt: "Terapeuta asystujący pacjentce podczas sesji na ICAROS Health z goglami VR",
@@ -32,19 +32,19 @@ const products: Product[] = [
     name: "ICAROS I.S.T. Board",
     category: "Aktywacja i mobilność",
     description:
-      "Foot-controlled trening ICAROS do terapii i aktywacji: ultralekki, gotowy do użycia od razu. Balans, reakcja i koordynacja prowadzone przez aplikację — w sesjach indywidualnych lub w grupie.",
-    position: "Siedząca — mobilna",
+      "Foot-controlled trening ICAROS do terapii i aktywacji: ultralekki, gotowy do użycia od razu. Balans, reakcja i koordynacja prowadzone przez aplikację - w sesjach indywidualnych lub w grupie.",
+    position: "Siedząca - mobilna",
     indications: "Terapia, profilaktyka, aktywacja grupowa · Ultralekki i kompaktowy · Aplikacja ICAROS",
     image: "/icaros_ist_hero_1.webp",
-    imageAlt: "ICAROS I.S.T. Board — trening stóp i nóg sterowany ruchem",
+    imageAlt: "ICAROS I.S.T. Board - trening stóp i nóg sterowany ruchem",
   },
   {
     step: "03",
     name: "ICAROS Guardian",
     category: "Trening stabilności",
     description:
-      "Dynamiczny trening pionowy z pełnym wsparciem. Poprawia kontrolę posturalną, równowagę i koordynację. Minimalny nadzór — idealne dla seniorów.",
-    position: "Wertykalna — wspierana",
+      "Dynamiczny trening pionowy z pełnym wsparciem. Poprawia kontrolę posturalną, równowagę i koordynację. Minimalny nadzór - idealne dla seniorów.",
+    position: "Wertykalna - wspierana",
     indications: "Prewencja upadków, rehabilitacja seniorów",
     image: "/senior_2.webp",
     imageAlt: "Senior ćwiczący na ICAROS Guardian z interaktywną grą na ekranie",
@@ -54,11 +54,11 @@ const products: Product[] = [
     name: "ICAROS Cloud",
     category: "Trening pełnego ciała",
     description:
-      "Cyfrowy trening całego ciała łączący skuteczność z angażującymi exergames. Sterowanie przez smartfon lub tablet — w domu, butikowym studio lub na sali treningowej.",
-    position: "Wertykalna — wolnostojąca",
+      "Cyfrowy trening całego ciała łączący skuteczność z angażującymi exergames. Sterowanie przez smartfon lub tablet - w domu, butikowym studio lub na sali treningowej.",
+    position: "Wertykalna - wolnostojąca",
     indications: "Fitness, zajęcia grupowe, równowaga i stabilizacja",
     image: "/icaros_cloud_7.webp",
-    imageAlt: "ICAROS Cloud — kompaktowe urządzenie do cyfrowego treningu całego ciała",
+    imageAlt: "ICAROS Cloud - kompaktowe urządzenie do cyfrowego treningu całego ciała",
   },
 ];
 
@@ -93,7 +93,7 @@ export default function ProductEcosystem() {
           </h2>
           <p className="mt-5 text-[16px] text-white/80 leading-[1.8]">
             Cztery zaawansowane urządzenia. Jeden zintegrowany system. Pełna ścieżka
-            terapeutyczna — od wspomaganego treningu i szybkiej aktywacji, przez stabilizację
+            terapeutyczna - od wspomaganego treningu i szybkiej aktywacji, przez stabilizację
             pionową, aż po intensywny trening całego ciała.
           </p>
         </motion.div>

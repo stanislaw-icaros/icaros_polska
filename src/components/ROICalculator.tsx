@@ -414,7 +414,7 @@ export default function ROICalculator() {
                   animate={{ opacity: 1, y: 0 }}
                   className="text-[16px] font-medium text-foreground tabular-nums tracking-tight"
                 >
-                  {results.paybackMonths === Infinity ? "—" : `${results.paybackMonths}`}{" "}
+                  {results.paybackMonths === Infinity ? "-" : `${results.paybackMonths}`}{" "}
                   <span className="text-[12px] text-foreground/30">mies.</span>
                 </motion.span>
               </div>

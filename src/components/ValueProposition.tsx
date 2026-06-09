@@ -32,7 +32,7 @@ const values: { number: string; title: string; description: string; icon: ReactN
     number: "04",
     title: "Plug & Play",
     description:
-      "Kompletne rozwiązanie gotowe do pracy od pierwszego dnia. Sprzęt, oprogramowanie, gogle VR i wsparcie techniczne — wszystko w jednym pakiecie.",
+      "Kompletne rozwiązanie gotowe do pracy od pierwszego dnia. Sprzęt, oprogramowanie, gogle VR i wsparcie techniczne - wszystko w jednym pakiecie.",
     icon: <Zap size={22} strokeWidth={1.4} />,
   },
 ];
@@ -58,7 +58,7 @@ export default function ValueProposition() {
           >
             <Image
               src="/ICAROS-17_0051.webp"
-              alt="ICAROS w użyciu — pacjent podczas sesji terapeutycznej VR"
+              alt="ICAROS w użyciu - pacjent podczas sesji terapeutycznej VR"
               fill
               className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
               sizes="(max-width: 1024px) 100vw, 50vw"

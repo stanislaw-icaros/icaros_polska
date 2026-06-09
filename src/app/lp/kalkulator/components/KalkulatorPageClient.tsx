@@ -289,7 +289,7 @@ export default function KalkulatorPageClient() {
           <div className="relative min-h-[38svh] sm:min-h-[44svh] lg:min-h-0 overflow-hidden">
             <Image
               src="/hero-icaros.webp"
-              alt="ICAROS Health — nowoczesna rehabilitacja z wirtualną rzeczywistością"
+              alt="ICAROS Health - nowoczesna rehabilitacja z wirtualną rzeczywistością"
               fill
               priority
               fetchPriority="high"
@@ -459,7 +459,7 @@ export default function KalkulatorPageClient() {
                   ))}
                 </div>
                 <p className="mt-4 text-[12px] text-foreground/45">
-                  Nie wiesz? Wybierz 20-22 dni — to standard dla większości placówek w Polsce.
+                  Nie wiesz? Wybierz 20-22 dni - to standard dla większości placówek w Polsce.
                 </p>
               </section>
             ) : null}
@@ -550,7 +550,7 @@ export default function KalkulatorPageClient() {
                       </span>
                     </div>
                     <p className="mt-2 text-[12px] text-white/40 max-w-[520px] leading-relaxed">
-                      po odjęciu szacunkowej raty ICAROS Circle (48 mies., 10% wpłaty, 1% wykupu — kwoty netto) ·
+                      po odjęciu szacunkowej raty ICAROS Circle (48 mies., 10% wpłaty, 1% wykupu - kwoty netto) ·
                       przy 50% zapełnienia
                     </p>
                   </motion.div>

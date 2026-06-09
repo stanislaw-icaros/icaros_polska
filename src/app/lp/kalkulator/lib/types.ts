@@ -23,7 +23,7 @@ export type CalculatorResult = {
   sessionsPerDay: number;
   icarosSessionPrice: number;
   monthlyRevenue: number;
-  /** ICAROS Circle — szacunkowa rata netto, 48 rat, 10% wpłata, 1% wykup */
+  /** ICAROS Circle - szacunkowa rata netto, 48 rat, 10% wpłata, 1% wykup */
   leasingMonthlyNet: number;
   profitMonthlyNet: number;
   yearlyProfitNet: number;

@@ -8,12 +8,12 @@ const faqs = [
   {
     question: "Czym dokładnie jest ICAROS i jak działa?",
     answer:
-      "ICAROS to ekosystem certyfikowanych urządzeń treningowych, które łączą rehabilitację z grywalizacją i wirtualną rzeczywistością. Pacjent wykonuje precyzyjne ćwiczenia na sprzęcie, sterując środowiskiem VR ruchami ciała. System mierzy postępy, dostosowuje trudność i generuje raporty — wszystko w sposób angażujący i motywujący.",
+      "ICAROS to ekosystem certyfikowanych urządzeń treningowych, które łączą rehabilitację z grywalizacją i wirtualną rzeczywistością. Pacjent wykonuje precyzyjne ćwiczenia na sprzęcie, sterując środowiskiem VR ruchami ciała. System mierzy postępy, dostosowuje trudność i generuje raporty - wszystko w sposób angażujący i motywujący.",
   },
   {
     question: "Ile kosztuje system ICAROS i czy to się opłaca?",
     answer:
-      "ICAROS Circle (kompletny ekosystem czterech urządzeń: Health, I.S.T. Board, Guardian i Cloud) to inwestycja rzędu 49 900 € netto. Przy zaledwie 15 użytkownikach dziennie i stawce 25 € za sesję, system zwraca się w niecałe 5 miesięcy i generuje ponad 55 000 € zysku w pierwszym roku. Leasing szacunkowo od ok. 340 € do ok. 1 134 € netto miesięcznie (48 rat, 10% wpłaty wstępnej, 1% wykupu — kurs przeliczeniowy jak w kalkulatorze, ok. 4,25 PLN/EUR). To wyłącznie orientacyjne wyliczenie; chętnie przygotujemy kalkulację dopasowaną do Twojej placówki.",
+      "ICAROS Circle (kompletny ekosystem czterech urządzeń: Health, I.S.T. Board, Guardian i Cloud) to inwestycja rzędu 49 900 € netto. Przy zaledwie 15 użytkownikach dziennie i stawce 25 € za sesję, system zwraca się w niecałe 5 miesięcy i generuje ponad 55 000 € zysku w pierwszym roku. Leasing szacunkowo od ok. 340 € do ok. 1 134 € netto miesięcznie (48 rat, 10% wpłaty wstępnej, 1% wykupu - kurs przeliczeniowy jak w kalkulatorze, ok. 4,25 PLN/EUR). To wyłącznie orientacyjne wyliczenie; chętnie przygotujemy kalkulację dopasowaną do Twojej placówki.",
   },
   {
     question: "Czy potrzebuję specjalistycznego personelu do obsługi?",
@@ -23,7 +23,7 @@ const faqs = [
   {
     question: "Czy ICAROS jest certyfikowanym wyrobem medycznym?",
     answer:
-      "ICAROS Health i ICAROS Guardian są certyfikowanymi wyrobami medycznymi klasy I i spełniają wymagania MDR. ICAROS Cloud oraz ICAROS I.S.T. Board to rozwiązania treningowe oparte o ekosystem ICAROS (w tym aplikację) — nie są wyrobami medycznymi w rozumieniu MDR, o ile dokumentacja producenta dla danej wersji produktu nie stanowi inaczej.",
+      "ICAROS Health i ICAROS Guardian są certyfikowanymi wyrobami medycznymi klasy I i spełniają wymagania MDR. ICAROS Cloud oraz ICAROS I.S.T. Board to rozwiązania treningowe oparte o ekosystem ICAROS (w tym aplikację) - nie są wyrobami medycznymi w rozumieniu MDR, o ile dokumentacja producenta dla danej wersji produktu nie stanowi inaczej.",
   },
   {
     question: "Dla jakich pacjentów i wskazań jest ICAROS?",
@@ -33,7 +33,7 @@ const faqs = [
   {
     question: "Jak wygląda wdrożenie i ile trwa instalacja?",
     answer:
-      "Wdrożenie jest proste i szybkie. Sprzęt jest dostarczany gotowy do pracy — wystarczy podłączyć, skonfigurować oprogramowanie i przeszkolić personel. Cały proces zajmuje zazwyczaj jeden dzień roboczy. Zapewniamy pełne wsparcie techniczne i szkolenie.",
+      "Wdrożenie jest proste i szybkie. Sprzęt jest dostarczany gotowy do pracy - wystarczy podłączyć, skonfigurować oprogramowanie i przeszkolić personel. Cały proces zajmuje zazwyczaj jeden dzień roboczy. Zapewniamy pełne wsparcie techniczne i szkolenie.",
   },
   {
     question: "Czy mogę zobaczyć ICAROS w akcji przed zakupem?",

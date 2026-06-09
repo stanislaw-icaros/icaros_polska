@@ -109,7 +109,7 @@ export default function Hero() {
               <div className="relative w-full" style={{ paddingBottom: "66%" }}>
                 <Image
                   src="/hero-icaros.webp"
-                  alt="ICAROS Health — nowoczesna rehabilitacja z wirtualną rzeczywistością"
+                  alt="ICAROS Health - nowoczesna rehabilitacja z wirtualną rzeczywistością"
                   fill
                   priority
                   fetchPriority="high"

@@ -35,7 +35,7 @@ export const LEASING_RATES_48M_NET_PLN = {
   circle: 4820.09,
 } as const;
 
-/** Kalkulator LP (ICAROS Circle) — odjęcie od przychodu */
+/** Kalkulator LP (ICAROS Circle) - odjęcie od przychodu */
 export const LEASING_CIRCLE_MONTHLY_NET_PLN = LEASING_RATES_48M_NET_PLN.circle;
 
 type SimulationInput = {

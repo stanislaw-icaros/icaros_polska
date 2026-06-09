@@ -40,7 +40,7 @@ export async function POST(request: Request) {
     const pixelId = process.env.NEXT_PUBLIC_FB_PIXEL_ID?.trim();
     const accessToken = process.env.META_CAPI_ACCESS_TOKEN?.trim();
     if (!pixelId || !accessToken) {
-      // Brak konfiguracji — tracking jest opcjonalny, nie traktujemy jako błąd.
+      // Brak konfiguracji - tracking jest opcjonalny, nie traktujemy jako błąd.
       return NextResponse.json({ success: false, skipped: true }, { status: 200 });
     }
 

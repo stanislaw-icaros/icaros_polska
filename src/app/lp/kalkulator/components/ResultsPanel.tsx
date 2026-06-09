@@ -135,7 +135,7 @@ export default function ResultsPanel({ result }: ResultsPanelProps) {
 
       <p className="mt-6 text-[11px] text-foreground/35 leading-relaxed">
         Kwoty netto. Kalkulator pokazuje wyłącznie szacunki edukacyjne przy powyższych założeniach leasingu
-        (m.in. 10% wpłaty i 48 rat). Wynik zależy także od Twojej ceny sesji i zapełnienia — nie zastępuje oferty
+        (m.in. 10% wpłaty i 48 rat). Wynik zależy także od Twojej ceny sesji i zapełnienia - nie zastępuje oferty
         leasingodawcy.
       </p>
     </section>

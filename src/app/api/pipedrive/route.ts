@@ -236,7 +236,7 @@ export async function POST(request: Request) {
       }
     }
 
-    // 2) Resolve the person — reuse an existing record or create a new one.
+    // 2) Resolve the person - reuse an existing record or create a new one.
     let personSearch: PipedriveResponse<{ items?: SearchItem[] }> | null = null;
     if (email) {
       personSearch = await callPipedrive(
@@ -254,10 +254,10 @@ export async function POST(request: Request) {
       personId = existingPerson.id;
 
       if (!orgId) {
-        // No company on this submission — fall back to the person's existing org.
+        // No company on this submission - fall back to the person's existing org.
         orgId = existingPerson.organization?.id;
       } else if (!existingPerson.organization?.id) {
-        // Person exists without an org — link them to the resolved placówka.
+        // Person exists without an org - link them to the resolved placówka.
         await callPipedrive(`/persons/${personId}`, {
           method: "PUT",
           body: JSON.stringify({ org_id: orgId }),
@@ -283,7 +283,7 @@ export async function POST(request: Request) {
 
     const customFields: Record<string, string | undefined> = {};
     const leadSource = payload.leadSource || "Formularz WWW";
-    const formSource = payload.formSource || "Strona główna — formularz główny";
+    const formSource = payload.formSource || "Strona główna - formularz główny";
 
     if (getEnv("PIPEDRIVE_FIELD_LEAD_SOURCE")) {
       customFields[getEnv("PIPEDRIVE_FIELD_LEAD_SOURCE") as string] = leadSource;
@@ -308,8 +308,8 @@ export async function POST(request: Request) {
     }
 
     const dealTitle = payload.company?.trim()
-      ? `ICAROS — ${payload.company.trim()}`
-      : `ICAROS — ${name}`;
+      ? `ICAROS - ${payload.company.trim()}`
+      : `ICAROS - ${name}`;
 
     const createdDeal = await callPipedrive<{ id: number }>("/deals", {
       method: "POST",
@@ -390,7 +390,7 @@ export async function POST(request: Request) {
         );
       }
 
-      // Powiadomienie e-mail do zespołu sprzedaży — trafia do obu handlowców,
+      // Powiadomienie e-mail do zespołu sprzedaży - trafia do obu handlowców,
       // z wyraźnym oznaczeniem, kto obsługuje tego leada (round-robin).
       try {
         const usersResp = await callPipedrive<PipedriveUser[]>("/users");

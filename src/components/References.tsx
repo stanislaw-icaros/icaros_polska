@@ -49,7 +49,7 @@ export default function References() {
               <div className={`transition-all duration-700 ${expanded ? "p-0" : "p-4 sm:p-6 lg:p-10"}`}>
                 <Image
                   src="/ICAROS_Health_References.webp"
-                  alt="Referencje ICAROS — FX Mayr, BGU Murnau, SRH, Hessingpark Clinic, ADELI Medical Center, Nescens, Frankenlandklinik, VAMED Klinik Kipfenberg, VIVAMAYR"
+                  alt="Referencje ICAROS - FX Mayr, BGU Murnau, SRH, Hessingpark Clinic, ADELI Medical Center, Nescens, Frankenlandklinik, VAMED Klinik Kipfenberg, VIVAMAYR"
                   width={1920}
                   height={500}
                   className={`w-full h-auto object-contain transition-all duration-700 ${
