@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Link from "next/link";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import LegalLinks from "@/components/LegalLinks";
 import { COMPANY_ADDRESS, COMPANY_NAME, DISCLAIMER_MEDICAL_DEVICES, KRS, NIP } from "@/lib/legal";
@@ -9,26 +10,27 @@ const footerLinks = {
   rozwiazania: {
     title: "Rozwiązania",
     links: [
-      { label: "ICAROS Circle", href: "#produkty" },
-      { label: "ICAROS Health", href: "#produkty" },
-      { label: "ICAROS I.S.T. Board", href: "#produkty" },
-      { label: "ICAROS Guardian", href: "#produkty" },
-      { label: "ICAROS Cloud", href: "#produkty" },
+      { label: "ICAROS Circle", href: "/produkty" },
+      { label: "ICAROS Health", href: "/produkty" },
+      { label: "ICAROS I.S.T. Board", href: "/produkty" },
+      { label: "ICAROS Guardian", href: "/produkty" },
+      { label: "ICAROS Cloud", href: "/produkty" },
     ],
   },
   firma: {
     title: "Firma",
     links: [
-      { label: "O ICAROS", href: "#rozwiazania" },
-      { label: "Badania naukowe", href: "#badania" },
+      { label: "O ICAROS", href: "/rozwiazania" },
+      { label: "Badania naukowe", href: "/efektywnosc" },
       { label: "Kontakt", href: "#kontakt" },
     ],
   },
   zasoby: {
     title: "Zasoby",
     links: [
-      { label: "FAQ", href: "#faq" },
-      { label: "Kalkulacja ROI", href: "#efektywnosc" },
+      { label: "FAQ", href: "/faq" },
+      { label: "Kalkulacja ROI", href: "/efektywnosc" },
+      { label: "Raport", href: "/raport" },
       { label: "Umów prezentację", href: "#kontakt" },
     ],
   },
@@ -103,13 +105,22 @@ export default function Footer() {
               </h4>
               <ul className="space-y-4">
                 {section.links.map((link) => (
-                  <li key={link.label}>
-                    <a
-                      href={link.href}
-                      className="text-[13px] text-white/75 hover:text-white transition-colors duration-500"
-                    >
-                      {link.label}
-                    </a>
+                  <li key={`${section.title}-${link.label}`}>
+                    {link.href.startsWith("#") ? (
+                      <a
+                        href={link.href}
+                        className="text-[13px] text-white/75 hover:text-white transition-colors duration-500"
+                      >
+                        {link.label}
+                      </a>
+                    ) : (
+                      <Link
+                        href={link.href}
+                        className="text-[13px] text-white/75 hover:text-white transition-colors duration-500"
+                      >
+                        {link.label}
+                      </Link>
+                    )}
                   </li>
                 ))}
               </ul>

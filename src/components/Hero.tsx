@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Hero() {
   return (
@@ -60,12 +61,12 @@ export default function Hero() {
                   />
                 </svg>
               </a>
-              <a
-                href="#rozwiazania"
+              <Link
+                href="/rozwiazania"
                 className="inline-flex items-center justify-center gap-2 px-8 py-4 text-foreground text-[14px] font-semibold border border-brand-orange/40 hover:border-transparent hover:text-white transition-[border-color] duration-500 tracking-[0.01em] hover:[background:linear-gradient(135deg,#ff6600,#ff7b1f)]"
               >
                 Poznaj rozwiązania
-              </a>
+              </Link>
             </div>
 
             <div className="mt-16 grid grid-cols-3 gap-4 sm:gap-8 lg:gap-12">
