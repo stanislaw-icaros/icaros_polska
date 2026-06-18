@@ -85,11 +85,17 @@ export default function ProductEcosystem() {
           transition={{ duration: 0.8 }}
           className="text-center max-w-3xl mx-auto"
         >
-          <p className="text-[11px] font-semibold tracking-[0.3em] uppercase text-white/75">
-            ICAROS Circle
-          </p>
-          <h2 className="mt-5 text-[clamp(1.8rem,4vw,2.8rem)] font-bold tracking-[-0.03em] text-white leading-[1.1]">
+          <p className="text-[11px] font-semibold tracking-[0.3em] uppercase text-white/55">
             Kompletny ekosystem treningowy
+          </p>
+          <h2 className="mt-4 text-[clamp(2.8rem,8vw,5.5rem)] font-bold tracking-[-0.04em] text-white leading-[0.92]">
+            ICAROS{" "}
+            <span
+              className="bg-clip-text text-transparent"
+              style={{ backgroundImage: "linear-gradient(135deg, #ff6600, #ff7b1f)" }}
+            >
+              Circle
+            </span>
           </h2>
           <p className="mt-5 text-[16px] text-white/80 leading-[1.8]">
             Cztery zaawansowane urządzenia. Jeden zintegrowany system. Pełna ścieżka
