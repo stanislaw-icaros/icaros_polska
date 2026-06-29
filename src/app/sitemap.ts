@@ -9,6 +9,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/produkty", priority: 0.8 },
     { path: "/zastosowania", priority: 0.7 },
     { path: "/efektywnosc", priority: 0.7 },
+    { path: "/komercjalizacja", priority: 0.7 },
+    { path: "/finansowanie", priority: 0.6 },
     { path: "/faq", priority: 0.6 },
     { path: "/raport", priority: 0.6 },
   ];

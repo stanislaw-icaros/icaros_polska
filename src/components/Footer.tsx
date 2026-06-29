@@ -22,16 +22,17 @@ const footerLinks = {
     links: [
       { label: "O ICAROS", href: "/rozwiazania" },
       { label: "Badania naukowe", href: "/efektywnosc" },
+      { label: "Finansowanie", href: "/finansowanie" },
       { label: "Kontakt", href: "#kontakt" },
     ],
   },
   zasoby: {
     title: "Zasoby",
     links: [
-      { label: "FAQ", href: "/faq" },
-      { label: "Kalkulacja ROI", href: "/efektywnosc" },
+      { label: "FAQ / Pytania", href: "/faq" },
+      { label: "Komercjalizacja", href: "/komercjalizacja" },
+      { label: "Lokalizacje", href: "/mapa" },
       { label: "Raport", href: "/raport" },
-      { label: "Umów prezentację", href: "#kontakt" },
     ],
   },
 };

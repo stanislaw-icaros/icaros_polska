@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { Activity, LayoutGrid, Building2, TrendingUp, HelpCircle, FileText, ArrowUpRight } from "lucide-react";
+import { Activity, LayoutGrid, Building2, TrendingUp, HelpCircle, FileText, Briefcase, MapPin, ArrowUpRight } from "lucide-react";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 
 const entries = [
@@ -25,8 +25,8 @@ const entries = [
   },
   {
     href: "/zastosowania",
-    label: "Zastosowania",
-    description: "Kliniki, centra senioralne, obiekty premium i sport.",
+    label: "Stosowanie",
+    description: "Schorzenia i wskazania, w których pomaga ICAROS - od neurologii po seniorów.",
     image: "/senior_6.webp",
     icon: Building2,
     span: "",
@@ -34,17 +34,33 @@ const entries = [
   {
     href: "/efektywnosc",
     label: "Efekty i badania",
-    description: "Kalkulator ROI i ponad 9 badań klinicznych potwierdzających skuteczność.",
+    description: "Ponad 9 badań klinicznych i historie pacjentów po udarze potwierdzające skuteczność.",
     image: "/Icaros-24_0428.webp",
     icon: TrendingUp,
     span: "lg:col-span-2",
   },
   {
     href: "/faq",
-    label: "Najczęstsze pytania",
-    description: "Technologia, wdrożenie, wsparcie i koszty - w jednym miejscu.",
+    label: "FAQ / Pytania",
+    description: "Technologia, terapia, wdrożenie, wsparcie i koszty - w jednym miejscu.",
     image: "/Icaros-24_0552.webp",
     icon: HelpCircle,
+    span: "",
+  },
+  {
+    href: "/mapa",
+    label: "Lokalizacje",
+    description: "Mapa placówek w Polsce, gdzie pracuje ICAROS - część dostępna publicznie.",
+    image: "/ICAROS-17_0051.webp",
+    icon: MapPin,
+    span: "",
+  },
+  {
+    href: "/komercjalizacja",
+    label: "Dla biznesu",
+    description: "Argumenty za zakupem, kalkulator ROI i finansowanie - strefa dla placówek.",
+    image: "/Icaros-24_0428.webp",
+    icon: Briefcase,
     span: "",
   },
   {

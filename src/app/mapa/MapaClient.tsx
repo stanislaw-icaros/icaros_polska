@@ -61,11 +61,12 @@ export default function MapaClient() {
               </span>
             </div>
             <h1 className="mt-4 text-[clamp(1.9rem,5vw,3rem)] font-bold leading-[1.05] tracking-[-0.035em]">
-              Gdzie zobaczysz ICAROS
+              Gdzie działa ICAROS w Polsce
             </h1>
             <p className="mt-4 max-w-[560px] text-[15px] leading-[1.7] text-white/65">
-              Placówki, w których możesz na żywo zobaczyć i przetestować urządzenia ICAROS.
-              Najedź na pinezkę lub wybierz placówkę z listy, aby poznać szczegóły.
+              Placówki w całej Polsce, w których pracują urządzenia ICAROS. Część z nich jest
+              dostępna publicznie - możesz umówić pokaz i przetestować sprzęt na żywo. Najedź na
+              pinezkę lub wybierz placówkę z listy, aby poznać szczegóły.
             </p>
           </motion.div>
 

@@ -60,9 +60,15 @@ function LocationPopup({ loc }: { loc: IcarosLocation }) {
       </p>
       <p className="mt-1 text-[15px] font-bold leading-tight">{loc.name}</p>
       <p className="mt-1.5 text-[12.5px] leading-snug text-black/65">{loc.address}</p>
-      {loc.building ? (
-        <p className="mt-1 text-[12px] leading-snug text-black/55">{loc.building}</p>
-      ) : null}
+      <div className="mt-2 flex items-center gap-1.5">
+        <span
+          className="h-1.5 w-1.5 rounded-full"
+          style={{ background: loc.publicAccess ? "#16a34a" : "#9ca3af" }}
+        />
+        <span className="text-[11px] font-medium text-black/60">
+          {loc.publicAccess ? "Dostępne publicznie" : "Dostęp na zaproszenie"}
+        </span>
+      </div>
       {loc.devices.length ? (
         <div className="mt-2.5 flex flex-wrap gap-1.5">
           {loc.devices.map((d) => (
@@ -74,9 +80,6 @@ function LocationPopup({ loc }: { loc: IcarosLocation }) {
             </span>
           ))}
         </div>
-      ) : null}
-      {loc.description ? (
-        <p className="mt-2.5 text-[12px] leading-relaxed text-black/65">{loc.description}</p>
       ) : null}
       {loc.url ? (
         <a
@@ -144,6 +147,15 @@ export default function MapExperience() {
                     {loc.shortName}
                   </p>
                   <p className="mt-1 text-[12.5px] leading-snug text-white/50">{loc.address}</p>
+                  <div className="mt-2 flex items-center gap-1.5">
+                    <span
+                      className="h-1.5 w-1.5 rounded-full"
+                      style={{ background: loc.publicAccess ? "#22c55e" : "rgba(255,255,255,0.3)" }}
+                    />
+                    <span className="text-[11px] font-medium text-white/45">
+                      {loc.publicAccess ? "Dostępne publicznie" : "Dostęp na zaproszenie"}
+                    </span>
+                  </div>
                   <div className="mt-2.5 flex flex-wrap gap-1.5">
                     {loc.devices.map((d) => (
                       <span
