@@ -7,20 +7,28 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ChevronDown } from "lucide-react";
 import AudienceSwitch from "@/components/AudienceSwitch";
+import { products } from "@/lib/products";
 
 type NavLink = { href: string; label: string };
-type NavGroup = { label: string; children: NavLink[] };
+type NavGroup = { label: string; children: NavLink[]; align?: "left" | "right" };
 type NavEntry = NavLink | NavGroup;
 
 const isGroup = (e: NavEntry): e is NavGroup => "children" in e;
 
+/** Lista urządzeń do rozwijanego menu "Urządzenia" - wspólna dla obu stref. */
+const deviceChildren = (base: string): NavLink[] => [
+  { href: base, label: "Wszystkie urządzenia" },
+  ...products.map((p) => ({ href: `${base}/${p.slug}`, label: p.name })),
+];
+
 const patientNav: NavEntry[] = [
   { href: "/rozwiazania", label: "Jak to działa" },
-  { href: "/produkty", label: "Urządzenia" },
+  { label: "Urządzenia", children: deviceChildren("/produkty") },
   { href: "/zastosowania", label: "Stosowanie" },
   { href: "/efektywnosc", label: "Efekty i badania" },
   {
     label: "Więcej",
+    align: "right",
     children: [
       { href: "/faq", label: "FAQ/Pytania" },
       { href: "/mapa", label: "Lokalizacje" },
@@ -32,7 +40,8 @@ const patientNav: NavEntry[] = [
 const businessNav: NavEntry[] = [
   { href: "/komercjalizacja", label: "Komercjalizacja" },
   { href: "/finansowanie", label: "Finansowanie" },
-  { href: "/urzadzenia", label: "Urządzenia" },
+  { label: "Urządzenia", children: deviceChildren("/urzadzenia") },
+  { href: "/lokalizacje", label: "Lokalizacje" },
   { href: "/pytania", label: "FAQ/Pytania" },
 ];
 
@@ -81,6 +90,7 @@ function NavDropdown({
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
   const active = group.children.some((c) => c.href === pathname);
+  const alignRight = group.align === "right";
 
   useEffect(() => {
     setOpen(false);
@@ -120,7 +130,7 @@ function NavDropdown({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 6 }}
             transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
-            className={`absolute right-0 top-full pt-3`}
+            className={`absolute top-full pt-3 ${alignRight ? "right-0" : "left-0"}`}
           >
             <div
               className={`min-w-[200px] overflow-hidden border shadow-[0_18px_50px_-18px_rgba(0,0,0,0.35)] ${

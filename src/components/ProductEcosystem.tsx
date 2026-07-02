@@ -3,9 +3,11 @@
 import { motion } from "framer-motion";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import Image from "next/image";
+import Link from "next/link";
 
 type Product = {
   step: string;
+  slug: string;
   name: string;
   category: string;
   description: string;
@@ -18,6 +20,7 @@ type Product = {
 const products: Product[] = [
   {
     step: "01",
+    slug: "health",
     name: "ICAROS Health",
     category: "Rehabilitacja",
     description:
@@ -29,6 +32,7 @@ const products: Product[] = [
   },
   {
     step: "02",
+    slug: "ist-board",
     name: "ICAROS I.S.T. Board",
     category: "Aktywacja i mobilność",
     description:
@@ -40,6 +44,7 @@ const products: Product[] = [
   },
   {
     step: "03",
+    slug: "guardian",
     name: "ICAROS Guardian",
     category: "Trening stabilności",
     description:
@@ -51,6 +56,7 @@ const products: Product[] = [
   },
   {
     step: "04",
+    slug: "cloud",
     name: "ICAROS Cloud",
     category: "Trening pełnego ciała",
     description:
@@ -62,7 +68,11 @@ const products: Product[] = [
   },
 ];
 
-export default function ProductEcosystem() {
+export default function ProductEcosystem({
+  basePath = "/produkty",
+}: {
+  basePath?: string;
+}) {
   const { ref, isVisible } = useScrollAnimation();
 
   return (
@@ -164,6 +174,16 @@ export default function ProductEcosystem() {
                   <div className="mt-6 pt-5 border-t border-white/[0.06] space-y-4">
                     <p className="text-[13px] text-white/80">{product.indications}</p>
                   </div>
+
+                  <Link
+                    href={`${basePath}/${product.slug}`}
+                    className="group/link mt-6 inline-flex items-center gap-2 text-[13px] font-semibold text-white/85 transition-colors duration-300 hover:text-white"
+                  >
+                    Zobacz szczegóły
+                    <svg className="h-4 w-4 transition-transform duration-300 group-hover/link:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                    </svg>
+                  </Link>
                 </div>
               </div>
             </motion.div>
