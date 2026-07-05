@@ -2,11 +2,13 @@ import Hero from "@/components/Hero";
 import TrustBar from "@/components/TrustBar";
 import KnowledgeBaseIndex from "@/components/KnowledgeBaseIndex";
 import References from "@/components/References";
+import { getLocations } from "@/lib/mapa/getLocations";
 
-export default function Home() {
+export default async function Home() {
+  const locationCount = (await getLocations()).length;
   return (
     <>
-      <Hero />
+      <Hero locationCount={locationCount} />
       <TrustBar />
       <KnowledgeBaseIndex />
       <References />

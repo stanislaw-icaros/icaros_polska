@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function Hero() {
+export default function Hero({ locationCount = 8 }: { locationCount?: number }) {
   return (
     <section className="relative min-h-[100svh] flex items-center overflow-hidden bg-white">
       <div className="absolute inset-0">
@@ -24,29 +24,31 @@ export default function Hero() {
             <div className="w-12 h-[2px] mb-10 hidden lg:block" style={{ background: "linear-gradient(90deg, #ff6600, #ff7b1f)" }} />
 
             <p className="text-[11px] font-semibold tracking-[0.3em] uppercase text-foreground/30 mb-5">
-              Oficjalny dystrybutor w Polsce
+              Ruch i wirtualna rzeczywistość
             </p>
 
             <h1 className="text-[clamp(2.6rem,6.5vw,4.5rem)] leading-[0.92] font-bold tracking-[-0.04em] text-foreground">
-              Technologia, która
+              Rehabilitacja
               <br />
-              wyróżnia Twoją
+              na nowym
               <br />
-              placówkę
+              poziomie
             </h1>
 
-            <p className="mt-7 text-[15px] lg:text-[16px] text-foreground/50 max-w-[420px] leading-[1.75]">
-              Niemieckie urządzenia VR łączące rehabilitację
-              z&nbsp;grywalizacją. Dla klinik, które inwestują
-              w&nbsp;jakość i&nbsp;szukają nowych źródeł przychodów.
+            <p className="mt-7 text-[15px] lg:text-[16px] text-foreground/50 max-w-[440px] leading-[1.75]">
+              ICAROS łączy realny ruch z&nbsp;wirtualną rzeczywistością. Ćwiczenia
+              równowagi, siły i&nbsp;koordynacji stają się bardziej angażujące,
+              dzięki czemu pacjent trenuje chętniej i&nbsp;regularniej. Rozwiązanie
+              dla osób po urazach, w&nbsp;chorobach neurologicznych i&nbsp;dla
+              seniorów, potwierdzone badaniami klinicznymi.
             </p>
 
             <div className="mt-10 flex flex-col sm:flex-row gap-4">
-              <a
-                href="#kontakt"
+              <Link
+                href="/mapa"
                 className="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-foreground text-white text-[14px] font-semibold hover:bg-foreground/80 transition-all duration-500 tracking-[0.01em]"
               >
-                Umów prezentację
+                Znajdź placówkę
                 <svg
                   className="w-4 h-4 transition-transform duration-500 group-hover:translate-x-1"
                   fill="none"
@@ -60,20 +62,20 @@ export default function Hero() {
                     d="M17 8l4 4m0 0l-4 4m4-4H3"
                   />
                 </svg>
-              </a>
+              </Link>
               <Link
                 href="/rozwiazania"
                 className="inline-flex items-center justify-center gap-2 px-8 py-4 text-foreground text-[14px] font-semibold border border-brand-orange/40 hover:border-transparent hover:text-white transition-[border-color] duration-500 tracking-[0.01em] hover:[background:linear-gradient(135deg,#ff6600,#ff7b1f)]"
               >
-                Poznaj rozwiązania
+                Jak to działa
               </Link>
             </div>
 
             <div className="mt-16 grid grid-cols-3 gap-4 sm:gap-8 lg:gap-12">
               {[
                 { value: "9+", label: "Badań klinicznych" },
-                { value: "DE", label: "Made in Germany" },
-                { value: "4", label: "Urządzenia w systemie" },
+                { value: "Klasa I", label: "Wyrób medyczny" },
+                { value: `${locationCount}`, label: "Placówek w Polsce" },
               ].map((stat, i) => (
                 <motion.div
                   key={stat.value}
