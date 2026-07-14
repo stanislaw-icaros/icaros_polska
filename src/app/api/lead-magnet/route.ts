@@ -1,12 +1,15 @@
 import { NextResponse } from "next/server";
 import { sendLeadMagnetEmail } from "@/lib/email/leadMagnet";
 import { addContactToAudience } from "@/lib/email/audience";
+import { evaluateSubmission, getClientIp, isRateLimited } from "@/lib/antispam";
 
 type LeadMagnetPayload = {
   firstName?: string;
   email?: string;
   company?: string;
   marketingConsent?: boolean;
+  honeypot?: string;
+  elapsedMs?: number;
   utm?: {
     utm_source?: string;
     utm_medium?: string;
@@ -29,6 +32,26 @@ export async function POST(request: Request) {
         { success: false, error: "Podaj prawidłowy adres e-mail." },
         { status: 400 }
       );
+    }
+
+    // Ochrona antyspamowa.
+    const ip = getClientIp(request);
+    if (isRateLimited(ip)) {
+      return NextResponse.json(
+        { success: false, error: "Zbyt wiele zgłoszeń. Spróbuj ponownie za chwilę." },
+        { status: 429 }
+      );
+    }
+    const verdict = evaluateSubmission({
+      name: firstName,
+      email,
+      company,
+      honeypot: payload.honeypot,
+      elapsedMs: payload.elapsedMs,
+    });
+    if (verdict.spam) {
+      console.warn(`[antispam] lead-magnet blocked (${verdict.reason}) ip=${ip} email=${email}`);
+      return NextResponse.json({ success: true }, { status: 200 });
     }
 
     // Wysyłka raportu PDF - nie blokuje odpowiedzi, użytkownik i tak pobierze go na stronie quizu.

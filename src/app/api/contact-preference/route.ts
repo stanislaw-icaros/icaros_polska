@@ -2,12 +2,15 @@ import { NextResponse } from "next/server";
 import fs from "node:fs";
 import path from "node:path";
 import { sendLeadNotificationEmail } from "@/lib/email/leadNotification";
+import { evaluateSubmission, getClientIp, isRateLimited } from "@/lib/antispam";
 
 type PreferencePayload = {
   email?: string;
   days?: string[];
   hours?: string[];
   note?: string;
+  honeypot?: string;
+  elapsedMs?: number;
   utm?: {
     utm_source?: string;
     utm_medium?: string;
@@ -156,6 +159,25 @@ export async function POST(request: Request) {
         { success: false, error: "Zaznacz preferowane dni lub godziny kontaktu." },
         { status: 400 }
       );
+    }
+
+    // Ochrona antyspamowa.
+    const ip = getClientIp(request);
+    if (isRateLimited(ip)) {
+      return NextResponse.json(
+        { success: false, error: "Zbyt wiele zgłoszeń. Spróbuj ponownie za chwilę." },
+        { status: 429 }
+      );
+    }
+    const verdict = evaluateSubmission({
+      email,
+      note: payload.note,
+      honeypot: payload.honeypot,
+      elapsedMs: payload.elapsedMs,
+    });
+    if (verdict.spam) {
+      console.warn(`[antispam] contact-preference blocked (${verdict.reason}) ip=${ip} email=${email}`);
+      return NextResponse.json({ success: true }, { status: 200 });
     }
 
     // 1) Znajdź istniejący kontakt po dokładnym adresie e-mail.

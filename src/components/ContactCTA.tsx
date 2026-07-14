@@ -7,6 +7,7 @@ import LegalLinks from "@/components/LegalLinks";
 import ConsentFields from "@/components/ConsentFields";
 import { DISCLAIMER_MEDICAL_DEVICES } from "@/lib/legal";
 import { trackMetaEvent } from "@/lib/meta/track";
+import { useSpamGuard } from "@/hooks/useSpamGuard";
 
 const roleOptions = [
   { value: "owner", label: "Właściciel placówki" },
@@ -34,6 +35,7 @@ export default function ContactCTA() {
   const [submitError, setSubmitError] = useState("");
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const { spamFields, getSpamSignals } = useSpamGuard();
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
@@ -74,6 +76,7 @@ export default function ContactCTA() {
         },
         body: JSON.stringify({
           ...formState,
+          ...getSpamSignals(),
           marketingConsent,
           leadSource: "Formularz WWW",
           formSource: "Strona główna - formularz główny",
@@ -180,6 +183,7 @@ export default function ContactCTA() {
                 onSubmit={handleSubmit}
                 className="p-8 lg:p-12 border border-foreground/[0.06] bg-white"
               >
+                {spamFields}
                 <h3 className="text-[20px] font-bold text-foreground tracking-[-0.02em] mb-1">
                   Umów prezentację
                 </h3>

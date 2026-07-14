@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import LegalLinks from "@/components/LegalLinks";
+import SocialLinks from "@/components/SocialLinks";
 import { COMPANY_ADDRESS, COMPANY_NAME, DISCLAIMER_MEDICAL_DEVICES, KRS, NIP } from "@/lib/legal";
 
 const footerLinks = {
@@ -96,6 +97,13 @@ export default function Footer() {
               <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-[10px] text-white/75 font-medium border border-white/[0.10]">
                 Made in Germany
               </span>
+            </div>
+
+            <div className="mt-10">
+              <h4 className="text-[10px] font-semibold tracking-[0.2em] uppercase text-white/60">
+                Odwiedź nas w social mediach
+              </h4>
+              <SocialLinks variant="square" className="mt-5" iconSize="h-[18px] w-[18px]" />
             </div>
           </div>
 

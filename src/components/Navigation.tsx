@@ -7,6 +7,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ChevronDown } from "lucide-react";
 import AudienceSwitch from "@/components/AudienceSwitch";
+import SocialLinks from "@/components/SocialLinks";
 import { products } from "@/lib/products";
 
 type NavLink = { href: string; label: string };
@@ -26,15 +27,9 @@ const patientNav: NavEntry[] = [
   { label: "Urządzenia", children: deviceChildren("/produkty") },
   { href: "/zastosowania", label: "Stosowanie" },
   { href: "/efektywnosc", label: "Efekty i badania" },
-  {
-    label: "Więcej",
-    align: "right",
-    children: [
-      { href: "/faq", label: "FAQ/Pytania" },
-      { href: "/mapa", label: "Lokalizacje" },
-      { href: "/raport", label: "Raport" },
-    ],
-  },
+  { href: "/faq", label: "FAQ/Pytania" },
+  { href: "/mapa", label: "Lokalizacje" },
+  { href: "/raport", label: "Raport" },
 ];
 
 const businessNav: NavEntry[] = [
@@ -229,7 +224,7 @@ export default function Navigation({
               </div>
             </div>
 
-            <div className="hidden xl:flex items-center gap-8">
+            <div className="hidden xl:flex items-center gap-6">
               {navEntries.map((entry) =>
                 isGroup(entry) ? (
                   <NavDropdown
@@ -253,13 +248,20 @@ export default function Navigation({
             </div>
 
             <div className="hidden xl:flex items-center">
-              <a
-                href="#kontakt"
-                className="text-[13px] font-semibold text-white px-7 py-3 transition-all duration-500 tracking-[0.02em] hover:opacity-90"
-                style={{ background: "linear-gradient(135deg, #ff6600, #ff7b1f)" }}
-              >
-                Umów prezentację
-              </a>
+              {business ? (
+                <a
+                  href="#kontakt"
+                  className="text-[13px] font-semibold text-white px-7 py-3 transition-all duration-500 tracking-[0.02em] hover:opacity-90"
+                  style={{ background: "linear-gradient(135deg, #ff6600, #ff7b1f)" }}
+                >
+                  Umów prezentację
+                </a>
+              ) : (
+                <SocialLinks
+                  iconSize="h-[18px] w-[18px]"
+                  itemClassName="text-foreground/40 hover:text-foreground"
+                />
+              )}
             </div>
 
             <button
@@ -329,14 +331,27 @@ export default function Navigation({
               transition={{ delay: 0.3, duration: 0.4 }}
               className="pt-8"
             >
-              <a
-                href="#kontakt"
-                onClick={() => setMobileOpen(false)}
-                className="inline-flex text-base font-semibold text-white px-10 py-5 tracking-[0.01em] hover:opacity-90 transition-opacity duration-500"
-                style={{ background: "linear-gradient(135deg, #ff6600, #ff7b1f)" }}
-              >
-                Umów prezentację
-              </a>
+              {business ? (
+                <a
+                  href="#kontakt"
+                  onClick={() => setMobileOpen(false)}
+                  className="inline-flex text-base font-semibold text-white px-10 py-5 tracking-[0.01em] hover:opacity-90 transition-opacity duration-500"
+                  style={{ background: "linear-gradient(135deg, #ff6600, #ff7b1f)" }}
+                >
+                  Umów prezentację
+                </a>
+              ) : (
+                <div>
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.25em] text-foreground/40">
+                    Odwiedź nas
+                  </p>
+                  <SocialLinks
+                    className="mt-4"
+                    iconSize="h-6 w-6"
+                    itemClassName="text-foreground/45 hover:text-foreground"
+                  />
+                </div>
+              )}
             </motion.div>
           </motion.div>
         )}

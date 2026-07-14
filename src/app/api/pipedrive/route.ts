@@ -4,6 +4,7 @@ import path from "node:path";
 import { sendContactConfirmationEmail } from "@/lib/email/contactConfirmation";
 import { sendLeadNotificationEmail } from "@/lib/email/leadNotification";
 import { addContactToAudience } from "@/lib/email/audience";
+import { evaluateSubmission, getClientIp, isRateLimited } from "@/lib/antispam";
 
 type ContactPayload = {
   name?: string;
@@ -17,6 +18,8 @@ type ContactPayload = {
   formSource?: string;
   leadSource?: string;
   marketingConsent?: boolean;
+  honeypot?: string;
+  elapsedMs?: number;
   utm?: {
     utm_source?: string;
     utm_medium?: string;
@@ -205,6 +208,29 @@ export async function POST(request: Request) {
         { success: false, error: "Name and at least one contact field (email or phone) are required." },
         { status: 400 }
       );
+    }
+
+    // Ochrona antyspamowa - blokada botów i fejków przed utworzeniem leada.
+    const ip = getClientIp(request);
+    if (isRateLimited(ip)) {
+      return NextResponse.json(
+        { success: false, error: "Zbyt wiele zgłoszeń. Spróbuj ponownie za chwilę." },
+        { status: 429 }
+      );
+    }
+    const verdict = evaluateSubmission({
+      name,
+      email,
+      phone,
+      company: payload.company,
+      message: payload.message,
+      honeypot: payload.honeypot,
+      elapsedMs: payload.elapsedMs,
+    });
+    if (verdict.spam) {
+      console.warn(`[antispam] pipedrive blocked (${verdict.reason}) ip=${ip} email=${email || "-"}`);
+      // Cicha odpowiedź "sukces" - nie tworzymy leada i nie zdradzamy botom sygnału.
+      return NextResponse.json({ success: true }, { status: 200 });
     }
 
     let personId: number | undefined;

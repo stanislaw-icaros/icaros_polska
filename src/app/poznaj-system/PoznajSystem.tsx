@@ -6,6 +6,7 @@ import { useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 import LegalLinks from "@/components/LegalLinks";
 import { DISCLAIMER_MEDICAL_DEVICES } from "@/lib/legal";
+import { useSpamGuard } from "@/hooks/useSpamGuard";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const VIDEO_ID = "XSf0H6LhRLo";
@@ -205,6 +206,7 @@ export default function PoznajSystem() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const { spamFields, getSpamSignals } = useSpamGuard();
 
   function toggle(list: string[], value: string, setter: (next: string[]) => void) {
     setter(list.includes(value) ? list.filter((item) => item !== value) : [...list, value]);
@@ -231,7 +233,7 @@ export default function PoznajSystem() {
       const response = await fetch("/api/contact-preference", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: cleanEmail, days, hours, note: note.trim(), utm }),
+        body: JSON.stringify({ ...getSpamSignals(), email: cleanEmail, days, hours, note: note.trim(), utm }),
       });
       const payload = await response.json();
       if (!response.ok || !payload?.success) {
@@ -770,6 +772,7 @@ export default function PoznajSystem() {
                   </div>
                 ) : (
                   <form onSubmit={handlePreferenceSubmit} noValidate className="mt-8 space-y-6">
+                    {spamFields}
                     <div>
                       <label className="block text-[11px] font-semibold uppercase tracking-[0.14em] text-white/50">
                         Twój adres e-mail

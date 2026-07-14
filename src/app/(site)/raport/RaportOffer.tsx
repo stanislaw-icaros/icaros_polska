@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import { Check, Lock } from "lucide-react";
 import ConsentFields from "@/components/ConsentFields";
 import { trackMetaEvent } from "@/lib/meta/track";
+import { useSpamGuard } from "@/hooks/useSpamGuard";
 import { LEAD_STORAGE_KEY } from "@/app/lp/raport/lib/quiz";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -27,6 +28,7 @@ export default function RaportOffer() {
   const [marketingConsent, setMarketingConsent] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const { spamFields, getSpamSignals } = useSpamGuard();
 
   const utm = useMemo(
     () => ({
@@ -65,7 +67,7 @@ export default function RaportOffer() {
       const response = await fetch("/api/lead-magnet", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: cleanEmail, company: cleanCompany, marketingConsent, utm }),
+        body: JSON.stringify({ ...getSpamSignals(), email: cleanEmail, company: cleanCompany, marketingConsent, utm }),
       });
       const payload = await response.json();
       if (!response.ok || !payload?.success) {
@@ -141,6 +143,7 @@ export default function RaportOffer() {
               noValidate
               className="mt-7 border border-white/10 bg-white/[0.03] p-5 sm:p-6"
             >
+              {spamFields}
               <div className="space-y-3">
                 <input
                   type="email"

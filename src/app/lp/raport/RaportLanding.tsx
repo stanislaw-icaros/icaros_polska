@@ -8,6 +8,7 @@ import LegalLinks from "@/components/LegalLinks";
 import ConsentFields from "@/components/ConsentFields";
 import { DISCLAIMER_MEDICAL_DEVICES } from "@/lib/legal";
 import { trackMetaEvent } from "@/lib/meta/track";
+import { useSpamGuard } from "@/hooks/useSpamGuard";
 import { LEAD_STORAGE_KEY } from "./lib/quiz";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -28,6 +29,7 @@ export default function RaportLanding() {
   const [marketingConsent, setMarketingConsent] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const { spamFields, getSpamSignals } = useSpamGuard();
 
   const utm = useMemo(
     () => ({
@@ -67,6 +69,7 @@ export default function RaportLanding() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          ...getSpamSignals(),
           email: cleanEmail,
           company: cleanCompany,
           marketingConsent,
@@ -192,6 +195,7 @@ export default function RaportLanding() {
                 noValidate
                 className="mt-4 border border-white/10 bg-white/[0.03] p-3.5 sm:p-6 sm:mt-7"
               >
+                {spamFields}
                 <div className="space-y-2.5 sm:space-y-3">
                   <input
                     type="email"

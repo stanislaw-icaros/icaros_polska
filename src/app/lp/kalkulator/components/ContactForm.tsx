@@ -7,6 +7,7 @@ import LegalLinks from "@/components/LegalLinks";
 import ConsentFields from "@/components/ConsentFields";
 import { DISCLAIMER_MEDICAL_DEVICES } from "@/lib/legal";
 import { trackMetaEvent } from "@/lib/meta/track";
+import { useSpamGuard } from "@/hooks/useSpamGuard";
 
 type ContactFormProps = {
   utm: {
@@ -45,6 +46,7 @@ export default function ContactForm({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const { spamFields, getSpamSignals } = useSpamGuard();
 
   function toErrorMessage(error: unknown) {
     if (error instanceof Error) return error.message;
@@ -111,6 +113,7 @@ Zgoda marketingowa: ${marketingConsent ? "TAK" : "NIE"}`,
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          ...getSpamSignals(),
           name: name.trim(),
           email: email.trim() || undefined,
           phone: phone.trim(),
@@ -159,6 +162,7 @@ Zgoda marketingowa: ${marketingConsent ? "TAK" : "NIE"}`,
       </p>
 
       <form onSubmit={handleSubmit} className="mt-7 sm:mt-8 grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
+        {spamFields}
         <label className="block">
           <span className="text-[12px] tracking-[0.05em] uppercase text-white/65">Imię i nazwisko *</span>
           <input

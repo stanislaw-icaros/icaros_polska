@@ -6,6 +6,7 @@ import LegalLinks from "@/components/LegalLinks";
 import ConsentFields from "@/components/ConsentFields";
 import { DISCLAIMER_MEDICAL_DEVICES } from "@/lib/legal";
 import { trackMetaEvent } from "@/lib/meta/track";
+import { useSpamGuard } from "@/hooks/useSpamGuard";
 import {
   FACILITY_OPTIONS,
   PATIENTS_OPTIONS,
@@ -105,6 +106,7 @@ export default function QuizClient() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const { spamFields, getSpamSignals } = useSpamGuard();
 
   useEffect(() => {
     try {
@@ -198,6 +200,7 @@ export default function QuizClient() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          ...getSpamSignals(),
           name: cleanFirstName,
           email: email || undefined,
           phone: phone.trim(),
@@ -494,6 +497,7 @@ export default function QuizClient() {
                 </p>
 
                 <form onSubmit={handlePhoneSubmit} className="mt-6 space-y-4" noValidate>
+                  {spamFields}
                   <label className="block">
                     <span className="text-[11px] font-medium tracking-[0.06em] uppercase text-foreground/50">
                       Imię osoby kontaktowej
