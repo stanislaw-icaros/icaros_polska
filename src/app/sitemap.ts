@@ -13,13 +13,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/zastosowania", priority: 0.7 },
     { path: "/efektywnosc", priority: 0.7 },
     { path: "/mapa", priority: 0.5 },
+    { path: "/kontakt", priority: 0.7 },
     { path: "/komercjalizacja", priority: 0.7 },
     { path: "/finansowanie", priority: 0.6 },
     { path: "/urzadzenia", priority: 0.7 },
     // Podstrony produktów (biznes).
     ...products.map((p) => ({ path: `/urzadzenia/${p.slug}`, priority: 0.6 })),
+    { path: "/dla-placowek", priority: 0.6 },
     { path: "/lokalizacje", priority: 0.5 },
     { path: "/pytania", priority: 0.6 },
+    { path: "/kontakt-partner", priority: 0.6 },
     { path: "/faq", priority: 0.6 },
     { path: "/raport", priority: 0.6 },
   ];

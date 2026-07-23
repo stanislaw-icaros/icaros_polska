@@ -1,6 +1,8 @@
 export const COMPANY_NAME = "LILAZEN SPÓŁKA Z OGRANICZONĄ ODPOWIEDZIALNOŚCIĄ";
 export const COMPANY_ADDRESS = "Św. Filipa 23 / 3, 31-150 Kraków, Polska";
 export const COMPANY_EMAIL = "kontakt@icaros.com.pl";
+export const COMPANY_PHONE = "+48 32 30 77 444";
+export const COMPANY_PHONE_HREF = "+48323077444";
 export const KRS = "0001150508";
 export const NIP = "6762685442";
 export const REGON = "540688202";

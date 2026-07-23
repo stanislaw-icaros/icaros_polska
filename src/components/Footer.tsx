@@ -24,7 +24,7 @@ const footerLinks = {
       { label: "O ICAROS", href: "/rozwiazania" },
       { label: "Badania naukowe", href: "/efektywnosc" },
       { label: "Finansowanie", href: "/finansowanie" },
-      { label: "Kontakt", href: "#kontakt" },
+      { label: "Kontakt", href: "/kontakt" },
     ],
   },
   zasoby: {

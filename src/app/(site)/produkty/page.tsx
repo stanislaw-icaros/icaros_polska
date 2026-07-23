@@ -4,7 +4,7 @@ import ProductEcosystem from "@/components/ProductEcosystem";
 export const metadata: Metadata = {
   title: "Produkty | ICAROS Polska",
   description:
-    "Urządzenia ICAROS i ekosystem ICAROS Circle: Health, Guardian, I.S.T. Board i Cloud. Poznaj produkty dostępne w Polsce.",
+    "Urządzenia ICAROS: Circle, Health, I.S.T. Board, Guardian, Lightning i Cloud. Poznaj pełny ekosystem treningowy i rehabilitacyjny dostępny w Polsce.",
 };
 
 export default function ProduktyPage() {

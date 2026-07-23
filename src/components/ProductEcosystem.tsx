@@ -20,6 +20,18 @@ type Product = {
 const products: Product[] = [
   {
     step: "01",
+    slug: "circle",
+    name: "ICAROS Circle",
+    category: "Kompletny system",
+    description:
+      "Zestaw łączący Health, Guardian i Cloud w jeden obieg rehabilitacyjny. Pełna ścieżka terapii, od treningu w podporze po ćwiczenia całego ciała, z jedną aplikacją do wszystkich urządzeń.",
+    position: "Kompletny ekosystem",
+    indications: "Kliniki i centra rehabilitacji · Pełna ścieżka terapii",
+    image: "/Full_Icaros_Circle_Display.webp",
+    imageAlt: "ICAROS Circle - kompletny zestaw urządzeń Health, Guardian i Cloud",
+  },
+  {
+    step: "02",
     slug: "health",
     name: "ICAROS Health",
     category: "Rehabilitacja",
@@ -31,7 +43,7 @@ const products: Product[] = [
     imageAlt: "Terapeuta asystujący pacjentce podczas sesji na ICAROS Health z goglami VR",
   },
   {
-    step: "02",
+    step: "03",
     slug: "ist-board",
     name: "ICAROS I.S.T. Board",
     category: "Aktywacja i mobilność",
@@ -43,7 +55,7 @@ const products: Product[] = [
     imageAlt: "ICAROS I.S.T. Board - trening stóp i nóg sterowany ruchem",
   },
   {
-    step: "03",
+    step: "04",
     slug: "guardian",
     name: "ICAROS Guardian",
     category: "Trening stabilności",
@@ -55,7 +67,19 @@ const products: Product[] = [
     imageAlt: "Senior ćwiczący na ICAROS Guardian z interaktywną grą na ekranie",
   },
   {
-    step: "04",
+    step: "05",
+    slug: "lightning",
+    name: "ICAROS Lightning",
+    category: "Fitness i VR",
+    description:
+      "Trening fitness w wirtualnej rzeczywistości. Lecąc przez wirtualne światy, wzmacniasz górę ciała i tułów oraz poprawiasz refleks, równowagę i koordynację. Do domu i obiektów komercyjnych.",
+    position: "Wertykalna - VR",
+    indications: "Dom, fitness, hotele i rozrywka",
+    image: "/lightning.webp",
+    imageAlt: "ICAROS Lightning - trening fitness w wirtualnej rzeczywistości",
+  },
+  {
+    step: "06",
     slug: "cloud",
     name: "ICAROS Cloud",
     category: "Trening pełnego ciała",
@@ -99,18 +123,18 @@ export default function ProductEcosystem({
             Kompletny ekosystem treningowy
           </p>
           <h2 className="mt-4 text-[clamp(2.8rem,8vw,5.5rem)] font-bold tracking-[-0.04em] text-white leading-[0.92]">
-            ICAROS{" "}
+            Urządzenia{" "}
             <span
               className="bg-clip-text text-transparent"
               style={{ backgroundImage: "linear-gradient(135deg, #ff6600, #ff7b1f)" }}
             >
-              Circle
+              ICAROS
             </span>
           </h2>
           <p className="mt-5 text-[16px] text-white/80 leading-[1.8]">
-            Cztery zaawansowane urządzenia. Jeden zintegrowany system. Pełna ścieżka
-            terapeutyczna - od wspomaganego treningu i szybkiej aktywacji, przez stabilizację
-            pionową, aż po intensywny trening całego ciała.
+            Zaawansowane urządzenia w jednym zintegrowanym systemie. Pełna ścieżka
+            terapeutyczna - od kompletnego zestawu ICAROS Circle, przez wspomagany trening
+            i szybką aktywację, po intensywny trening całego ciała.
           </p>
         </motion.div>
 

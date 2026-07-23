@@ -1,17 +1,17 @@
 import type { Metadata } from "next";
-import ValueProposition from "@/components/ValueProposition";
+import HowItWorks from "@/components/HowItWorks";
 import VideoShowcase from "@/components/VideoShowcase";
 
 export const metadata: Metadata = {
-  title: "Rozwiązania | ICAROS Polska",
+  title: "Jak to działa | ICAROS Polska",
   description:
-    "Jak działa system ICAROS - niemiecka technologia łącząca rehabilitację, trening i wirtualną rzeczywistość. Poznaj rozwiązania ICAROS dla klinik i placówek.",
+    "Jak działa ICAROS - terapia w formie gry. Ćwiczysz ruchami całego ciała w wirtualnej rzeczywistości, wzmacniasz mięśnie, równowagę i koordynację. Rehabilitacja, która wciąga.",
 };
 
 export default function RozwiazaniaPage() {
   return (
     <>
-      <ValueProposition />
+      <HowItWorks />
       <VideoShowcase />
     </>
   );

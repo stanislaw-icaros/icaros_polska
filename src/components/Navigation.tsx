@@ -25,19 +25,22 @@ const deviceChildren = (base: string): NavLink[] => [
 const patientNav: NavEntry[] = [
   { href: "/rozwiazania", label: "Jak to działa" },
   { label: "Urządzenia", children: deviceChildren("/produkty") },
-  { href: "/zastosowania", label: "Stosowanie" },
+  { href: "/zastosowania", label: "Dla kogo" },
   { href: "/efektywnosc", label: "Efekty i badania" },
   { href: "/faq", label: "FAQ/Pytania" },
   { href: "/mapa", label: "Lokalizacje" },
   { href: "/raport", label: "Raport" },
+  { href: "/kontakt", label: "Kontakt" },
 ];
 
 const businessNav: NavEntry[] = [
   { href: "/komercjalizacja", label: "Komercjalizacja" },
   { href: "/finansowanie", label: "Finansowanie" },
   { label: "Urządzenia", children: deviceChildren("/urzadzenia") },
+  { href: "/dla-placowek", label: "Zastosowania" },
   { href: "/lokalizacje", label: "Lokalizacje" },
   { href: "/pytania", label: "FAQ/Pytania" },
+  { href: "/kontakt-partner", label: "Kontakt" },
 ];
 
 function NavItemLink({
@@ -212,7 +215,7 @@ export default function Navigation({
                 />
               </Link>
               {business && (
-                <span className="hidden sm:inline-flex items-center px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-white border border-white/20">
+                <span className="hidden 2xl:inline-flex items-center px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-white border border-white/20">
                   Biznes
                 </span>
               )}
@@ -224,7 +227,7 @@ export default function Navigation({
               </div>
             </div>
 
-            <div className="hidden xl:flex items-center gap-6">
+            <div className="hidden xl:flex items-center gap-5">
               {navEntries.map((entry) =>
                 isGroup(entry) ? (
                   <NavDropdown
@@ -247,7 +250,7 @@ export default function Navigation({
               )}
             </div>
 
-            <div className="hidden xl:flex items-center">
+            <div className={`${business ? "hidden xl:flex" : "hidden 2xl:flex"} items-center`}>
               {business ? (
                 <a
                   href="#kontakt"

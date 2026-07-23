@@ -89,6 +89,19 @@ export default function ProductDetail({
             <p className={`mt-5 max-w-[520px] text-[15px] leading-[1.7] ${t.body}`}>
               {product.shortDesc}
             </p>
+
+            {product.focusAreas.length > 0 && (
+              <div className="mt-6 flex flex-wrap gap-2">
+                {product.focusAreas.map((area) => (
+                  <span
+                    key={area}
+                    className={`border px-3 py-1.5 text-[11px] font-medium ${t.chip}`}
+                  >
+                    {area}
+                  </span>
+                ))}
+              </div>
+            )}
           </div>
 
           <div className={`relative aspect-[4/3] overflow-hidden border ${t.border}`}>
@@ -112,12 +125,62 @@ export default function ProductDetail({
           ))}
         </div>
 
+        {/* Co zyskujesz */}
+        {product.outcomes.length > 0 && (
+          <div className={`mt-12 border-t ${t.border} pt-10`}>
+            <h2 className={`text-[10px] font-semibold uppercase tracking-[0.2em] ${t.label}`}>
+              Co zyskujesz
+            </h2>
+            <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2">
+              {product.outcomes.map((outcome) => (
+                <div key={outcome} className={`flex items-start gap-3 border p-4 ${t.card}`}>
+                  <svg className="mt-0.5 h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="#ff6600" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                  </svg>
+                  <span className={`text-[14px] leading-[1.6] ${t.body}`}>{outcome}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* Zastosowania / Cechy / Grupy docelowe */}
         <div className={`mt-12 grid grid-cols-1 gap-10 border-t ${t.border} pt-10 sm:grid-cols-2 lg:grid-cols-3`}>
           <InfoList title="Zastosowania" items={product.applications} t={t} />
           <InfoList title="Najważniejsze cechy" items={product.features} t={t} />
           <InfoList title="Dla kogo" items={product.targetGroups} t={t} />
         </div>
+
+        {/* Opinia */}
+        {product.testimonial && (
+          <figure className={`mt-12 border-t ${t.border} pt-10`}>
+            <blockquote className={`max-w-[760px] text-[19px] font-light italic leading-[1.55] lg:text-[22px] ${t.text}`}>
+              &ldquo;{product.testimonial.quote}&rdquo;
+            </blockquote>
+            <figcaption className="mt-5 flex items-baseline gap-2">
+              <span className={`text-[14px] font-semibold ${t.text}`}>{product.testimonial.author}</span>
+              <span className={`text-[13px] ${t.label}`}>{product.testimonial.role}</span>
+            </figcaption>
+          </figure>
+        )}
+
+        {/* Film - pojawia się, gdy uzupełnimy videoUrl */}
+        {product.videoUrl && (
+          <div className={`mt-12 border-t ${t.border} pt-10`}>
+            <h2 className={`text-[10px] font-semibold uppercase tracking-[0.2em] ${t.label}`}>
+              Zobacz w akcji
+            </h2>
+            <div className={`relative mt-5 aspect-video overflow-hidden border ${t.border}`}>
+              <iframe
+                src={product.videoUrl}
+                title={`${product.name} - film`}
+                className="absolute inset-0 h-full w-full"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+            </div>
+          </div>
+        )}
 
         {/* Dane techniczne i przestrzeń - tylko wersja biznes */}
         {variant === "business" && (
