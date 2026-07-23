@@ -38,8 +38,13 @@ const footerLinks = {
   },
 };
 
-export default function Footer() {
+export default function Footer({
+  variant = "business",
+}: {
+  variant?: "patient" | "business";
+}) {
   const { ref, isVisible } = useScrollAnimation();
+  const patient = variant === "patient";
 
   return (
     <footer ref={ref} className="bg-foreground text-white">
@@ -53,17 +58,19 @@ export default function Footer() {
           >
             <div>
               <h3 className="text-[clamp(1.5rem,3vw,2.2rem)] font-bold tracking-[-0.03em]">
-                Gotowy na nowoczesną rehabilitację?
+                {patient ? "Masz pytania o ICAROS?" : "Gotowy na nowoczesną rehabilitację?"}
               </h3>
               <p className="mt-3 text-white/75 text-[15px]">
-                Umów bezpłatną prezentację i zobacz, jak ICAROS zmienia zasady gry.
+                {patient
+                  ? "Napisz do nas albo znajdź placówkę z ICAROS w pobliżu."
+                  : "Umów bezpłatną prezentację i zobacz, jak ICAROS zmienia zasady gry."}
               </p>
             </div>
             <a
-              href="#kontakt"
+              href={patient ? "/kontakt" : "#kontakt"}
               className="group inline-flex items-center gap-3 px-8 py-4 bg-white text-foreground text-[14px] font-semibold hover:bg-white/90 transition-all duration-500 shrink-0"
             >
-              Umów prezentację
+              {patient ? "Skontaktuj się" : "Umów prezentację"}
               <svg className="w-4 h-4 transition-transform duration-500 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>

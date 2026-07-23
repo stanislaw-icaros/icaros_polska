@@ -17,7 +17,6 @@ export type Study = {
 
 /** Ośrodki naukowe, które badały skuteczność treningu ICAROS. */
 export const researchPartners: string[] = [
-  "UCLA",
   "Uniwersytet w Salzburgu",
   "Ruhr-Universität Bochum",
   "Niemiecki Uniwersytet Sportowy w Kolonii",
@@ -144,16 +143,6 @@ export const studies: Study[] = [
     year: "2021",
     finding:
       "Wzrost siły core o 15,85% w 3 tygodnie, współczynnik zaangażowania 8,11/10, a 90% uczestników chciało kontynuować trening.",
-  },
-  {
-    id: "L-I",
-    device: "ICAROS Lightning",
-    title:
-      "Wpływ rozgrzewki stabilizacyjnej ICAROS Lightning na czucie stawowe barku u baseballistów",
-    institution: "UCLA",
-    year: "2026",
-    finding:
-      "Istotna poprawa rotacji wewnętrznej (+3,33°) i zewnętrznej (+5,11°) barku. Badanie w toku, pełne wyniki wkrótce.",
   },
   {
     id: "I.S.T-I",

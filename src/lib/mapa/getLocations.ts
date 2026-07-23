@@ -119,6 +119,22 @@ function rowToLocation(cols: string[]): IcarosLocation | null {
 }
 
 /**
+ * Urządzenia wycofane ze sprzedaży - nie pokazujemy ich na stronie.
+ * Pinezki placówek, którym po odfiltrowaniu nie zostaje żadne urządzenie,
+ * są ukrywane, bo mapa dotyczy dostępnego sprzętu ICAROS.
+ */
+const HIDDEN_DEVICES = ["icaros lightning"];
+
+function sanitizeDevices(locations: IcarosLocation[]): IcarosLocation[] {
+  return locations
+    .map((loc) => ({
+      ...loc,
+      devices: loc.devices.filter((d) => !HIDDEN_DEVICES.includes(d.trim().toLowerCase())),
+    }))
+    .filter((loc) => loc.devices.length > 0);
+}
+
+/**
  * Pobiera i parsuje listę placówek z arkusza. Wynik jest cache'owany przez
  * Next.js na `REVALIDATE_SECONDS`. Przy jakimkolwiek błędzie wraca do listy
  * zaszytej w kodzie.
@@ -128,18 +144,18 @@ export async function getLocations(): Promise<IcarosLocation[]> {
     const res = await fetch(CSV_URL, {
       next: { revalidate: REVALIDATE_SECONDS },
     });
-    if (!res.ok) return fallbackLocations;
+    if (!res.ok) return sanitizeDevices(fallbackLocations);
 
     const rows = parseCsv(await res.text());
-    if (rows.length < 2) return fallbackLocations;
+    if (rows.length < 2) return sanitizeDevices(fallbackLocations);
 
     const parsed = rows
       .slice(1) // pomiń nagłówek
       .map(rowToLocation)
       .filter((loc): loc is IcarosLocation => loc !== null);
 
-    return parsed.length ? parsed : fallbackLocations;
+    return sanitizeDevices(parsed.length ? parsed : fallbackLocations);
   } catch {
-    return fallbackLocations;
+    return sanitizeDevices(fallbackLocations);
   }
 }

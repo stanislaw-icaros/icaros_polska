@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import ContactInfo from "@/components/ContactInfo";
+import { getLocations } from "@/lib/mapa/getLocations";
 
 export const metadata: Metadata = {
   title: "Kontakt | ICAROS Polska",
@@ -8,6 +9,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/kontakt" },
 };
 
-export default function KontaktPage() {
-  return <ContactInfo variant="patient" />;
+export default async function KontaktPage() {
+  const locations = await getLocations();
+  return <ContactInfo variant="patient" locations={locations} />;
 }

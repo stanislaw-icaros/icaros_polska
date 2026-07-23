@@ -137,6 +137,26 @@ function NavDropdown({
             >
               {group.children.map((c) => {
                 const childActive = pathname === c.href;
+                // ICAROS Circle to kompletny zestaw, nie kolejne urządzenie - wyróżniamy kolorem.
+                const isCircle = c.href.endsWith("/circle");
+                if (isCircle) {
+                  return (
+                    <Link
+                      key={c.href}
+                      href={c.href}
+                      className={`flex items-center justify-between gap-3 border-b px-5 py-3 text-[13px] font-semibold transition-colors duration-300 ${
+                        dark ? "border-white/10" : "border-foreground/[0.08]"
+                      } text-brand-orange hover:text-brand-orange-light ${
+                        childActive ? (dark ? "bg-white/[0.06]" : "bg-foreground/[0.04]") : dark ? "hover:bg-white/[0.05]" : "hover:bg-foreground/[0.03]"
+                      }`}
+                    >
+                      {c.label}
+                      <span className="border border-brand-orange/30 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-[0.14em] text-brand-orange/80">
+                        Zestaw
+                      </span>
+                    </Link>
+                  );
+                }
                 return (
                   <Link
                     key={c.href}

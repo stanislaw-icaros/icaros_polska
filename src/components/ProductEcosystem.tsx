@@ -68,18 +68,6 @@ const products: Product[] = [
   },
   {
     step: "05",
-    slug: "lightning",
-    name: "ICAROS Lightning",
-    category: "Fitness i VR",
-    description:
-      "Trening fitness w wirtualnej rzeczywistości. Lecąc przez wirtualne światy, wzmacniasz górę ciała i tułów oraz poprawiasz refleks, równowagę i koordynację. Do domu i obiektów komercyjnych.",
-    position: "Wertykalna - VR",
-    indications: "Dom, fitness, hotele i rozrywka",
-    image: "/lightning.webp",
-    imageAlt: "ICAROS Lightning - trening fitness w wirtualnej rzeczywistości",
-  },
-  {
-    step: "06",
     slug: "cloud",
     name: "ICAROS Cloud",
     category: "Trening pełnego ciała",

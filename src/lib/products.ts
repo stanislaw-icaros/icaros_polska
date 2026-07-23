@@ -217,38 +217,6 @@ export const products: IcarosProduct[] = [
     imageAlt: "Senior ćwiczący na ICAROS Guardian z interaktywną grą na ekranie",
   },
   {
-    slug: "lightning",
-    name: "ICAROS Lightning",
-    shortName: "Lightning",
-    category: "Fitness i VR",
-    tagline: "Nowy wymiar treningu w wirtualnej rzeczywistości.",
-    shortDesc:
-      "Trening fitness w VR - latasz przez wirtualne światy, wzmacniając górę ciała i tułów oraz poprawiając refleks, równowagę i koordynację.",
-    longDesc: [
-      "ICAROS Lightning przenosi fitness do wirtualnego świata i zamienia trening w wyjątkowe przeżycie. Lecąc przez fascynujące otoczenia VR, w ukierunkowany sposób wzmacniasz mięśnie górnej części ciała i tułowia oraz poprawiasz refleks, równowagę i koordynację.",
-      "Nadaje się zarówno do domu, jak i na siłownię, do użytku prywatnego i komercyjnego. Dzięki nagradzanemu designowi i wyjątkowemu przeżyciu treningowemu to urządzenie fitness XXI wieku.",
-    ],
-    focusAreas: ["Kontrola poznawczo-ruchowa", "Zdrowe plecy", "Kontrola postawy"],
-    outcomes: [
-      "Wzmacnia górę ciała i mięśnie tułowia",
-      "Poprawia refleks, równowagę i koordynację",
-      "Angażujące przeżycie w wirtualnej rzeczywistości",
-      "Do domu i do obiektów komercyjnych",
-    ],
-    features: ["Nagradzany design", "Lekki", "Mała powierzchnia"],
-    applications: ["Trening mięśni tułowia", "Równowaga", "Gaming i rozrywka"],
-    targetGroups: ["Dom", "Fitness i hotele", "Rozrywka"],
-    testimonial: {
-      quote: "Nasi goście na TUI Mein Schiff 1 i 2 są zachwyceni urządzeniami ICAROS.",
-      author: "Martina Schumann",
-      role: "Dyrektor Spa & Sport, sea chefs Cruises Worldwide GmbH",
-    },
-    space: "Kompaktowa powierzchnia, około 1,5 m × 2,5 m.",
-    technical: "Standardowe gniazdko 230 V. Gogle VR i aplikacja ICAROS.",
-    image: "/lightning.webp",
-    imageAlt: "ICAROS Lightning - trening fitness w wirtualnej rzeczywistości",
-  },
-  {
     slug: "cloud",
     name: "ICAROS Cloud",
     shortName: "Cloud",

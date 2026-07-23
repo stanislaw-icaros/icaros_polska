@@ -218,14 +218,16 @@ export default function ProductDetail({
         {/* CTA */}
         <div className={`mt-14 flex flex-col items-start gap-4 border-t ${t.border} pt-10 sm:flex-row sm:items-center sm:justify-between`}>
           <p className={`text-[15px] ${t.body}`}>
-            Chcesz zobaczyć {product.shortName} na żywo? Umów bezpłatną prezentację.
+            {variant === "business"
+              ? `Chcesz zobaczyć ${product.shortName} na żywo? Umów bezpłatną prezentację.`
+              : `Chcesz dowiedzieć się więcej o ${product.shortName}? Napisz do nas lub znajdź placówkę z ICAROS w pobliżu.`}
           </p>
           <a
-            href="#kontakt"
+            href={variant === "business" ? "#kontakt" : "/kontakt"}
             className="inline-flex shrink-0 items-center gap-2 px-7 py-3 text-[13px] font-semibold text-white transition-opacity duration-300 hover:opacity-90"
             style={{ background: "linear-gradient(135deg, #ff6600, #ff7b1f)" }}
           >
-            Umów prezentację
+            {variant === "business" ? "Umów prezentację" : "Skontaktuj się"}
           </a>
         </div>
       </div>

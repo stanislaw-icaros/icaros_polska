@@ -17,7 +17,12 @@ const roleOptions = [
   { value: "other", label: "Inne" },
 ];
 
-export default function ContactCTA() {
+export default function ContactCTA({
+  variant = "business",
+}: {
+  variant?: "patient" | "business";
+}) {
+  const business = variant === "business";
   const { ref, isVisible } = useScrollAnimation();
   const [formState, setFormState] = useState({
     name: "",
@@ -79,7 +84,7 @@ export default function ContactCTA() {
           ...getSpamSignals(),
           marketingConsent,
           leadSource: "Formularz WWW",
-          formSource: "Strona główna - formularz główny",
+          formSource: business ? "Strona główna - formularz główny" : "Strona pacjent - zapytanie",
           page: window.location.pathname,
           utm,
         }),
@@ -117,22 +122,39 @@ export default function ContactCTA() {
               Kontakt
             </p>
             <h2 className="mt-5 text-[clamp(1.8rem,4vw,2.8rem)] font-bold tracking-[-0.03em] text-foreground leading-[1.1]">
-              Porozmawiajmy
-              <br />o Twojej placówce
+              {business ? (
+                <>
+                  Porozmawiajmy
+                  <br />o Twojej placówce
+                </>
+              ) : (
+                <>
+                  Masz pytania
+                  <br />o ICAROS?
+                </>
+              )}
             </h2>
             <p className="mt-5 text-[16px] text-foreground/70 leading-[1.8]">
-              Umów bezpłatną prezentację online lub rozmowę konsultacyjną.
-              Pokażemy Ci, jak ICAROS może wzmocnić Twoją ofertę terapeutyczną
-              i&nbsp;wygenerować nowe źródło przychodów.
+              {business
+                ? "Umów bezpłatną prezentację online lub rozmowę konsultacyjną. Pokażemy Ci, jak ICAROS może wzmocnić Twoją ofertę terapeutyczną i wygenerować nowe źródło przychodów."
+                : "Napisz do nas - odpowiemy na pytania o terapię i urządzenia oraz pomożemy znaleźć placówkę z ICAROS blisko Ciebie."}
             </p>
 
             <div className="mt-12 space-y-5">
-              {[
-                "Prezentacja dopasowana do Twojego profilu",
-                "Kalkulacja zwrotu z inwestycji",
-                "Bez zobowiązań - zerowy koszt",
-                "Odpowiedzi na wszystkie pytania techniczne",
-              ].map((benefit, i) => (
+              {(business
+                ? [
+                    "Prezentacja dopasowana do Twojego profilu",
+                    "Kalkulacja zwrotu z inwestycji",
+                    "Bez zobowiązań - zerowy koszt",
+                    "Odpowiedzi na wszystkie pytania techniczne",
+                  ]
+                : [
+                    "Odpowiedzi na pytania o terapię i urządzenia",
+                    "Pomoc w znalezieniu placówki z ICAROS",
+                    "Doradztwo, które rozwiązanie pasuje",
+                    "Bez zobowiązań",
+                  ]
+              ).map((benefit, i) => (
                 <motion.div
                   key={benefit}
                   initial={{ opacity: 0, x: -16 }}
@@ -185,10 +207,12 @@ export default function ContactCTA() {
               >
                 {spamFields}
                 <h3 className="text-[20px] font-bold text-foreground tracking-[-0.02em] mb-1">
-                  Umów prezentację
+                  {business ? "Umów prezentację" : "Napisz do nas"}
                 </h3>
                 <p className="text-[13px] text-foreground/65 mb-10">
-                  Wypełnij formularz, a odezwiemy się w ciągu 24 godzin.
+                  {business
+                    ? "Wypełnij formularz, a odezwiemy się w ciągu 24 godzin."
+                    : "Wypełnij formularz, a odpowiemy najszybciej jak to możliwe."}
                 </p>
 
                 <div className="space-y-6">
@@ -206,48 +230,66 @@ export default function ContactCTA() {
                         placeholder="Jan Kowalski"
                       />
                     </div>
-                    <div>
-                      <label className="block text-[12px] font-medium text-foreground/50 mb-2 tracking-[0.02em]">
-                        Placówka / firma *
-                      </label>
-                      <input
-                        type="text"
-                        required
-                        value={formState.company}
-                        onChange={(e) => setFormState({ ...formState, company: e.target.value })}
-                        className="w-full px-0 py-3 border-0 border-b border-foreground/[0.08] bg-transparent text-[14px] text-foreground placeholder:text-foreground/15 focus:outline-none focus:border-foreground/30 transition-colors duration-500"
-                        placeholder="Nazwa placówki"
-                      />
-                    </div>
+                    {business ? (
+                      <div>
+                        <label className="block text-[12px] font-medium text-foreground/50 mb-2 tracking-[0.02em]">
+                          Placówka / firma *
+                        </label>
+                        <input
+                          type="text"
+                          required
+                          value={formState.company}
+                          onChange={(e) => setFormState({ ...formState, company: e.target.value })}
+                          className="w-full px-0 py-3 border-0 border-b border-foreground/[0.08] bg-transparent text-[14px] text-foreground placeholder:text-foreground/15 focus:outline-none focus:border-foreground/30 transition-colors duration-500"
+                          placeholder="Nazwa placówki"
+                        />
+                      </div>
+                    ) : (
+                      <div>
+                        <label className="block text-[12px] font-medium text-foreground/50 mb-2 tracking-[0.02em]">
+                          E-mail *
+                        </label>
+                        <input
+                          type="email"
+                          required
+                          value={formState.email}
+                          onChange={(e) => setFormState({ ...formState, email: e.target.value })}
+                          className="w-full px-0 py-3 border-0 border-b border-foreground/[0.08] bg-transparent text-[14px] text-foreground placeholder:text-foreground/15 focus:outline-none focus:border-foreground/30 transition-colors duration-500"
+                          placeholder="jan@example.com"
+                        />
+                      </div>
+                    )}
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                    <div>
-                      <label className="block text-[12px] font-medium text-foreground/50 mb-2 tracking-[0.02em]">
-                        NIP firmy
-                      </label>
-                      <input
-                        type="text"
-                        value={formState.nip}
-                        onChange={(e) => setFormState({ ...formState, nip: e.target.value })}
-                        className="w-full px-0 py-3 border-0 border-b border-foreground/[0.08] bg-transparent text-[14px] text-foreground placeholder:text-foreground/15 focus:outline-none focus:border-foreground/30 transition-colors duration-500"
-                        placeholder="000-000-00-00"
-                      />
+                  {business && (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                      <div>
+                        <label className="block text-[12px] font-medium text-foreground/50 mb-2 tracking-[0.02em]">
+                          NIP firmy
+                        </label>
+                        <input
+                          type="text"
+                          value={formState.nip}
+                          onChange={(e) => setFormState({ ...formState, nip: e.target.value })}
+                          className="w-full px-0 py-3 border-0 border-b border-foreground/[0.08] bg-transparent text-[14px] text-foreground placeholder:text-foreground/15 focus:outline-none focus:border-foreground/30 transition-colors duration-500"
+                          placeholder="000-000-00-00"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-[12px] font-medium text-foreground/50 mb-2 tracking-[0.02em]">
+                          E-mail *
+                        </label>
+                        <input
+                          type="email"
+                          required
+                          value={formState.email}
+                          onChange={(e) => setFormState({ ...formState, email: e.target.value })}
+                          className="w-full px-0 py-3 border-0 border-b border-foreground/[0.08] bg-transparent text-[14px] text-foreground placeholder:text-foreground/15 focus:outline-none focus:border-foreground/30 transition-colors duration-500"
+                          placeholder="jan@klinika.pl"
+                        />
+                      </div>
                     </div>
-                    <div>
-                      <label className="block text-[12px] font-medium text-foreground/50 mb-2 tracking-[0.02em]">
-                        E-mail *
-                      </label>
-                      <input
-                        type="email"
-                        required
-                        value={formState.email}
-                        onChange={(e) => setFormState({ ...formState, email: e.target.value })}
-                        className="w-full px-0 py-3 border-0 border-b border-foreground/[0.08] bg-transparent text-[14px] text-foreground placeholder:text-foreground/15 focus:outline-none focus:border-foreground/30 transition-colors duration-500"
-                        placeholder="jan@klinika.pl"
-                      />
-                    </div>
-                  </div>
+                  )}
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <div>
@@ -262,6 +304,7 @@ export default function ContactCTA() {
                         placeholder="+48 ..."
                       />
                     </div>
+                    {business && (
                     <div ref={dropdownRef} className="relative">
                       <label className="block text-[12px] font-medium text-foreground/50 mb-2 tracking-[0.02em]">
                         Twoja rola
@@ -315,6 +358,7 @@ export default function ContactCTA() {
                         )}
                       </AnimatePresence>
                     </div>
+                    )}
                   </div>
 
                   <div>
@@ -326,7 +370,7 @@ export default function ContactCTA() {
                       value={formState.message}
                       onChange={(e) => setFormState({ ...formState, message: e.target.value })}
                       className="w-full px-0 py-3 border-0 border-b border-foreground/[0.08] bg-transparent text-[14px] text-foreground placeholder:text-foreground/15 focus:outline-none focus:border-foreground/30 transition-colors duration-500 resize-none"
-                      placeholder="Powiedz nam więcej o swojej placówce i potrzebach..."
+                      placeholder={business ? "Powiedz nam więcej o swojej placówce i potrzebach..." : "W czym możemy pomóc?"}
                     />
                   </div>
 

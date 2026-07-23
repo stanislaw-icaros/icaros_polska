@@ -104,17 +104,6 @@ const products: Product[] = [
     image: "/icaros_cloud_7.webp",
     imageAlt: "ICAROS Cloud - kompaktowe urządzenie do cyfrowego treningu całego ciała",
   },
-  {
-    name: "ICAROS Lightning",
-    category: "Sport i fitness · trening w VR",
-    description:
-      "Urządzenie fitness łączące ruch z wirtualną rzeczywistością. Użytkownik „leci” przez środowiska VR, jednocześnie wzmacniając mięśnie górnej części ciała i core oraz poprawiając refleks, równowagę i koordynację. Nadaje się do użytku domowego i komercyjnego, zajmuje niewiele miejsca.",
-    application: "Trening core · równowaga · rozgrywka w VR",
-    target: "Dom, kluby fitness i hotele, rozrywka",
-    award: "ISPO Award Gold 2018 · red dot 2018",
-    image: "/lightning.webp",
-    imageAlt: "ICAROS Lightning - trening fitness w wirtualnej rzeczywistości",
-  },
 ];
 
 const pillars = [

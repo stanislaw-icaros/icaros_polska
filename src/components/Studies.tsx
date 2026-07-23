@@ -43,8 +43,8 @@ export default function Studies() {
             Skuteczność potwierdzona naukowo
           </h2>
           <p className="mt-5 text-[16px] text-foreground/70 leading-[1.8]">
-            Ponad 13 badań klinicznych przeprowadzonych we współpracy z&nbsp;czołowymi
-            europejskimi i&nbsp;światowymi uniwersytetami. Realne wyniki, nie obietnice.
+            Ponad 12 badań klinicznych przeprowadzonych we współpracy z&nbsp;czołowymi
+            europejskimi uniwersytetami. Realne wyniki, nie obietnice.
           </p>
         </motion.div>
 

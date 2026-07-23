@@ -10,9 +10,9 @@ export default function SiteLayout({
       <Navigation />
       <main>
         {children}
-        <ContactCTA />
+        <ContactCTA variant="patient" />
       </main>
-      <Footer />
+      <Footer variant="patient" />
     </>
   );
 }

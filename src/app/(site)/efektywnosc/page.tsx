@@ -7,7 +7,7 @@ import VideoCases from "@/components/VideoCases";
 export const metadata: Metadata = {
   title: "Efekty i badania | ICAROS Polska",
   description:
-    "Dowody naukowe i realne efekty terapii ICAROS: wyniki ponad 13 badań klinicznych nad terapią VR oraz historie pacjentów po udarze i seniorów.",
+    "Dowody naukowe i realne efekty terapii ICAROS: wyniki ponad 12 badań klinicznych nad terapią VR oraz historie pacjentów po udarze i seniorów.",
 };
 
 export default function EfektywnoscPage() {

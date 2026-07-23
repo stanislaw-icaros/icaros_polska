@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import ContactInfo from "@/components/ContactInfo";
+import { getLocations } from "@/lib/mapa/getLocations";
 
 export const metadata: Metadata = {
   title: "Kontakt dla partnerów | ICAROS Polska",
@@ -8,6 +9,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/kontakt-partner" },
 };
 
-export default function KontaktBiznesPage() {
-  return <ContactInfo variant="business" />;
+export default async function KontaktBiznesPage() {
+  const locations = await getLocations();
+  return <ContactInfo variant="business" locations={locations} />;
 }

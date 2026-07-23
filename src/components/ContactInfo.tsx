@@ -1,9 +1,12 @@
 "use client";
 
+import dynamic from "next/dynamic";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { Mail, Phone, MapPin } from "lucide-react";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import SocialLinks from "@/components/SocialLinks";
+import type { IcarosLocation } from "@/lib/mapa/locations";
 import {
   COMPANY_ADDRESS,
   COMPANY_EMAIL,
@@ -17,9 +20,22 @@ import {
 
 type Variant = "patient" | "business";
 
-export default function ContactInfo({ variant = "patient" }: { variant?: Variant }) {
+// Leaflet sięga do `window`, więc mapkę ładujemy tylko po stronie klienta.
+const MiniMap = dynamic(() => import("@/components/map/MiniMap"), {
+  ssr: false,
+  loading: () => <div className="h-full min-h-[220px] w-full" />,
+});
+
+export default function ContactInfo({
+  variant = "patient",
+  locations = [],
+}: {
+  variant?: Variant;
+  locations?: IcarosLocation[];
+}) {
   const { ref, isVisible } = useScrollAnimation();
   const dark = variant === "business";
+  const mapHref = variant === "business" ? "/lokalizacje" : "/mapa";
 
   const t = {
     section: dark ? "bg-[#0a0a0a]" : "bg-white",
@@ -126,9 +142,9 @@ export default function ContactInfo({ variant = "patient" }: { variant?: Variant
             initial={{ opacity: 0, y: 24 }}
             animate={isVisible ? { opacity: 1, y: 0 } : {}}
             transition={{ delay: 0.15, duration: 0.8 }}
-            className={`flex flex-col justify-between border ${t.card} p-8 lg:p-12`}
+            className="flex flex-col gap-6"
           >
-            <div>
+            <div className={`border ${t.card} p-8 lg:p-12`}>
               <p className={`text-[10px] font-semibold uppercase tracking-[0.2em] ${t.label}`}>
                 Dane spółki
               </p>
@@ -151,14 +167,36 @@ export default function ContactInfo({ variant = "patient" }: { variant?: Variant
                   </div>
                 ))}
               </div>
+
+              <div className={`mt-8 flex items-center gap-2 border-t ${t.divider} pt-8`}>
+                <span className={`text-[11px] tracking-[0.1em] ${t.label}`}>Technologia</span>
+                <span className={`inline-flex items-center px-2.5 py-1 text-[10px] font-medium ${dark ? "border border-white/[0.12] text-white/75" : "border border-foreground/[0.12] text-foreground/70"}`}>
+                  Made in Germany
+                </span>
+              </div>
             </div>
 
-            <div className={`mt-10 flex items-center gap-2 border-t ${t.divider} pt-8`}>
-              <span className={`text-[11px] tracking-[0.1em] ${t.label}`}>Technologia</span>
-              <span className={`inline-flex items-center px-2.5 py-1 text-[10px] font-medium ${dark ? "border border-white/[0.12] text-white/75" : "border border-foreground/[0.12] text-foreground/70"}`}>
-                Made in Germany
-              </span>
-            </div>
+            {/* Mini mapa lokalizacji - pełna, interaktywna jest pod /mapa. */}
+            {locations.length > 0 && (
+              <div className={`flex flex-1 flex-col overflow-hidden border ${t.card}`}>
+                <div className={`flex items-center justify-between gap-3 border-b ${t.divider} px-5 py-4`}>
+                  <p className={`text-[10px] font-semibold uppercase tracking-[0.2em] ${t.label}`}>
+                    Nasze lokalizacje
+                  </p>
+                  <Link
+                    href={mapHref}
+                    className={`text-[12px] font-semibold transition-colors ${dark ? "text-white/70 hover:text-white" : "text-foreground/70 hover:text-foreground"}`}
+                  >
+                    Zobacz pełną mapę →
+                  </Link>
+                </div>
+                <MiniMap
+                  locations={locations}
+                  theme={dark ? "dark" : "light"}
+                  className="h-[240px] flex-1 lg:h-full"
+                />
+              </div>
+            )}
           </motion.div>
         </div>
       </div>
