@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import VideoEmbed from "@/components/VideoEmbed";
 import type { IcarosProduct } from "@/lib/products";
 
 type Theme = "light" | "dark";
@@ -164,21 +165,53 @@ export default function ProductDetail({
           </figure>
         )}
 
-        {/* Film - pojawia się, gdy uzupełnimy videoUrl */}
-        {product.videoUrl && (
-          <div className={`mt-12 border-t ${t.border} pt-10`}>
+        {/* Film produktowy - polska wersja z kanału ICAROS POLSKA */}
+        {product.videos && product.videos.length > 0 && (
+          <div id="film" className={`mt-12 scroll-mt-24 border-t ${t.border} pt-10`}>
             <h2 className={`text-[10px] font-semibold uppercase tracking-[0.2em] ${t.label}`}>
               Zobacz w akcji
             </h2>
-            <div className={`relative mt-5 aspect-video overflow-hidden border ${t.border}`}>
-              <iframe
-                src={product.videoUrl}
-                title={`${product.name} - film`}
-                className="absolute inset-0 h-full w-full"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
+            <p className={`mt-4 max-w-[620px] text-[15px] leading-[1.7] ${t.body}`}>
+              {product.videos.length > 1
+                ? `Trzy urządzenia, które składają się na ${product.shortName}, w krótkich filmach.`
+                : `Krótki film pokazuje, jak wygląda trening na urządzeniu ${product.shortName}.`}
+            </p>
+
+            {product.videos.length === 1 ? (
+              <VideoEmbed
+                videoId={product.videos[0].id}
+                title={`${product.videos[0].title} - film produktowy`}
+                poster={product.videos[0].poster}
+                posterAlt={product.videos[0].posterAlt}
+                posterLabel={product.category}
+                posterTitle={product.videos[0].title}
+                theme={theme}
+                size="hero"
+                hint="Film ładuje się z YouTube dopiero po kliknięciu."
+                className="mt-6"
               />
-            </div>
+            ) : (
+              <>
+                <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                  {product.videos.map((video) => (
+                    <VideoEmbed
+                      key={video.id}
+                      videoId={video.id}
+                      title={`${video.title} - film produktowy`}
+                      poster={video.poster}
+                      posterAlt={video.posterAlt}
+                      posterLabel={video.caption}
+                      posterTitle={video.title}
+                      theme={theme}
+                      size="card"
+                    />
+                  ))}
+                </div>
+                <p className={`mt-4 text-[11.5px] ${t.label}`}>
+                  Filmy ładują się z YouTube dopiero po kliknięciu.
+                </p>
+              </>
+            )}
           </div>
         )}
 
