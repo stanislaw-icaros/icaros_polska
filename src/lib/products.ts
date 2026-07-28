@@ -9,6 +9,22 @@
  * urządzeń (kg/cm), więc jako "wymiary" podajemy zalecaną powierzchnię montażu.
  * Realne wymiary urządzeń dodamy tu później, gdy będą dostępne.
  */
+export type ProductVideo = {
+  /** ID filmu z YouTube - fragment po watch?v= (kanał ICAROS POLSKA). */
+  id: string;
+  /** Tytuł filmu pokazywany na miniaturze. */
+  title: string;
+  /** Podpis używany, gdy przy produkcie jest kilka filmów (np. Circle). */
+  caption?: string;
+  /**
+   * Własna miniatura z /public. Ustawiamy ją tam, gdzie automatyczna klatka
+   * z YouTube wypada słabo (I.S.T. Board, Cloud). Bez tego pola bierzemy
+   * miniaturę z YouTube.
+   */
+  poster?: string;
+  posterAlt?: string;
+};
+
 export type IcarosProduct = {
   slug: string;
   name: string;
@@ -28,8 +44,12 @@ export type IcarosProduct = {
   included?: string[];
   /** Opcjonalna wypowiedź pacjenta lub eksperta (z katalogu ICAROS). */
   testimonial?: { quote: string; author: string; role: string };
-  /** Opcjonalny film do osadzenia (embed). Uzupełnimy później. */
-  videoUrl?: string;
+  /**
+   * Filmy prezentujące urządzenie (polskie wersje z kanału ICAROS POLSKA).
+   * Jeden film pokazujemy dużym kadrem, kilka - w siatce (tak ma Circle,
+   * który łączy trzy urządzenia i nie ma własnego filmu).
+   */
+  videos?: ProductVideo[];
   /** Zalecana powierzchnia montażu - pokazywane w wersji biznes. */
   space: string;
   /** Wymagania techniczne - pokazywane w wersji biznes. */
@@ -79,6 +99,17 @@ export const products: IcarosProduct[] = [
       author: "Domenico Gurzi",
       role: "Kierownik Działu Biomechaniki, IBS Health",
     },
+    videos: [
+      { id: "tM6JjLU_veQ", title: "ICAROS Health", caption: "Trening wspomagany" },
+      { id: "B8WvQh_rFGk", title: "ICAROS Guardian", caption: "Trening równowagi" },
+      {
+        id: "TCrm7hsQ-Yw",
+        title: "ICAROS Cloud",
+        caption: "Trening całego ciała",
+        poster: "/Icaros-24_0428.webp",
+        posterAlt: "Sportsmenka trenująca na platformie ICAROS Cloud",
+      },
+    ],
     space:
       "Powierzchnia dla pełnego zestawu ustalana indywidualnie, w zależności od liczby urządzeń.",
     technical:
@@ -124,6 +155,7 @@ export const products: IcarosProduct[] = [
       author: "Sandra",
       role: "Pacjentka po udarze",
     },
+    videos: [{ id: "tM6JjLU_veQ", title: "ICAROS Health" }],
     space: "Zalecana powierzchnia montażu: co najmniej 1,50 m × 2,50 m.",
     technical: "Standardowe gniazdko 230 V. Dostęp do internetu przez Wi-Fi.",
     image: "/Icaros-24_0544.webp",
@@ -167,6 +199,14 @@ export const products: IcarosProduct[] = [
       author: "ICAROS",
       role: "Idea I.S.T. Board",
     },
+    videos: [
+      {
+        id: "79r28U9c7NM",
+        title: "ICAROS I.S.T. Board",
+        poster: "/icaros_ist_1.webp",
+        posterAlt: "Kobieta ćwicząca na ICAROS I.S.T. Board w pozycji siedzącej",
+      },
+    ],
     space: "Wymagana powierzchnia: około 60 cm × 50 cm.",
     technical:
       "Smartfon lub tablet z aplikacją ICAROS (iOS/Android). Połączenie Bluetooth, Wi-Fi nie jest wymagane.",
@@ -211,6 +251,7 @@ export const products: IcarosProduct[] = [
       author: "Walter",
       role: "Pacjent po udarze",
     },
+    videos: [{ id: "B8WvQh_rFGk", title: "ICAROS Guardian" }],
     space: "Zalecana powierzchnia montażu: co najmniej 1,50 m × 2,50 m.",
     technical: "Standardowe gniazdko 230 V. Dostęp do internetu przez Wi-Fi.",
     image: "/senior_2.webp",
@@ -244,6 +285,14 @@ export const products: IcarosProduct[] = [
       author: "You Sport and Wellness Clinic",
       role: "Wilno, Litwa",
     },
+    videos: [
+      {
+        id: "TCrm7hsQ-Yw",
+        title: "ICAROS Cloud",
+        poster: "/Icaros-24_0428.webp",
+        posterAlt: "Sportsmenka trenująca na platformie ICAROS Cloud",
+      },
+    ],
     space: "Kompaktowa powierzchnia, około 1,5 m × 2,5 m.",
     technical:
       "Smartfon lub tablet z aplikacją ICAROS (iOS/Android). Połączenie Bluetooth, Wi-Fi nie jest wymagane.",

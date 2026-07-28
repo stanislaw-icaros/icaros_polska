@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import ProductEcosystem from "@/components/ProductEcosystem";
+import ProductVideos from "@/components/ProductVideos";
 
 export const metadata: Metadata = {
   title: "Produkty | ICAROS Polska",
@@ -8,5 +9,10 @@ export const metadata: Metadata = {
 };
 
 export default function ProduktyPage() {
-  return <ProductEcosystem />;
+  return (
+    <>
+      <ProductEcosystem />
+      <ProductVideos basePath="/produkty" />
+    </>
+  );
 }

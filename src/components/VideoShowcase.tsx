@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+import VideoEmbed from "@/components/VideoEmbed";
 
 export default function VideoShowcase() {
   const { ref, isVisible } = useScrollAnimation();
@@ -33,29 +34,24 @@ export default function VideoShowcase() {
           transition={{ delay: 0.15, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           className="relative"
         >
-          <div className="bg-foreground p-3 sm:p-4 lg:p-6 shadow-[0_12px_60px_-12px_rgba(0,0,0,0.15)]">
-            <div className="relative w-full" style={{ paddingBottom: "56.25%" }}>
-              <iframe
-                className="absolute inset-0 h-full w-full"
-                src="https://www.youtube-nocookie.com/embed/XSf0H6LhRLo?rel=0&modestbranding=1&color=white"
-                title="ICAROS - innowacyjna rehabilitacja i trening VR"
-                loading="lazy"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                referrerPolicy="strict-origin-when-cross-origin"
-                allowFullScreen
-              />
-            </div>
-          </div>
+          <VideoEmbed
+            videoId="XSf0H6LhRLo"
+            title="ICAROS - innowacyjna rehabilitacja i trening VR"
+            posterLabel="Film"
+            posterTitle="ICAROS w praktyce"
+            theme="dark"
+            size="hero"
+          />
 
           <div className="mt-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <p className="text-[12px] text-foreground/30">
-              ICAROS GmbH &middot; Oficjalne wideo produktowe
+              ICAROS Polska &middot; film ładuje się z YouTube po kliknięciu
             </p>
             <a
-              href="#kontakt"
+              href="/mapa"
               className="group inline-flex items-center gap-2 text-[13px] font-semibold text-foreground/40 hover:text-foreground transition-colors duration-500 tracking-[0.02em]"
             >
-              Umów prezentację na żywo
+              Zobacz, gdzie poćwiczysz na ICAROS
               <svg className="w-4 h-4 transition-transform duration-500 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>

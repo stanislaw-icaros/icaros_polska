@@ -5,11 +5,32 @@ import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 import LegalLinks from "@/components/LegalLinks";
+import VideoEmbed from "@/components/VideoEmbed";
 import { DISCLAIMER_MEDICAL_DEVICES } from "@/lib/legal";
 import { useSpamGuard } from "@/hooks/useSpamGuard";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const VIDEO_ID = "XSf0H6LhRLo";
+
+/** Polskie filmy urządzeń z kanału ICAROS POLSKA, w kolejności jak sekcja produktów. */
+const DEVICE_VIDEOS = [
+  { id: "tM6JjLU_veQ", name: "ICAROS Health", label: "Rehabilitacja" },
+  { id: "B8WvQh_rFGk", name: "ICAROS Guardian", label: "Trening stabilności" },
+  {
+    id: "79r28U9c7NM",
+    name: "ICAROS I.S.T. Board",
+    label: "Aktywacja i mobilizacja",
+    poster: "/icaros_ist_1.webp",
+    posterAlt: "Kobieta ćwicząca na ICAROS I.S.T. Board w pozycji siedzącej",
+  },
+  {
+    id: "TCrm7hsQ-Yw",
+    name: "ICAROS Cloud",
+    label: "Trening całego ciała",
+    poster: "/Icaros-24_0428.webp",
+    posterAlt: "Sportsmenka trenująca na platformie ICAROS Cloud",
+  },
+];
 
 const EASE_OUT = [0.22, 1, 0.36, 1] as const;
 
@@ -428,20 +449,51 @@ export default function PoznajSystem() {
               </p>
             </Reveal>
             <Reveal delay={0.1}>
-              <div className="border border-white/10 bg-black/40 p-2 shadow-[0_40px_80px_-30px_rgba(0,0,0,0.8)] sm:p-3">
-                <div className="relative w-full" style={{ paddingBottom: "56.25%" }}>
-                  <iframe
-                    className="absolute inset-0 h-full w-full"
-                    src={`https://www.youtube-nocookie.com/embed/${VIDEO_ID}?rel=0&modestbranding=1&color=white`}
-                    title="ICAROS - innowacyjna rehabilitacja i trening VR"
-                    loading="lazy"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    referrerPolicy="strict-origin-when-cross-origin"
-                    allowFullScreen
-                  />
-                </div>
+              <VideoEmbed
+                videoId={VIDEO_ID}
+                title="ICAROS - innowacyjna rehabilitacja i trening VR"
+                posterLabel="Film"
+                posterTitle="ICAROS w praktyce"
+                theme="dark"
+                size="hero"
+              />
+            </Reveal>
+
+            <Reveal delay={0.15} className="mt-20">
+              <div className="text-center">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-white/45">
+                  Filmy urządzeń
+                </p>
+                <h3 className="mx-auto mt-4 max-w-2xl text-[clamp(1.4rem,3vw,2rem)] font-bold leading-[1.15] tracking-[-0.02em]">
+                  Każde urządzenie z osobna
+                </h3>
+                <p className="mx-auto mt-4 max-w-xl text-[15px] leading-[1.8] text-white/60">
+                  Cztery krótkie filmy pokazują, jak w praktyce wygląda trening na
+                  poszczególnych urządzeniach ICAROS.
+                </p>
               </div>
             </Reveal>
+
+            <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2 lg:gap-8">
+              {DEVICE_VIDEOS.map((video, i) => (
+                <Reveal key={video.id} delay={0.05 + i * 0.05}>
+                  <VideoEmbed
+                    videoId={video.id}
+                    title={`${video.name} - film produktowy`}
+                    poster={video.poster}
+                    posterAlt={video.posterAlt}
+                    posterLabel={video.label}
+                    posterTitle={video.name}
+                    theme="dark"
+                    size="card"
+                  />
+                </Reveal>
+              ))}
+            </div>
+
+            <p className="mt-10 text-center text-[11.5px] text-white/30">
+              Materiały wideo: ICAROS Polska · filmy ładują się z YouTube dopiero po kliknięciu
+            </p>
           </div>
         </section>
 
