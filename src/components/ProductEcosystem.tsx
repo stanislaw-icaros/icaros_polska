@@ -44,18 +44,6 @@ const products: Product[] = [
   },
   {
     step: "03",
-    slug: "ist-board",
-    name: "ICAROS I.S.T. Board",
-    category: "Aktywacja i mobilność",
-    description:
-      "Foot-controlled trening ICAROS do terapii i aktywacji: ultralekki, gotowy do użycia od razu. Balans, reakcja i koordynacja prowadzone przez aplikację - w sesjach indywidualnych lub w grupie.",
-    position: "Siedząca - mobilna",
-    indications: "Terapia, profilaktyka, aktywacja grupowa · Ultralekki i kompaktowy · Aplikacja ICAROS",
-    image: "/icaros_ist_hero_1.webp",
-    imageAlt: "ICAROS I.S.T. Board - trening stóp i nóg sterowany ruchem",
-  },
-  {
-    step: "04",
     slug: "guardian",
     name: "ICAROS Guardian",
     category: "Trening stabilności",
@@ -67,7 +55,7 @@ const products: Product[] = [
     imageAlt: "Senior ćwiczący na ICAROS Guardian z interaktywną grą na ekranie",
   },
   {
-    step: "05",
+    step: "04",
     slug: "cloud",
     name: "ICAROS Cloud",
     category: "Trening pełnego ciała",
@@ -77,6 +65,18 @@ const products: Product[] = [
     indications: "Fitness, zajęcia grupowe, równowaga i stabilizacja",
     image: "/icaros_cloud_7.webp",
     imageAlt: "ICAROS Cloud - kompaktowe urządzenie do cyfrowego treningu całego ciała",
+  },
+  {
+    step: "05",
+    slug: "ist-board",
+    name: "ICAROS I.S.T. Board",
+    category: "Aktywacja i mobilność",
+    description:
+      "Foot-controlled trening ICAROS do terapii i aktywacji: ultralekki, gotowy do użycia od razu. Balans, reakcja i koordynacja prowadzone przez aplikację - w sesjach indywidualnych lub w grupie.",
+    position: "Siedząca - mobilna",
+    indications: "Terapia, profilaktyka, aktywacja grupowa · Ultralekki i kompaktowy · Aplikacja ICAROS",
+    image: "/icaros_ist_hero_1.webp",
+    imageAlt: "ICAROS I.S.T. Board - trening stóp i nóg sterowany ruchem",
   },
 ];
 

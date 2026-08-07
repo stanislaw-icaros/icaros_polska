@@ -187,6 +187,12 @@ export default function HowItWorks() {
               Zobacz urządzenia
             </Link>
             <Link
+              href="/mapa"
+              className="inline-flex items-center gap-2 px-7 py-3.5 text-[14px] font-semibold text-foreground underline decoration-foreground/20 underline-offset-4 transition-colors hover:decoration-foreground/60"
+            >
+              Gdzie tego spróbować
+            </Link>
+            <Link
               href="/efektywnosc"
               className="inline-flex items-center gap-2 px-7 py-3.5 text-[14px] font-semibold text-foreground underline decoration-foreground/20 underline-offset-4 transition-colors hover:decoration-foreground/60"
             >

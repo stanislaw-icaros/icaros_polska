@@ -22,6 +22,7 @@ export const researchPartners: string[] = [
   "Niemiecki Uniwersytet Sportowy w Kolonii",
   "Politechnika w Monachium",
   "Uniwersytet w Heidelbergu",
+  "AWF im. Jerzego Kukuczki w Katowicach",
   "Center for Healthcare Professions Tyrol",
 ];
 
@@ -124,6 +125,23 @@ export const studies: Study[] = [
     year: "2025",
     finding:
       "Randomizowane badanie kliniczne: bezpieczna i klinicznie wartościowa metoda - istotna redukcja zmęczenia, wyższa satysfakcja i rzadsze nasilenia objawów (9% vs 22%).",
+  },
+  {
+    id: "H-VII",
+    device: "ICAROS Health",
+    title:
+      "Przyjemność i intensywność wysiłku w immersyjnej wirtualnej rzeczywistości na innowacyjnych urządzeniach treningowych",
+    institution: "AWF im. Jerzego Kukuczki w Katowicach",
+    year: "2019",
+    finding:
+      "Badanie 61 osób: uczestnicy ocenili trening jako przyjemny (5,60 na 7 pkt), a intensywność wysiłku przez ponad połowę sesji (50,8% czasu) mieściła się w zakresie zalecanym dla korzyści zdrowotnych.",
+    links: [
+      { label: "PubMed", href: "https://pubmed.ncbi.nlm.nih.gov/31574911/" },
+      {
+        label: "Int. J. Environ. Res. Public Health",
+        href: "https://www.mdpi.com/1660-4601/16/19/3673",
+      },
+    ],
   },
   {
     id: "C-I",

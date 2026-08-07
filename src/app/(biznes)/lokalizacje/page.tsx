@@ -11,5 +11,7 @@ export const metadata: Metadata = {
 
 export default async function LokalizacjePage() {
   const locations = await getLocations();
-  return <MapView locations={locations} theme="dark" />;
+  return (
+    <MapView locations={locations} theme="dark" worldHref="/icaros-na-swiecie-partner" />
+  );
 }

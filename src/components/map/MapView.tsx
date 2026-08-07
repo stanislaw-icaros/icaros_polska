@@ -1,8 +1,10 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import type { IcarosLocation } from "@/lib/mapa/locations";
+import { worldCategories, worldPlaces } from "@/lib/world";
 import type { MapTheme } from "./MapCanvas";
 
 // Leaflet sięga do `window`, więc mapę ładujemy wyłącznie po stronie klienta.
@@ -18,9 +20,12 @@ const MapCanvas = dynamic(() => import("./MapCanvas"), {
 export default function MapView({
   locations,
   theme = "dark",
+  worldHref = "/icaros-na-swiecie",
 }: {
   locations: IcarosLocation[];
   theme?: MapTheme;
+  /** Podstrona z zagranicznymi wdrożeniami - inna w strefie pacjenta i partnera. */
+  worldHref?: string;
 }) {
   const dark = theme === "dark";
 
@@ -89,6 +94,88 @@ export default function MapView({
           className="mt-10"
         >
           <MapCanvas locations={locations} theme={theme} />
+        </motion.div>
+
+        {/* Wejście na podstronę z wybranymi wdrożeniami zagranicznymi. */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.7 }}
+          className={`mt-20 border-t pt-16 lg:mt-24 lg:pt-20 ${
+            dark ? "border-white/[0.09]" : "border-foreground/[0.09]"
+          }`}
+        >
+          <div className="flex items-center gap-3">
+            <span
+              className="h-[2px] w-7"
+              style={{ background: "linear-gradient(90deg,#ff6600,#ff7b1f)" }}
+            />
+            <span
+              className={`text-[10px] font-semibold uppercase tracking-[0.28em] ${
+                dark ? "text-white/55" : "text-foreground/55"
+              }`}
+            >
+              ICAROS na świecie
+            </span>
+          </div>
+          <h2 className="mt-4 max-w-[680px] text-[clamp(1.5rem,3.6vw,2.3rem)] font-bold leading-[1.1] tracking-[-0.03em]">
+            A jak to wygląda poza Polską
+          </h2>
+          <p
+            className={`mt-4 max-w-[620px] text-[15px] leading-[1.75] ${
+              dark ? "text-white/65" : "text-foreground/65"
+            }`}
+          >
+            Te same urządzenia pracują w centrach urazowych z kilkuset łóżkami, w ośrodkach
+            przygotowania motorycznego zawodowych sportowców i w medical spa pod Rzymem.
+          </p>
+
+          <div
+            className={`mt-10 grid grid-cols-1 border-l border-t sm:grid-cols-3 ${
+              dark ? "border-white/[0.09]" : "border-foreground/[0.09]"
+            }`}
+          >
+            {worldCategories.map((cat) => {
+              const places = worldPlaces.filter((p) => p.category === cat.id);
+              return (
+                <Link
+                  key={cat.id}
+                  href={`${worldHref}#${cat.id}`}
+                  className={`group border-b border-r p-7 transition-colors duration-500 ${
+                    dark
+                      ? "border-white/[0.09] hover:bg-white/[0.04]"
+                      : "border-foreground/[0.09] hover:bg-foreground/[0.02]"
+                  }`}
+                >
+                  <h3 className="text-[16px] font-semibold leading-[1.3] tracking-[-0.01em]">
+                    {cat.label}
+                  </h3>
+                  <p
+                    className={`mt-3 text-[12.5px] leading-[1.6] ${
+                      dark ? "text-white/50" : "text-foreground/50"
+                    }`}
+                  >
+                    {places
+                      .slice(0, 3)
+                      .map((p) => p.name)
+                      .join(", ")}
+                  </p>
+                </Link>
+              );
+            })}
+          </div>
+
+          <Link
+            href={worldHref}
+            className="mt-10 inline-flex items-center gap-3 px-8 py-4 text-[14px] font-semibold text-white shadow-[0_14px_30px_-12px_rgba(255,102,0,0.55)] transition-opacity hover:opacity-90"
+            style={{ background: "linear-gradient(135deg, #ff6600, #ff7b1f)" }}
+          >
+            Zobacz ICAROS na świecie
+            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+          </Link>
         </motion.div>
       </div>
     </section>

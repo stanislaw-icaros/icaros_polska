@@ -64,7 +64,7 @@ export default function Hero({ locationCount = 8 }: { locationCount?: number }) 
                 </svg>
               </Link>
               <Link
-                href="/rozwiazania"
+                href="/jak-to-dziala"
                 className="inline-flex items-center justify-center gap-2 px-8 py-4 text-foreground text-[14px] font-semibold border border-brand-orange/40 hover:border-transparent hover:text-white transition-[border-color] duration-500 tracking-[0.01em] hover:[background:linear-gradient(135deg,#ff6600,#ff7b1f)]"
               >
                 Jak to działa

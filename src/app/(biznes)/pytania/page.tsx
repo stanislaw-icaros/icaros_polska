@@ -9,5 +9,5 @@ export const metadata: Metadata = {
 };
 
 export default function PytaniaBiznesPage() {
-  return <FAQ variant="dark" />;
+  return <FAQ variant="dark" audience="business" />;
 }

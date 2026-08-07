@@ -6,13 +6,14 @@ const base = "https://www.icaros.com.pl";
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
   const pages: { path: string; priority: number }[] = [
-    { path: "/rozwiazania", priority: 0.8 },
+    { path: "/jak-to-dziala", priority: 0.8 },
     { path: "/produkty", priority: 0.8 },
     // Podstrony produktów (pacjent) - ważne, tu prowadzą kody QR.
     ...products.map((p) => ({ path: `/produkty/${p.slug}`, priority: 0.7 })),
     { path: "/zastosowania", priority: 0.7 },
     { path: "/efektywnosc", priority: 0.7 },
     { path: "/mapa", priority: 0.5 },
+    { path: "/icaros-na-swiecie", priority: 0.6 },
     { path: "/kontakt", priority: 0.7 },
     { path: "/komercjalizacja", priority: 0.7 },
     { path: "/finansowanie", priority: 0.6 },

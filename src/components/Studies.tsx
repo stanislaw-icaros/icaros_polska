@@ -43,8 +43,9 @@ export default function Studies() {
             Skuteczność potwierdzona naukowo
           </h2>
           <p className="mt-5 text-[16px] text-foreground/70 leading-[1.8]">
-            Ponad 12 badań klinicznych przeprowadzonych we współpracy z&nbsp;czołowymi
-            europejskimi uniwersytetami. Realne wyniki, nie obietnice.
+            Kilkanaście badań klinicznych przeprowadzonych we współpracy z&nbsp;czołowymi
+            europejskimi uniwersytetami, w&nbsp;tym z&nbsp;AWF w&nbsp;Katowicach. Realne
+            wyniki, nie obietnice.
           </p>
         </motion.div>
 

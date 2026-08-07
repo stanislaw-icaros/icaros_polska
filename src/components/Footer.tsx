@@ -6,22 +6,17 @@ import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import LegalLinks from "@/components/LegalLinks";
 import SocialLinks from "@/components/SocialLinks";
 import { COMPANY_ADDRESS, COMPANY_NAME, DISCLAIMER_MEDICAL_DEVICES, KRS, NIP } from "@/lib/legal";
+import { products } from "@/lib/products";
 
 const footerLinks = {
   rozwiazania: {
-    title: "Rozwiązania",
-    links: [
-      { label: "ICAROS Circle", href: "/produkty" },
-      { label: "ICAROS Health", href: "/produkty" },
-      { label: "ICAROS I.S.T. Board", href: "/produkty" },
-      { label: "ICAROS Guardian", href: "/produkty" },
-      { label: "ICAROS Cloud", href: "/produkty" },
-    ],
+    title: "Urządzenia",
+    links: products.map((p) => ({ label: p.name, href: `/produkty/${p.slug}` })),
   },
   firma: {
     title: "Firma",
     links: [
-      { label: "O ICAROS", href: "/rozwiazania" },
+      { label: "O ICAROS", href: "/jak-to-dziala" },
       { label: "Badania naukowe", href: "/efektywnosc" },
       { label: "Finansowanie", href: "/finansowanie" },
       { label: "Kontakt", href: "/kontakt" },
@@ -31,8 +26,8 @@ const footerLinks = {
     title: "Zasoby",
     links: [
       { label: "FAQ / Pytania", href: "/faq" },
-      { label: "Komercjalizacja", href: "/komercjalizacja" },
-      { label: "Lokalizacje", href: "/mapa" },
+      { label: "Lokalizacje w Polsce", href: "/mapa" },
+      { label: "ICAROS na świecie", href: "/icaros-na-swiecie" },
       { label: "Raport", href: "/raport" },
     ],
   },

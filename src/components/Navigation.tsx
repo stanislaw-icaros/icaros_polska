@@ -22,13 +22,19 @@ const deviceChildren = (base: string): NavLink[] => [
   ...products.map((p) => ({ href: `${base}/${p.slug}`, label: p.name })),
 ];
 
+/** Lokalizacje rozbite na Polskę i zagranicę, żeby nie wydłużać paska nawigacji. */
+const locationChildren = (mapHref: string, worldHref: string): NavLink[] => [
+  { href: mapHref, label: "Mapa w Polsce" },
+  { href: worldHref, label: "ICAROS na świecie" },
+];
+
 const patientNav: NavEntry[] = [
-  { href: "/rozwiazania", label: "Jak to działa" },
+  { href: "/jak-to-dziala", label: "Jak to działa" },
   { label: "Urządzenia", children: deviceChildren("/produkty") },
   { href: "/zastosowania", label: "Dla kogo" },
   { href: "/efektywnosc", label: "Efekty i badania" },
   { href: "/faq", label: "FAQ/Pytania" },
-  { href: "/mapa", label: "Lokalizacje" },
+  { label: "Lokalizacje", children: locationChildren("/mapa", "/icaros-na-swiecie") },
   { href: "/raport", label: "Raport" },
   { href: "/kontakt", label: "Kontakt" },
 ];
@@ -38,7 +44,10 @@ const businessNav: NavEntry[] = [
   { href: "/finansowanie", label: "Finansowanie" },
   { label: "Urządzenia", children: deviceChildren("/urzadzenia") },
   { href: "/dla-placowek", label: "Zastosowania" },
-  { href: "/lokalizacje", label: "Lokalizacje" },
+  {
+    label: "Lokalizacje",
+    children: locationChildren("/lokalizacje", "/icaros-na-swiecie-partner"),
+  },
   { href: "/pytania", label: "FAQ/Pytania" },
   { href: "/kontakt-partner", label: "Kontakt" },
 ];

@@ -3,12 +3,12 @@
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { Activity, LayoutGrid, Building2, TrendingUp, HelpCircle, FileText, Briefcase, MapPin, ArrowUpRight } from "lucide-react";
+import { Activity, LayoutGrid, Building2, TrendingUp, HelpCircle, FileText, Briefcase, MapPin, Globe, ArrowUpRight } from "lucide-react";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 
 const entries = [
   {
-    href: "/rozwiazania",
+    href: "/jak-to-dziala",
     label: "Jak to działa",
     description: "Niemiecka technologia, która łączy rehabilitację, trening i wirtualną rzeczywistość.",
     image: "/icaros_health_w_uzyciu.webp",
@@ -34,7 +34,7 @@ const entries = [
   {
     href: "/efektywnosc",
     label: "Efekty i badania",
-    description: "Ponad 9 badań klinicznych i historie pacjentów po udarze potwierdzające skuteczność.",
+    description: "Kilkanaście badań klinicznych i historie pacjentów po udarze potwierdzające skuteczność.",
     image: "/Icaros-24_0428.webp",
     icon: TrendingUp,
     span: "lg:col-span-2",
@@ -42,7 +42,7 @@ const entries = [
   {
     href: "/faq",
     label: "FAQ / Pytania",
-    description: "Technologia, terapia, wdrożenie, wsparcie i koszty - w jednym miejscu.",
+    description: "Jak działa trening, komu pomaga i gdzie możesz go spróbować.",
     image: "/Icaros-24_0552.webp",
     icon: HelpCircle,
     span: "",
@@ -53,6 +53,14 @@ const entries = [
     description: "Mapa placówek w Polsce, gdzie pracuje ICAROS - część dostępna publicznie.",
     image: "/ICAROS-17_0051.webp",
     icon: MapPin,
+    span: "",
+  },
+  {
+    href: "/icaros-na-swiecie",
+    label: "ICAROS na świecie",
+    description: "Wybrane kliniki urazowe, ośrodki longevity i centra sportowe, które pracują na ICAROS.",
+    image: "/0.webp",
+    icon: Globe,
     span: "",
   },
   {

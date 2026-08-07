@@ -80,9 +80,9 @@ export default function StudiesLibrary() {
             Efekty potwierdzone badaniami
           </h2>
           <p className="mt-5 text-[16px] leading-[1.8] text-foreground/65">
-            Ponad 12 badań klinicznych i pilotażowych przeprowadzonych przez czołowe
-            europejskie ośrodki naukowe. Poniżej znajdziesz je zebrane w jednym
-            miejscu wraz z linkami do publikacji.
+            {studies.length} badań klinicznych i pilotażowych przeprowadzonych przez czołowe
+            europejskie ośrodki naukowe, w tym AWF w&nbsp;Katowicach. Poniżej znajdziesz je
+            zebrane w jednym miejscu wraz z linkami do publikacji.
           </p>
         </motion.div>
 
