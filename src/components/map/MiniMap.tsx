@@ -8,7 +8,7 @@ import {
   MAP_DEFAULT_ZOOM,
   type IcarosLocation,
 } from "@/lib/mapa/locations";
-import type { MapTheme } from "./MapCanvas";
+import { tileConfig, type MapTheme } from "@/lib/mapa/tiles";
 
 /** Mała pinezka w kolorze marki (bez zewnętrznych assetów Leafletu). */
 function miniPin() {
@@ -40,9 +40,7 @@ export default function MiniMap({
   className?: string;
 }) {
   const dark = theme === "dark";
-  const tileUrl = dark
-    ? "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
-    : "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png";
+  const tiles = tileConfig(theme);
 
   return (
     <div className={`relative w-full ${className}`}>
@@ -56,7 +54,7 @@ export default function MiniMap({
         attributionControl={false}
         className={`h-full w-full ${dark ? "bg-[#0a0a0a]" : "bg-[#eef1f4]"}`}
       >
-        <TileLayer url={tileUrl} subdomains="abcd" maxZoom={19} />
+        <TileLayer {...tiles} />
         {locations.map((loc) => (
           <Marker key={loc.id} position={loc.coords} icon={miniPin()} interactive={false} />
         ))}

@@ -9,8 +9,9 @@ import {
   MAP_DEFAULT_ZOOM,
   type IcarosLocation,
 } from "@/lib/mapa/locations";
+import { tileConfig, type MapTheme } from "@/lib/mapa/tiles";
 
-export type MapTheme = "light" | "dark";
+export type { MapTheme };
 
 /** Zestaw klas zależny od motywu - lista placówek i nakładki na mapie. */
 function themeTokens(theme: MapTheme) {
@@ -40,9 +41,6 @@ function themeTokens(theme: MapTheme) {
       : "border-foreground/10 bg-white/85 text-foreground",
     overlayLabel: dark ? "text-white/45" : "text-foreground/45",
     mapBg: dark ? "bg-[#0a0a0a]" : "bg-[#eef1f4]",
-    tileUrl: dark
-      ? "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
-      : "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
   };
 }
 
@@ -141,6 +139,7 @@ export default function MapCanvas({
   theme?: MapTheme;
 }) {
   const t = themeTokens(theme);
+  const tiles = tileConfig(theme);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const markerRefs = useRef<Record<string, L.Marker | null>>({});
 
@@ -229,12 +228,7 @@ export default function MapCanvas({
           scrollWheelZoom={false}
           className={`h-full w-full ${t.mapBg}`}
         >
-          <TileLayer
-            url={t.tileUrl}
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>'
-            subdomains="abcd"
-            maxZoom={19}
-          />
+          <TileLayer {...tiles} />
           {locations.map((loc) => (
             <Marker
               key={loc.id}

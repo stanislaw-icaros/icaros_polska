@@ -202,3 +202,14 @@ input[type="range"].premium-slider::-moz-range-thumb {
   border: none;
   box-shadow: 0 0 0 2px #ffffff, 0 0 0 3px rgba(0, 0, 0, 0.12);
 }
+
+/* Podkład mapy bez klucza CARTO: standardowe kafelki OSM sprowadzone filtrem
+   do szarej palety strony. Po ustawieniu NEXT_PUBLIC_CARTO_API_KEY klasy nie są
+   już nakładane - patrz src/lib/mapa/tiles.ts. */
+.map-tiles-light {
+  filter: grayscale(1) contrast(0.88) brightness(1.08);
+}
+
+.map-tiles-dark {
+  filter: grayscale(1) invert(1) brightness(0.78) contrast(1.12);
+}
