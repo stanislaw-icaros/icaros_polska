@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import HowItWorks from "@/components/HowItWorks";
 import VideoShowcase from "@/components/VideoShowcase";
+import NewsletterStrip from "@/components/NewsletterStrip";
 
 export const metadata: Metadata = {
   title: "Jak to działa | ICAROS Polska",
@@ -14,6 +15,7 @@ export default function RozwiazaniaPage() {
     <>
       <HowItWorks />
       <VideoShowcase />
+      <NewsletterStrip />
     </>
   );
 }

@@ -7,6 +7,8 @@ type ConsentFieldsProps = {
   onMarketingConsentChange?: (value: boolean) => void;
   /** Ukryj zgodę marketingową - np. w krokach lejka, gdzie nie zbieramy adresu e-mail. */
   showMarketing?: boolean;
+  /** Treść zgody wymaganej - inna np. przy zapisie na newsletter. */
+  dataConsentText?: string;
   tone?: "light" | "dark";
   className?: string;
 };
@@ -22,6 +24,7 @@ export default function ConsentFields({
   marketingConsent = false,
   onMarketingConsentChange,
   showMarketing = true,
+  dataConsentText = "Wyrażam zgodę na przetwarzanie danych.",
   tone = "dark",
   className = "",
 }: ConsentFieldsProps) {
@@ -43,7 +46,7 @@ export default function ConsentFields({
           className="mt-[2px] shrink-0 accent-brand-orange"
         />
         <span>
-          Wyrażam zgodę na przetwarzanie danych.{" "}
+          {dataConsentText}{" "}
           <Link
             href="/polityka-prywatnosci"
             target="_blank"

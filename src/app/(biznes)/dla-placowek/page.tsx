@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import UseCases, { type UseCaseItem } from "@/components/UseCases";
+import NewsletterStrip from "@/components/NewsletterStrip";
 
 export const metadata: Metadata = {
   title: "Zastosowania dla placówek | ICAROS Polska",
@@ -45,12 +46,15 @@ const businessCases: UseCaseItem[] = [
 
 export default function ZastosowaniaBiznesPage() {
   return (
-    <UseCases
-      variant="business"
-      eyebrow="Zastosowania"
-      title="Dla jakich placówek jest ICAROS?"
-      intro="Nasze rozwiązania wspierają placówki, które stawiają na nowoczesną rehabilitację, jakość usług i przewagę konkurencyjną."
-      items={businessCases}
-    />
+    <>
+      <UseCases
+        variant="business"
+        eyebrow="Zastosowania"
+        title="Dla jakich placówek jest ICAROS?"
+        intro="Nasze rozwiązania wspierają placówki, które stawiają na nowoczesną rehabilitację, jakość usług i przewagę konkurencyjną."
+        items={businessCases}
+      />
+      <NewsletterStrip variant="dark" />
+    </>
   );
 }

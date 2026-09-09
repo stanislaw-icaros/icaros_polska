@@ -29,6 +29,7 @@ const footerLinks = {
       { label: "Lokalizacje w Polsce", href: "/mapa" },
       { label: "ICAROS na świecie", href: "/icaros-na-swiecie" },
       { label: "Raport", href: "/raport" },
+      { label: "Newsletter", href: "/newsletter" },
     ],
   },
 };

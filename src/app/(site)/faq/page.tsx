@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import FAQ from "@/components/FAQ";
+import NewsletterStrip from "@/components/NewsletterStrip";
 
 export const metadata: Metadata = {
   title: "FAQ / Pytania | ICAROS Polska",
@@ -8,5 +9,10 @@ export const metadata: Metadata = {
 };
 
 export default function FaqPage() {
-  return <FAQ audience="patient" />;
+  return (
+    <>
+      <FAQ audience="patient" />
+      <NewsletterStrip />
+    </>
+  );
 }
