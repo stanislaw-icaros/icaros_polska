@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
@@ -22,20 +22,27 @@ const deviceChildren = (base: string): NavLink[] => [
   ...products.map((p) => ({ href: `${base}/${p.slug}`, label: p.name })),
 ];
 
-/** Lokalizacje rozbite na Polskę i zagranicę, żeby nie wydłużać paska nawigacji. */
-const locationChildren = (mapHref: string, worldHref: string): NavLink[] => [
-  { href: mapHref, label: "Mapa w Polsce" },
-  { href: worldHref, label: "ICAROS na świecie" },
-];
-
+/**
+ * Pytania, lokalizacje i zapisy schowane pod jedną pozycją "Zasoby" - ten sam
+ * podział co w stopce. Dzięki temu pasek mieści się na laptopie 1280 px razem
+ * z przełącznikiem stref i przyciskiem CTA, zamiast łamać się na dwie linie.
+ */
 const patientNav: NavEntry[] = [
   { href: "/jak-to-dziala", label: "Jak to działa" },
   { label: "Urządzenia", children: deviceChildren("/produkty") },
   { href: "/zastosowania", label: "Dla kogo" },
   { href: "/efektywnosc", label: "Efekty i badania" },
-  { href: "/faq", label: "FAQ/Pytania" },
-  { label: "Lokalizacje", children: locationChildren("/mapa", "/icaros-na-swiecie") },
-  { href: "/raport", label: "Raport" },
+  {
+    label: "Zasoby",
+    align: "right",
+    children: [
+      { href: "/faq", label: "FAQ / Pytania" },
+      { href: "/mapa", label: "Mapa w Polsce" },
+      { href: "/icaros-na-swiecie", label: "ICAROS na świecie" },
+      { href: "/raport", label: "Raport" },
+      { href: "/newsletter", label: "Newsletter" },
+    ],
+  },
   { href: "/kontakt", label: "Kontakt" },
 ];
 
@@ -45,10 +52,15 @@ const businessNav: NavEntry[] = [
   { label: "Urządzenia", children: deviceChildren("/urzadzenia") },
   { href: "/dla-placowek", label: "Zastosowania" },
   {
-    label: "Lokalizacje",
-    children: locationChildren("/lokalizacje", "/icaros-na-swiecie-partner"),
+    label: "Zasoby",
+    align: "right",
+    children: [
+      { href: "/pytania", label: "FAQ / Pytania" },
+      { href: "/lokalizacje", label: "Lokalizacje w Polsce" },
+      { href: "/icaros-na-swiecie-partner", label: "ICAROS na świecie" },
+      { href: "/newsletter-partner", label: "Newsletter" },
+    ],
   },
-  { href: "/pytania", label: "FAQ/Pytania" },
   { href: "/kontakt-partner", label: "Kontakt" },
 ];
 
@@ -68,7 +80,7 @@ function NavItemLink({
   return (
     <Link
       href={href}
-      className={`group relative text-[13px] font-medium transition-colors duration-500 tracking-[0.01em] ${
+      className={`group relative whitespace-nowrap text-[13px] font-medium transition-colors duration-500 tracking-[0.01em] ${
         active ? linkActive : linkBase
       }`}
     >
@@ -99,10 +111,6 @@ function NavDropdown({
   const active = group.children.some((c) => c.href === pathname);
   const alignRight = group.align === "right";
 
-  useEffect(() => {
-    setOpen(false);
-  }, [pathname]);
-
   return (
     <div
       className="relative"
@@ -113,7 +121,7 @@ function NavDropdown({
         type="button"
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
-        className={`group relative flex items-center gap-1 text-[13px] font-medium transition-colors duration-500 tracking-[0.01em] ${
+        className={`group relative flex items-center gap-1 whitespace-nowrap text-[13px] font-medium transition-colors duration-500 tracking-[0.01em] ${
           active || open ? linkActive : linkBase
         }`}
       >
@@ -153,6 +161,7 @@ function NavDropdown({
                     <Link
                       key={c.href}
                       href={c.href}
+                      onClick={() => setOpen(false)}
                       className={`flex items-center justify-between gap-3 border-b px-5 py-3 text-[13px] font-semibold transition-colors duration-300 ${
                         dark ? "border-white/10" : "border-foreground/[0.08]"
                       } text-brand-orange hover:text-brand-orange-light ${
@@ -170,6 +179,7 @@ function NavDropdown({
                   <Link
                     key={c.href}
                     href={c.href}
+                    onClick={() => setOpen(false)}
                     className={`block px-5 py-3 text-[13px] font-medium transition-colors duration-300 ${
                       dark
                         ? `${childActive ? "text-white bg-white/[0.06]" : "text-white/60 hover:text-white hover:bg-white/[0.05]"}`
@@ -199,7 +209,6 @@ export default function Navigation({
 
   const business = variant === "business";
   const navEntries = business ? businessNav : patientNav;
-  const mobileLinks: NavLink[] = navEntries.flatMap((e) => (isGroup(e) ? e.children : [e]));
   const solid = business || scrolled || pathname !== "/";
 
   useEffect(() => {
@@ -227,11 +236,18 @@ export default function Navigation({
   const linkActive = business ? "text-white" : "text-foreground";
   const barColor = business ? "bg-white" : "bg-foreground";
 
+  const mobileBorder = business ? "border-white/[0.08]" : "border-foreground/[0.06]";
+  const mobileTop = business ? "text-white" : "text-foreground";
+  const mobileMuted = business ? "text-white/40" : "text-foreground/35";
+  const mobileChild = business
+    ? "text-white/70 hover:text-white"
+    : "text-foreground/60 hover:text-foreground";
+
   return (
     <>
       <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ${navBg}`}>
         <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
-          <div className="flex items-center justify-between h-18 lg:h-24">
+          <div className="flex items-center justify-between gap-6 h-18 lg:h-24">
             <div className="flex items-center gap-4 shrink-0">
               <Link href={business ? "/komercjalizacja" : "/"} className="relative shrink-0">
                 <Image
@@ -239,7 +255,7 @@ export default function Navigation({
                   alt="ICAROS"
                   width={140}
                   height={28}
-                  className={`h-6 lg:h-7 w-auto ${business ? "invert" : ""}`}
+                  className={`h-6 2xl:h-7 w-auto ${business ? "invert" : ""}`}
                   priority
                 />
               </Link>
@@ -256,7 +272,7 @@ export default function Navigation({
               </div>
             </div>
 
-            <div className="hidden xl:flex items-center gap-5">
+            <div className="hidden xl:flex items-center gap-4 2xl:gap-6">
               {navEntries.map((entry) =>
                 isGroup(entry) ? (
                   <NavDropdown
@@ -279,11 +295,12 @@ export default function Navigation({
               )}
             </div>
 
-            <div className={`${business ? "hidden xl:flex" : "hidden 2xl:flex"} items-center`}>
+            {/* Po odchudzeniu paska prawa kolumna mieści się już na 1280 px w obu strefach. */}
+            <div className="hidden xl:flex items-center">
               {business ? (
                 <a
                   href="#kontakt"
-                  className="text-[13px] font-semibold text-white px-7 py-3 transition-all duration-500 tracking-[0.02em] hover:opacity-90"
+                  className="whitespace-nowrap text-[13px] font-semibold text-white px-6 py-3 transition-all duration-500 tracking-[0.02em] hover:opacity-90"
                   style={{ background: "linear-gradient(135deg, #ff6600, #ff7b1f)" }}
                 >
                   Umów prezentację
@@ -336,24 +353,45 @@ export default function Navigation({
                   variant={business ? "dark" : "light"}
                 />
               </div>
-              {mobileLinks.map((link, i) => (
+              {/* Grupy zostają grupami także na telefonie - płaska lista wszystkich
+                  podstron rozciągała menu na kilka ekranów. */}
+              {navEntries.map((entry, i) => (
                 <motion.div
-                  key={link.href}
+                  key={isGroup(entry) ? entry.label : entry.href}
                   initial={{ opacity: 0, x: -16 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: i * 0.04, duration: 0.4 }}
+                  transition={{ delay: i * 0.05, duration: 0.4 }}
+                  className={`border-b ${mobileBorder}`}
                 >
-                  <Link
-                    href={link.href}
-                    onClick={() => setMobileOpen(false)}
-                    className={`block text-[24px] font-medium py-4 tracking-[-0.02em] border-b ${
-                      business
-                        ? "text-white border-white/[0.08]"
-                        : "text-foreground border-foreground/[0.06]"
-                    }`}
-                  >
-                    {link.label}
-                  </Link>
+                  {isGroup(entry) ? (
+                    <div className="py-5">
+                      <p
+                        className={`text-[11px] font-semibold uppercase tracking-[0.22em] ${mobileMuted}`}
+                      >
+                        {entry.label}
+                      </p>
+                      <div className="mt-2 grid grid-cols-2 gap-x-6">
+                        {entry.children.map((child) => (
+                          <Link
+                            key={child.href}
+                            href={child.href}
+                            onClick={() => setMobileOpen(false)}
+                            className={`py-2 text-[15px] transition-colors duration-300 ${mobileChild}`}
+                          >
+                            {child.label}
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  ) : (
+                    <Link
+                      href={entry.href}
+                      onClick={() => setMobileOpen(false)}
+                      className={`block py-4 text-[22px] font-medium tracking-[-0.02em] ${mobileTop}`}
+                    >
+                      {entry.label}
+                    </Link>
+                  )}
                 </motion.div>
               ))}
             </div>
