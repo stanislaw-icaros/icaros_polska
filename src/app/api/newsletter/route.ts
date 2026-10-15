@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { subscribeToNewsletter } from "@/lib/email/audience";
+import { sendNewsletterWelcomeEmail } from "@/lib/email/newsletterWelcome";
 import { evaluateSubmission, getClientIp, isRateLimited } from "@/lib/antispam";
 
 type NewsletterPayload = {
@@ -61,6 +62,17 @@ export async function POST(request: Request) {
       return NextResponse.json(
         { success: false, error: "Zapis jest chwilowo niedostępny. Spróbuj ponownie później." },
         { status: 503 }
+      );
+    }
+
+    // Potwierdzenie zapisu. Nieudana wysyłka nie unieważnia zapisu - kontakt
+    // jest już na liście, więc błąd tylko logujemy.
+    try {
+      await sendNewsletterWelcomeEmail({ to: email, firstName });
+    } catch (emailError: unknown) {
+      console.error(
+        "Newsletter welcome email (Resend) failed:",
+        emailError instanceof Error ? emailError.message : emailError
       );
     }
 

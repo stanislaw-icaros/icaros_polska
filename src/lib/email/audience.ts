@@ -88,3 +88,29 @@ export async function subscribeToNewsletter(
   if (error) throw new Error(error.message);
   return { status: "added" };
 }
+
+/**
+ * Wypisanie z listy: kontakt zostaje w Resend, ale z `unsubscribed: true`,
+ * czyli nie dostaje już broadcastów. Adresu, którego nie ma na liście,
+ * nie trzeba wypisywać - zwracamy wtedy `missing` i to też jest sukces
+ * z punktu widzenia osoby klikającej w link.
+ */
+export async function unsubscribeFromNewsletter(
+  email: string
+): Promise<{ status: "unsubscribed" | "missing" | "skipped" }> {
+  const config = getConfig();
+  if (!config) return { status: "skipped" };
+
+  const resend = new Resend(config.apiKey);
+  const { error } = await resend.contacts.update({
+    email,
+    audienceId: config.audienceId,
+    unsubscribed: true,
+  });
+  if (error) {
+    if (error.name === "not_found") return { status: "missing" };
+    throw new Error(error.message);
+  }
+
+  return { status: "unsubscribed" };
+}

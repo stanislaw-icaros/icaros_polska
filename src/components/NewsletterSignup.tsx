@@ -100,9 +100,10 @@ export default function NewsletterSignup({
           Adres jest na liście
         </h2>
         <p className={`mt-3 text-[14px] leading-[1.75] ${t.body}`}>
-          Napiszemy, kiedy będzie konkretny powód: zaproszenie na targi, termin
-          testów w placówce albo nowe wyniki badań. Wiadomości przychodzą
-          z&nbsp;adresu kontakt@icaros.com.pl, warto go dodać do kontaktów.
+          Potwierdzenie poszło na podany adres. Napiszemy, kiedy będzie konkretny
+          powód: zaproszenie na targi, termin testów w placówce albo nowe wyniki
+          badań. Wiadomości przychodzą z&nbsp;adresu kontakt@icaros.com.pl, warto
+          go dodać do kontaktów.
         </p>
       </div>
     );
