@@ -5,6 +5,8 @@ import {
   dealUrl,
   findPerson,
   getEnv,
+  OWNER_A,
+  OWNER_B,
   ownerEmails,
   PIPELINE_ID,
   resolveOrganization,
@@ -22,8 +24,19 @@ import { etykietaPelna } from "@/lib/kalendarz/czas";
  * na wybraną godzinę, przypisane do handlowca, który tę rozmowę prowadzi.
  */
 
+/**
+ * Identyfikatory handlowców w Pipedrive. Bierzemy je z tych samych stałych,
+ * z których korzystają formularze kontaktowe, bo one mają wpisane wartości
+ * domyślne. Czytanie samej zmiennej środowiskowej zostawiało kalendarz bez
+ * właściciela sprawy i wywracało cały zapis rezerwacji.
+ */
+const ID_W_PIPEDRIVE: Record<string, number> = {
+  PIPEDRIVE_OWNER_A_ID: OWNER_A,
+  PIPEDRIVE_OWNER_B_ID: OWNER_B,
+};
+
 export function idPipedrive(osoba: Handlowiec): number | undefined {
-  const wartosc = Number(getEnv(osoba.zmiennaPipedrive));
+  const wartosc = ID_W_PIPEDRIVE[osoba.zmiennaPipedrive];
   return Number.isFinite(wartosc) && wartosc > 0 ? wartosc : undefined;
 }
 
