@@ -26,6 +26,9 @@ export const HORYZONT_DNI = 21;
 /** Maksymalna liczba rozmów jednej osoby w jednym dniu. 0 wyłącza limit. */
 export const LIMIT_ROZMOW_NA_DZIEN = 6;
 
+/** Ile minut przed rozmową klient dostaje przypomnienie. 0 wyłącza. */
+export const PRZYPOMNIENIE_MIN_PRZED = 10;
+
 /**
  * Godziny pracy w czasie lokalnym, dzień tygodnia 1 = poniedziałek.
  * Można podać kilka okien w dniu, np. [["09:00", "12:00"], ["13:00", "16:00"]].

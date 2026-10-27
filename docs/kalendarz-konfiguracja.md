@@ -104,13 +104,17 @@ zaczyna się od kliknięcia: od otwarcia linku do kliknięcia „Zezwól” jest
 
 ## 5. Przypomnienia
 
-Plik `vercel.json` uruchamia codziennie o 5:00 UTC zadanie
-`/api/kalendarz/przypomnienia`. Wysyła ono maile do osób, które mają rozmowę
-tego samego dnia. Informacja o wysłanym przypomnieniu zapisuje się w samym
-wydarzeniu, więc nikt nie dostanie go dwa razy.
+Przypomnienie dla klienta jest planowane w chwili rezerwacji. Resend przyjmuje
+maila z godziną wysyłki i trzyma go w kolejce do `PRZYPOMNIENIE_MIN_PRZED`
+minut przed rozmową (domyślnie 10). Zero w tym ustawieniu wyłącza
+przypomnienia. Identyfikator maila zapisuje się w wydarzeniu w Google, dzięki
+czemu odwołanie terminu kasuje też przypomnienie.
 
-Na planie Hobby w Vercel zadanie może chodzić raz dziennie. Na planie Pro można
-ustawić częściej, np. co godzinę, wtedy przypomnienie trafia bliżej rozmowy.
+Plik `vercel.json` uruchamia dodatkowo codziennie o 5:00 UTC zadanie
+`/api/kalendarz/przypomnienia`. To zapas na wypadek, gdyby zaplanowanie się nie
+udało: zadanie bierze tylko te rozmowy, które nie mają przypomnienia w kolejce.
+Informacja o wysłanym przypomnieniu zapisuje się w samym wydarzeniu, więc nikt
+nie dostanie go dwa razy.
 
 ## 6. Co blokuje terminy
 

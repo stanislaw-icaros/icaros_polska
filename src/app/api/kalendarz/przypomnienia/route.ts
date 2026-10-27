@@ -6,13 +6,17 @@ import { pobierzUmowioneRozmowy } from "@/lib/kalendarz/terminy";
 import { wyslijPrzypomnienieOrozmowie } from "@/lib/email/rozmowa";
 
 /**
- * Przypomnienia o rozmowach zaplanowanych na dzisiaj.
+ * Zapasowe przypomnienia o rozmowach zaplanowanych na dzisiaj.
  *
- * Uruchamia to zadanie cron z vercel.json. Informacja o wysłanym przypomnieniu
- * ląduje w samym wydarzeniu, więc ponowne wywołanie nie wyśle drugiego maila.
+ * Normalnie przypomnienie czeka w kolejce Resend od chwili rezerwacji i
+ * wychodzi na kilka minut przed rozmową. To zadanie cron łapie tylko te
+ * rezerwacje, przy których zaplanowanie się nie udało. Informacja o wysłanym
+ * przypomnieniu ląduje w samym wydarzeniu, więc ponowne wywołanie nie wyśle
+ * drugiego maila.
  */
 
 const ZNACZNIK_WYSLANO = "przypomnienieWyslane";
+const ZNACZNIK_ZAPLANOWANO = "przypomnienieId";
 
 function autoryzacjaOk(request: Request): boolean {
   const sekret = process.env.CRON_SECRET?.trim();
@@ -41,7 +45,7 @@ export async function GET(request: Request) {
 
     for (const { osoba, wpis } of rozmowy) {
       const email = wpis.wlasciwosci.klientEmail;
-      if (!email || wpis.wlasciwosci[ZNACZNIK_WYSLANO]) {
+      if (!email || wpis.wlasciwosci[ZNACZNIK_WYSLANO] || wpis.wlasciwosci[ZNACZNIK_ZAPLANOWANO]) {
         pominiete += 1;
         continue;
       }

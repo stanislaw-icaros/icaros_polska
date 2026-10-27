@@ -5,7 +5,7 @@ import { odczytajBilet } from "@/lib/kalendarz/podpis";
 import { wyczyscPamiec } from "@/lib/kalendarz/terminy";
 import { SCIEZKA_KALENDARZA } from "@/lib/kalendarz/rezerwacja";
 import { odnotujOdwolanie } from "@/lib/pipedrive/rozmowa";
-import { wyslijOdwolanieRozmowy } from "@/lib/email/rozmowa";
+import { anulujPrzypomnienie, wyslijOdwolanieRozmowy } from "@/lib/email/rozmowa";
 import { SITE_URL } from "@/lib/email/unsubscribe";
 
 /** Odwołanie terminu z podpisanego linku w mailu. */
@@ -50,6 +50,11 @@ export async function POST(request: Request) {
 
     await usunRozmowe(osoba, bilet.w);
     wyczyscPamiec();
+
+    // Przypomnienie czeka w kolejce Resend, trzeba je skasować, inaczej
+    // przyjdzie do kogoś, kto nie ma już umówionej rozmowy.
+    const przypomnienie = wpis?.wlasciwosci.przypomnienieId;
+    if (przypomnienie) await anulujPrzypomnienie(przypomnienie);
 
     const imie = wpis?.wlasciwosci.klientImie || "Klient";
     await odnotujOdwolanie({ dealId: bilet.d, imie, termin: start, handlowiec: osoba });

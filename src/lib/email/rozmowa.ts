@@ -166,11 +166,19 @@ export async function wyslijPowiadomienieOrozmowie(
   });
 }
 
-/** Przypomnienie wysyłane w dniu rozmowy. */
-export async function wyslijPrzypomnienieOrozmowie(dane: DaneMailaRozmowy): Promise<void> {
+/**
+ * Przypomnienie o rozmowie.
+ *
+ * Z `zaplanujNa` mail nie wychodzi od razu, tylko czeka w kolejce Resend do
+ * podanej godziny. Zwrócony identyfikator pozwala go potem skasować, gdyby
+ * termin został odwołany.
+ */
+export async function wyslijPrzypomnienieOrozmowie(
+  dane: DaneMailaRozmowy & { zaplanujNa?: Date }
+): Promise<string | undefined> {
   const resend = klient();
   const from = nadawca();
-  if (!resend || !from || !dane.email) return;
+  if (!resend || !from || !dane.email) return undefined;
 
   const html = kopertaHtml({
     podglad: `Dzisiaj o ${etykietaGodziny(dane.start)} dzwonimy na numer ${dane.telefon}.`,
@@ -193,13 +201,31 @@ export async function wyslijPrzypomnienieOrozmowie(dane: DaneMailaRozmowy): Prom
       : undefined,
   });
 
-  await resend.emails.send({
+  const { data, error } = await resend.emails.send({
     from,
     to: dane.email,
     subject: `Przypomnienie o rozmowie dzisiaj o ${etykietaGodziny(dane.start)}`,
     html,
     replyTo: ADRES_KONTAKTOWY,
+    ...(dane.zaplanujNa ? { scheduledAt: dane.zaplanujNa.toISOString() } : {}),
   });
+
+  if (error) {
+    console.error("[kalendarz] przypomnienie nie poszlo do Resend:", error.message);
+    return undefined;
+  }
+  return data?.id;
+}
+
+/** Kasuje przypomnienie czekające w kolejce, np. po odwołaniu terminu. */
+export async function anulujPrzypomnienie(id: string): Promise<void> {
+  const resend = klient();
+  if (!resend) return;
+
+  const { error } = await resend.emails.cancel(id);
+  if (error) {
+    console.error(`[kalendarz] nie udalo sie anulowac przypomnienia ${id}:`, error.message);
+  }
 }
 
 /** Informacja dla klienta, że jego rozmowa została odwołana. */

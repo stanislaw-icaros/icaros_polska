@@ -1,4 +1,9 @@
-import { DLUGOSC_ROZMOWY_MIN, handlowiec, opisZrodla } from "./config";
+import {
+  DLUGOSC_ROZMOWY_MIN,
+  PRZYPOMNIENIE_MIN_PRZED,
+  handlowiec,
+  opisZrodla,
+} from "./config";
 import { etykietaPelna } from "./czas";
 import { utworzRozmowe, zaktualizujRozmowe } from "./google";
 import { zbudujBilet } from "./podpis";
@@ -7,6 +12,7 @@ import { rozpoznajLeada, zapiszRozmowe } from "@/lib/pipedrive/rozmowa";
 import {
   wyslijPotwierdzenieRozmowy,
   wyslijPowiadomienieOrozmowie,
+  wyslijPrzypomnienieOrozmowie,
 } from "@/lib/email/rozmowa";
 import { SITE_URL } from "@/lib/email/unsubscribe";
 
@@ -205,6 +211,41 @@ export async function umowRozmowe(zgloszenie: Zgloszenie): Promise<WynikRezerwac
       ? linkOdwolania({ osoba: osoba.klucz, idWydarzenia: wydarzenie.id, start, dealId })
       : link;
 
+  const daneMaila = {
+    imie,
+    telefon,
+    email,
+    firma,
+    temat,
+    start,
+    koniec,
+    handlowiec: osoba,
+    dlugoscMin: DLUGOSC_ROZMOWY_MIN,
+    zrodlo,
+    linkOdwolania: pelnyLink,
+    linkKalendarza: wydarzenie.link,
+    idWydarzenia: wydarzenie.id,
+  };
+
+  // Przypomnienie nie czeka na zadanie cron, tylko od razu ląduje w kolejce
+  // Resend na kilka minut przed rozmową. Identyfikator trzymamy w wydarzeniu,
+  // żeby dało się je skasować razem z odwołanym terminem.
+  const kiedyPrzypomniec = new Date(start.getTime() - PRZYPOMNIENIE_MIN_PRZED * 60_000);
+  let przypomnienieId: string | undefined;
+  if (email && PRZYPOMNIENIE_MIN_PRZED > 0 && kiedyPrzypomniec.getTime() > Date.now()) {
+    try {
+      przypomnienieId = await wyslijPrzypomnienieOrozmowie({
+        ...daneMaila,
+        zaplanujNa: kiedyPrzypomniec,
+      });
+    } catch (blad) {
+      console.error(
+        "[kalendarz] nie udalo sie zaplanowac przypomnienia:",
+        blad instanceof Error ? blad.message : blad
+      );
+    }
+  }
+
   try {
     await zaktualizujRozmowe(osoba, wydarzenie.id, {
       opis: opisWydarzenia({
@@ -221,6 +262,7 @@ export async function umowRozmowe(zgloszenie: Zgloszenie): Promise<WynikRezerwac
       wlasciwosci: {
         ...(dealId !== undefined ? { dealId: String(dealId) } : {}),
         ...(pelnyLink ? { linkOdwolania: pelnyLink } : {}),
+        ...(przypomnienieId ? { przypomnienieId } : {}),
       },
     });
   } catch (blad) {
@@ -229,22 +271,6 @@ export async function umowRozmowe(zgloszenie: Zgloszenie): Promise<WynikRezerwac
       blad instanceof Error ? blad.message : blad
     );
   }
-
-  const daneMaila = {
-    imie,
-    telefon,
-    email,
-    firma,
-    temat,
-    start,
-    koniec,
-    handlowiec: osoba,
-    dlugoscMin: DLUGOSC_ROZMOWY_MIN,
-    zrodlo,
-    linkOdwolania: pelnyLink,
-    linkKalendarza: wydarzenie.link,
-    idWydarzenia: wydarzenie.id,
-  };
 
   await Promise.allSettled([
     wyslijPotwierdzenieRozmowy(daneMaila),
