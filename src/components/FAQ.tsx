@@ -4,6 +4,7 @@ import { useState, type ReactNode } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+import { trackMapClick } from "@/lib/analytics/track";
 
 type QA = { question: string; answer: ReactNode };
 type Category = { label: string; items: QA[] };
@@ -48,6 +49,7 @@ const practicePatient: Category = {
           aktualne miejsca zobaczysz na{" "}
           <Link
             href="/mapa"
+            onClick={() => trackMapClick("faq")}
             className="font-semibold text-foreground underline decoration-brand-orange/60 underline-offset-4 transition-colors hover:decoration-brand-orange"
           >
             mapie lokalizacji

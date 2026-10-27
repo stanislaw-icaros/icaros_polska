@@ -145,6 +145,10 @@ export default function PrivacyPolicyPage() {
             oraz prowadzenia listy mailingowej (przy zgodzie marketingowej);
           </li>
           <li>
+            <strong>Google Analytics 4</strong> - narzędzie analityczne mierzące odsłony podstron, źródła ruchu
+            i kliknięcia w kluczowe elementy serwisu; uruchamiane wyłącznie po wyrażeniu zgody analitycznej;
+          </li>
+          <li>
             <strong>Meta Pixel</strong> oraz <strong>Conversions API</strong> - narzędzia marketingowe służące do
             pomiaru skuteczności kampanii reklamowych, remarketingu i atrybucji konwersji w ekosystemie Meta;
           </li>

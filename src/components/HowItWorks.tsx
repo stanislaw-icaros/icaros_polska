@@ -4,7 +4,8 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
-import { PersonStanding, Gamepad2, LineChart, ShieldCheck, HeartPulse, Sparkles, Brain } from "lucide-react";
+import { PersonStanding, Gamepad2, LineChart, ShieldCheck, HeartPulse, Sparkles, Brain, Map as MapIcon } from "lucide-react";
+import { trackMapClick } from "@/lib/analytics/track";
 import type { ReactNode } from "react";
 
 const steps: { number: string; title: string; description: string; icon: ReactNode }[] = [
@@ -188,8 +189,10 @@ export default function HowItWorks() {
             </Link>
             <Link
               href="/mapa"
+              onClick={() => trackMapClick("jak_to_dziala")}
               className="inline-flex items-center gap-2 px-7 py-3.5 text-[14px] font-semibold text-foreground underline decoration-foreground/20 underline-offset-4 transition-colors hover:decoration-foreground/60"
             >
+              <MapIcon className="h-[17px] w-[17px] shrink-0" strokeWidth={2} />
               Gdzie tego spróbować
             </Link>
             <Link

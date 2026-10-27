@@ -3,6 +3,9 @@
 import { motion } from "framer-motion";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import VideoEmbed from "@/components/VideoEmbed";
+import Link from "next/link";
+import { Map as MapIcon } from "lucide-react";
+import { trackMapClick } from "@/lib/analytics/track";
 
 export default function VideoShowcase() {
   const { ref, isVisible } = useScrollAnimation();
@@ -45,17 +48,19 @@ export default function VideoShowcase() {
 
           <div className="mt-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <p className="text-[12px] text-foreground/30">
-              ICAROS Polska &middot; film ładuje się z YouTube po kliknięciu
+              ICAROS Polska, film ładuje się z YouTube po kliknięciu
             </p>
-            <a
+            <Link
               href="/mapa"
+              onClick={() => trackMapClick("film")}
               className="group inline-flex items-center gap-2 text-[13px] font-semibold text-foreground/40 hover:text-foreground transition-colors duration-500 tracking-[0.02em]"
             >
+              <MapIcon className="h-4 w-4 shrink-0" strokeWidth={2} />
               Zobacz, gdzie poćwiczysz na ICAROS
               <svg className="w-4 h-4 transition-transform duration-500 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>
-            </a>
+            </Link>
           </div>
         </motion.div>
       </div>

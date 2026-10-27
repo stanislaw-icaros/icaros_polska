@@ -6,7 +6,9 @@ import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import LegalLinks from "@/components/LegalLinks";
 import SocialLinks from "@/components/SocialLinks";
 import { COMPANY_ADDRESS, COMPANY_NAME, DISCLAIMER_MEDICAL_DEVICES, KRS, NIP } from "@/lib/legal";
+import { Map as MapIcon } from "lucide-react";
 import { products } from "@/lib/products";
+import { trackBookingClick, trackContactClick, trackMapClick } from "@/lib/analytics/track";
 
 const footerLinks = {
   rozwiazania: {
@@ -64,6 +66,9 @@ export default function Footer({
             </div>
             <a
               href={patient ? "/kontakt" : "#kontakt"}
+              onClick={() =>
+                patient ? trackContactClick("stopka") : trackBookingClick("stopka")
+              }
               className="group inline-flex items-center gap-3 px-8 py-4 bg-white text-foreground text-[14px] font-semibold hover:bg-white/90 transition-all duration-500 shrink-0"
             >
               {patient ? "Skontaktuj się" : "Umów prezentację"}
@@ -128,8 +133,14 @@ export default function Footer({
                     ) : (
                       <Link
                         href={link.href}
-                        className="text-[13px] text-white/75 hover:text-white transition-colors duration-500"
+                        onClick={() => {
+                          if (link.href === "/mapa") trackMapClick("stopka");
+                        }}
+                        className="inline-flex items-center gap-2 text-[13px] text-white/75 hover:text-white transition-colors duration-500"
                       >
+                        {link.href === "/mapa" && (
+                          <MapIcon className="h-4 w-4 shrink-0" strokeWidth={1.75} />
+                        )}
                         {link.label}
                       </Link>
                     )}

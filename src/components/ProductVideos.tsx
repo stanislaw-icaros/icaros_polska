@@ -8,8 +8,8 @@ import { products } from "@/lib/products";
 
 /**
  * Galeria filmów produktowych (polskie wersje z kanału ICAROS POLSKA).
- * Bierzemy urządzenia z własnym filmem - Circle pomijamy, bo pokazuje
- * filmy Health, Guardian i Cloud, które i tak są tutaj osobno.
+ * Bierzemy urządzenia z własnym filmem - Circle pomijamy, bo zbiera filmy
+ * I.S.T. Board, Health, Guardian i Cloud, które i tak są tutaj osobno.
  *
  * Treść musi działać w obu strefach (pacjent i biznes), więc bez słownictwa
  * sprzedażowego typu "placówka" czy "prezentacja".

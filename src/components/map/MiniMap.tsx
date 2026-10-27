@@ -34,19 +34,34 @@ export default function MiniMap({
   locations,
   theme = "light",
   className = "h-[240px]",
+  zoom = MAP_DEFAULT_ZOOM - 1,
+  fitToMarkers = false,
 }: {
   locations: IcarosLocation[];
   theme?: MapTheme;
   className?: string;
+  /** Domyślnie o stopień dalej niż pełna mapa; większe kafelki potrzebują bliższego kadru. */
+  zoom?: number;
+  /**
+   * Dopasowanie kadru do pinezek zamiast stałego środka i przybliżenia.
+   * Przy wąskich kontenerach (telefon) stały zoom ucina pół Polski.
+   */
+  fitToMarkers?: boolean;
 }) {
   const dark = theme === "dark";
   const tiles = tileConfig(theme);
 
+  const bounds =
+    fitToMarkers && locations.length > 1
+      ? L.latLngBounds(locations.map((loc) => loc.coords))
+      : undefined;
+
   return (
     <div className={`relative w-full ${className}`}>
       <MapContainer
-        center={MAP_DEFAULT_CENTER}
-        zoom={MAP_DEFAULT_ZOOM - 1}
+        {...(bounds
+          ? { bounds, boundsOptions: { padding: [26, 26] as [number, number], maxZoom: MAP_DEFAULT_ZOOM } }
+          : { center: MAP_DEFAULT_CENTER, zoom })}
         scrollWheelZoom={false}
         dragging={false}
         doubleClickZoom={false}

@@ -72,7 +72,7 @@ export type IcarosProduct = {
   /**
    * Filmy prezentujące urządzenie (polskie wersje z kanału ICAROS POLSKA).
    * Jeden film pokazujemy dużym kadrem, kilka - w siatce (tak ma Circle,
-   * który łączy trzy urządzenia i nie ma własnego filmu).
+   * który łączy cztery urządzenia i nie ma własnego filmu).
    */
   videos?: ProductVideo[];
   /** Dodatkowe zdjęcia urządzenia poza głównym kadrem. */
@@ -114,21 +114,21 @@ export const products: IcarosProduct[] = [
     category: "Kompletny system",
     tagline: "Kompletny obieg rehabilitacji w jednym systemie.",
     shortDesc:
-      "Zestaw łączący ICAROS Health, Guardian i Cloud - pełna rehabilitacja na każdym etapie, od treningu w podporze po trening całego ciała.",
+      "Zestaw czterech urządzeń: I.S.T. Board, ICAROS Health, Guardian i Cloud. Pełna rehabilitacja na każdym etapie, od treningu stóp na siedząco po trening całego ciała.",
     longDesc: [
-      "ICAROS Circle to kompleksowy i wysokiej jakości system terapii i treningu, który elastycznie dopasowuje się do potrzeb pacjentów i podopiecznych. Łączy ICAROS Health, ICAROS Guardian i ICAROS Cloud w jeden spójny obieg rehabilitacyjny.",
-      "Prowadzi pacjenta przez kolejne etapy: od treningu mięśni głębokich w podporze, przez dynamiczne ćwiczenia równowagi w pozycji pionowej, po trening całego ciała w fazie po rehabilitacji.",
+      "ICAROS Circle to kompleksowy i wysokiej jakości system terapii i treningu, który elastycznie dopasowuje się do potrzeb pacjentów i podopiecznych. Łączy cztery urządzenia: I.S.T. Board, ICAROS Health, ICAROS Guardian i ICAROS Cloud, w jeden spójny obieg rehabilitacyjny.",
+      "Prowadzi pacjenta przez kolejne etapy: od aktywacji stóp i nóg w pozycji siedzącej, przez trening mięśni głębokich w podporze i dynamiczne ćwiczenia równowagi w pozycji pionowej, po trening całego ciała w fazie po rehabilitacji.",
       "To rozwiązanie dla placówek, które chcą oferować nowoczesną terapię w pełnym zakresie, z jedną aplikacją do obsługi wszystkich urządzeń.",
     ],
     focusAreas: ["Kontrola poznawczo-ruchowa", "Wydolność krążeniowo-oddechowa", "Kontrola postawy"],
     outcomes: [
-      "Pełny obieg terapii w jednym systemie",
+      "Cztery urządzenia w jednym obiegu terapii",
       "Trening na każdym etapie rehabilitacji",
       "Jedna aplikacja do wszystkich urządzeń",
       "Elastyczne dopasowanie do pacjenta",
     ],
     features: [
-      "Kompletny zestaw treningowy ICAROS",
+      "Cztery urządzenia ICAROS w jednym zestawie",
       "Jedna aplikacja do wszystkich urządzeń",
       "Intuicyjna obsługa",
     ],
@@ -142,11 +142,11 @@ export const products: IcarosProduct[] = [
       "Medical fitness",
     ],
     included: [
-      "ICAROS Health",
-      "ICAROS Guardian",
-      "ICAROS Cloud",
       "ICAROS I.S.T. Board",
-      "Wyposażenie techniczne i dostęp do aplikacji",
+      "ICAROS Health wraz z komputerem i goglami VR",
+      "ICAROS Guardian wraz z iPadem, Apple TV i ekranem",
+      "ICAROS Cloud",
+      "Dostęp do aplikacji ICAROS dla całego zestawu",
     ],
     testimonial: {
       quote:
@@ -155,6 +155,13 @@ export const products: IcarosProduct[] = [
       role: "Kierownik Działu Biomechaniki, IBS Health",
     },
     videos: [
+      {
+        id: "79r28U9c7NM",
+        title: "ICAROS I.S.T. Board",
+        caption: "Aktywacja na siedząco",
+        poster: "/icaros_ist_1.webp",
+        posterAlt: "Kobieta ćwicząca na ICAROS I.S.T. Board w pozycji siedzącej",
+      },
       { id: "tM6JjLU_veQ", title: "ICAROS Health", caption: "Trening wspomagany" },
       { id: "B8WvQh_rFGk", title: "ICAROS Guardian", caption: "Trening równowagi" },
       {
@@ -167,8 +174,12 @@ export const products: IcarosProduct[] = [
     ],
     gallery: [
       {
+        src: "/icaros-circle-zestaw.webp",
+        alt: "Zestaw ICAROS Circle: I.S.T. Board, Guardian, Health i Cloud obok siebie",
+      },
+      {
         src: "/Circle_Raw_photo_display.webp",
-        alt: "Trzy urządzenia ICAROS Circle: Health, Cloud i Guardian obok siebie",
+        alt: "Urządzenia ICAROS Health, Cloud i Guardian ustawione obok siebie",
       },
       {
         src: "/ICAROS-17_0051.webp",
@@ -199,6 +210,11 @@ export const products: IcarosProduct[] = [
     software: [ICAROS_APP],
     sessionSteps: [
       {
+        title: "Aktywacja: I.S.T. Board",
+        description:
+          "Pacjent siedzi i steruje grą ruchem stóp. Deska waży 5 kg, nie wymaga montażu i działa też przy łóżku albo wózku podpórkowym.",
+      },
+      {
         title: "Faza wczesna: ICAROS Health",
         description:
           "Pacjent ćwiczy w pozycji podpartej, z asekuracją i podpórkami. Trening skupia się na mięśniach głębokich i kontroli tułowia.",
@@ -221,6 +237,11 @@ export const products: IcarosProduct[] = [
     ],
     faqs: [
       {
+        question: "Co wchodzi w skład ICAROS Circle?",
+        answer:
+          "Cztery urządzenia: I.S.T. Board, ICAROS Health, ICAROS Guardian i ICAROS Cloud, razem z wyposażeniem technicznym i dostępem do aplikacji ICAROS.",
+      },
+      {
         question: "Czy trzeba kupić wszystkie urządzenia naraz?",
         answer:
           "Nie. Circle to komplet, ale możesz zacząć od jednego urządzenia i rozbudowywać system później. Aplikacja i konta użytkowników pozostają te same.",
@@ -242,8 +263,8 @@ export const products: IcarosProduct[] = [
       "Powierzchnia dla pełnego zestawu ustalana indywidualnie, w zależności od liczby urządzeń. Katalogowo około 650 × 250 cm.",
     technical:
       "Standardowe gniazdko 230 V. Dostęp do internetu przez Wi-Fi. Jedna aplikacja ICAROS do wszystkich urządzeń.",
-    image: "/Full_Icaros_Circle_Display.webp",
-    imageAlt: "ICAROS Circle - kompletny zestaw urządzeń Health, Guardian i Cloud",
+    image: "/icaros-circle-zestaw.webp",
+    imageAlt: "ICAROS Circle - zestaw czterech urządzeń: I.S.T. Board, Guardian, Health i Cloud",
   },
   {
     slug: "health",

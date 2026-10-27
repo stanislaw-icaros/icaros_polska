@@ -17,13 +17,19 @@ const NECESSARY_ONLY: CookieConsentPreferences = {
   externalMedia: false,
 };
 
-type PreferenceKey = "marketing";
+type PreferenceKey = "analytics" | "marketing";
 
 const PREFERENCE_OPTIONS: Array<{
   key: PreferenceKey;
   label: string;
   description: string;
 }> = [
+  {
+    key: "analytics",
+    label: "Analityczne",
+    description:
+      "Google Analytics - liczba wejść na podstrony i kliknięć w mapę oraz kontakt.",
+  },
   {
     key: "marketing",
     label: "Marketingowe",
@@ -82,7 +88,8 @@ export default function CookieConsentGate() {
               {!showDetails ? (
                 <>
                   <p className="mt-1.5 text-[11.5px] leading-[1.5] text-white/80">
-                    Używamy cookies do pomiaru reklam (Meta Pixel).{" "}
+                    Używamy cookies do statystyk odwiedzin (Google Analytics)
+                    i do pomiaru reklam (Meta Pixel).{" "}
                     <Link
                       href="/polityka-cookies"
                       className="text-white/65 underline decoration-white/25 underline-offset-2 transition-colors hover:text-white"

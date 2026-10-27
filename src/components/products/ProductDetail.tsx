@@ -293,7 +293,7 @@ export default function ProductDetail({
             <SectionHeading t={t}>Zobacz w akcji</SectionHeading>
             <p className={`mt-4 max-w-[620px] text-[15px] leading-[1.7] ${t.body}`}>
               {product.videos.length > 1
-                ? `Trzy urządzenia, które składają się na ${product.shortName}, w krótkich filmach.`
+                ? `Urządzenia, które składają się na ${product.shortName}, w krótkich filmach.`
                 : `Krótki film pokazuje, jak wygląda trening na urządzeniu ${product.shortName}.`}
             </p>
 

@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Komercjalizacja from "./Komercjalizacja";
-import NewsletterStrip from "@/components/NewsletterStrip";
 
 export const metadata: Metadata = {
   title: "Komercjalizacja | ICAROS Biznes",
@@ -10,9 +9,6 @@ export const metadata: Metadata = {
 
 export default function KomercjalizacjaPage() {
   return (
-    <>
-      <Komercjalizacja />
-      <NewsletterStrip variant="dark" />
-    </>
+    <Komercjalizacja />
   );
 }

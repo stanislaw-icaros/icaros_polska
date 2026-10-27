@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { Award, Sparkles, Trophy, TrendingUp, Users, ShieldCheck } from "lucide-react";
 import ROICalculator from "@/components/ROICalculator";
+import NewsletterStrip from "@/components/NewsletterStrip";
 
 const arguments_ = [
   {
@@ -109,6 +110,12 @@ export default function Komercjalizacja() {
           </div>
         </div>
       </section>
+
+      {/* Zapis na listę zaraz pod belką argumentów. Niżej w hierarchii niż
+          "Umów prezentację" z paska i sekcji kontaktu, ale wysoko na stronie. */}
+      <div className="relative z-10">
+        <NewsletterStrip variant="dark" form source="komercjalizacja" />
+      </div>
 
       {/* Kalkulator ROI (na jasnej karcie dla czytelności) */}
       <section id="roi" className="relative z-10 px-6 py-20 sm:px-10 lg:px-16 lg:py-28">

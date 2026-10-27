@@ -48,8 +48,9 @@ export default function CookiesPolicyPage() {
         <h3>Analityczne</h3>
         <p>
           Umożliwiają mierzenie ruchu, źródeł odwiedzin, zachowań użytkowników, jakości treści oraz wydajności strony.
-          Obecnie nie korzystamy z narzędzi z tej kategorii; jeżeli zostaną wdrożone w przyszłości, ich użycie będzie
-          uzależnione od Twojej zgody.
+          Do tej kategorii należy <strong>Google Analytics 4</strong>, który uruchamiamy wyłącznie po wyrażeniu zgody
+          analitycznej. Zbieramy w nim między innymi odsłony podstron oraz kliknięcia w mapę placówek, zapis na listę
+          i formularz kontaktowy.
         </p>
 
         <h3>Marketingowe</h3>
@@ -84,6 +85,10 @@ export default function CookiesPolicyPage() {
           <li>
             <strong>Meta Pixel</strong> oraz <strong>Conversions API</strong> - pomiar konwersji, remarketing
             i analiza skuteczności działań reklamowych w ekosystemie Meta;
+          </li>
+          <li>
+            <strong>Google Analytics 4</strong> - statystyka odwiedzin: liczba wejść na poszczególne podstrony,
+            źródła ruchu oraz kliknięcia w kluczowe elementy strony, w tym mapę placówek;
           </li>
           <li>
             <strong>YouTube</strong> - odtwarzanie osadzonych materiałów wideo, co może wiązać się z zapisem cookies

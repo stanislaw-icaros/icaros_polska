@@ -3,6 +3,8 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
+import { ArrowRight, Map as MapIcon } from "lucide-react";
+import { trackMapClick } from "@/lib/analytics/track";
 
 export default function Hero({ locationCount = 8 }: { locationCount?: number }) {
   return (
@@ -44,24 +46,19 @@ export default function Hero({ locationCount = 8 }: { locationCount?: number }) 
             </p>
 
             <div className="mt-10 flex flex-col sm:flex-row gap-4">
+              {/* Ikona mapy zostaje przy etykiecie - przez telefon da się wtedy
+                  powiedzieć "u góry jest przycisk z mapą". */}
               <Link
                 href="/mapa"
+                onClick={() => trackMapClick("hero")}
                 className="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-foreground text-white text-[14px] font-semibold hover:bg-foreground/80 transition-all duration-500 tracking-[0.01em]"
               >
+                <MapIcon className="h-[18px] w-[18px] shrink-0" strokeWidth={2} />
                 Znajdź placówkę
-                <svg
-                  className="w-4 h-4 transition-transform duration-500 group-hover:translate-x-1"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
+                <ArrowRight
+                  className="h-4 w-4 transition-transform duration-500 group-hover:translate-x-1"
                   strokeWidth={2}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M17 8l4 4m0 0l-4 4m4-4H3"
-                  />
-                </svg>
+                />
               </Link>
               <Link
                 href="/jak-to-dziala"
@@ -129,7 +126,7 @@ export default function Hero({ locationCount = 8 }: { locationCount?: number }) 
                   ICAROS Health
                 </div>
                 <div className="text-[12px] text-foreground/40 mt-0.5">
-                  Trening VR &middot; Rehabilitacja &middot; Core
+                  Trening VR, rehabilitacja, core
                 </div>
               </div>
             </motion.div>

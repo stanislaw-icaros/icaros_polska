@@ -1,18 +1,25 @@
 import Hero from "@/components/Hero";
 import TrustBar from "@/components/TrustBar";
+import LocationsTeaser from "@/components/LocationsTeaser";
 import KnowledgeBaseIndex from "@/components/KnowledgeBaseIndex";
 import NewsletterStrip from "@/components/NewsletterStrip";
 import References from "@/components/References";
 import { getLocations } from "@/lib/mapa/getLocations";
 
+/**
+ * Kolejność sekcji odpowiada temu, co ma zobaczyć pacjent: najpierw gdzie
+ * spróbować ICAROS (mapa zaraz pod belką partnerów), potem zapis na listę,
+ * a dopiero dalej baza wiedzy i referencje.
+ */
 export default async function Home() {
-  const locationCount = (await getLocations()).length;
+  const locations = await getLocations();
   return (
     <>
-      <Hero locationCount={locationCount} />
+      <Hero locationCount={locations.length} />
       <TrustBar />
+      <LocationsTeaser locations={locations} />
+      <NewsletterStrip form source="strona-glowna" />
       <KnowledgeBaseIndex />
-      <NewsletterStrip />
       <References />
     </>
   );

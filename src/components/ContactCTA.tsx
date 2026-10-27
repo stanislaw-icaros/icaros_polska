@@ -7,6 +7,7 @@ import LegalLinks from "@/components/LegalLinks";
 import ConsentFields from "@/components/ConsentFields";
 import { DISCLAIMER_MEDICAL_DEVICES } from "@/lib/legal";
 import { trackMetaEvent } from "@/lib/meta/track";
+import { trackEvent } from "@/lib/analytics/track";
 import { useSpamGuard } from "@/hooks/useSpamGuard";
 
 const roleOptions = [
@@ -99,6 +100,9 @@ export default function ContactCTA({
       trackMetaEvent("CompleteRegistration", {
         email: formState.email.trim() || undefined,
         phone: formState.phone.trim() || undefined,
+      });
+      trackEvent("contact_form_submit", {
+        place: business ? "kontakt-biznes" : "kontakt-pacjent",
       });
     } catch (error: unknown) {
       setSubmitError(error instanceof Error ? error.message : "Wystąpił błąd. Spróbuj ponownie.");

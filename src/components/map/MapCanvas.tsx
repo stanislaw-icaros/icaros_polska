@@ -10,6 +10,7 @@ import {
   type IcarosLocation,
 } from "@/lib/mapa/locations";
 import { tileConfig, type MapTheme } from "@/lib/mapa/tiles";
+import { trackEvent, trackMapLocationClick } from "@/lib/analytics/track";
 
 export type { MapTheme };
 
@@ -121,6 +122,7 @@ function LocationPopup({ loc }: { loc: IcarosLocation }) {
           href={loc.url}
           target="_blank"
           rel="noopener noreferrer"
+          onClick={() => trackEvent("map_location_website", { location_name: loc.name, city: loc.city })}
           className="mt-2.5 inline-flex items-center gap-1.5 text-[12px] font-semibold hover:underline"
           style={{ color: "#ff6600" }}
         >
@@ -174,7 +176,10 @@ export default function MapCanvas({
             return (
               <li key={loc.id}>
                 <button
-                  onClick={() => setSelectedId(loc.id)}
+                  onClick={() => {
+                    setSelectedId(loc.id);
+                    trackMapLocationClick(loc.name, loc.city);
+                  }}
                   className={`w-full border-b ${t.itemBorder} px-6 py-5 text-left transition-colors ${
                     active ? t.itemActive : t.itemHover
                   }`}
@@ -237,7 +242,12 @@ export default function MapCanvas({
               ref={(ref) => {
                 markerRefs.current[loc.id] = ref;
               }}
-              eventHandlers={{ click: () => setSelectedId(loc.id) }}
+              eventHandlers={{
+                click: () => {
+                  setSelectedId(loc.id);
+                  trackMapLocationClick(loc.name, loc.city);
+                },
+              }}
             >
               <Popup>
                 <LocationPopup loc={loc} />

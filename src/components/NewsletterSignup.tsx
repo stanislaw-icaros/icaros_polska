@@ -1,17 +1,14 @@
 "use client";
 
-import { useState } from "react";
 import { Check } from "lucide-react";
 import ConsentFields from "@/components/ConsentFields";
-import { useSpamGuard } from "@/hooks/useSpamGuard";
-import { trackMetaEvent } from "@/lib/meta/track";
+import { useNewsletterSignup } from "@/hooks/useNewsletterSignup";
 import { NEWSLETTER_CONSENT_TEXT, NEWSLETTER_FOOTNOTE } from "@/lib/newsletter";
-
-const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 /**
  * Formularz zapisu na listę. Jedno wymagane pole (adres) i jedna zgoda,
- * żeby zapis był kwestią kilku sekund.
+ * żeby zapis był kwestią kilku sekund. Krótsza, jednopolowa wersja do paska
+ * jest w `NewsletterInlineForm` - obie korzystają z tej samej logiki wysyłki.
  */
 export default function NewsletterSignup({
   source = "newsletter",
@@ -22,13 +19,19 @@ export default function NewsletterSignup({
   tone?: "light" | "dark";
   className?: string;
 }) {
-  const [email, setEmail] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [consent, setConsent] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
-  const [done, setDone] = useState(false);
-  const { spamFields, getSpamSignals } = useSpamGuard();
+  const {
+    email,
+    setEmail,
+    firstName,
+    setFirstName,
+    consent,
+    setConsent,
+    isSubmitting,
+    errorMessage,
+    done,
+    spamFields,
+    submit,
+  } = useNewsletterSignup(source);
 
   const dark = tone === "dark";
   const t = {
@@ -44,51 +47,6 @@ export default function NewsletterSignup({
     error: dark ? "text-red-400" : "text-red-600",
     iconBox: dark ? "border-brand-orange/50" : "border-brand-orange/40",
   };
-
-  async function handleSubmit(event: React.FormEvent) {
-    event.preventDefault();
-    if (isSubmitting) return;
-
-    const cleanEmail = email.trim().toLowerCase();
-    if (!EMAIL_PATTERN.test(cleanEmail)) {
-      setErrorMessage("Podaj prawidłowy adres e-mail.");
-      return;
-    }
-    if (!consent) {
-      setErrorMessage("Zaznacz zgodę na otrzymywanie newslettera.");
-      return;
-    }
-
-    setErrorMessage("");
-    setIsSubmitting(true);
-
-    try {
-      const response = await fetch("/api/newsletter", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ...getSpamSignals(),
-          email: cleanEmail,
-          firstName: firstName.trim(),
-          consent,
-          source,
-        }),
-      });
-      const payload = await response.json();
-      if (!response.ok || !payload?.success) {
-        throw new Error(payload?.error || "Nie udało się zapisać adresu.");
-      }
-
-      trackMetaEvent("CompleteRegistration", { email: cleanEmail });
-      setDone(true);
-    } catch (error: unknown) {
-      setErrorMessage(
-        error instanceof Error ? error.message : "Nie udało się zapisać adresu."
-      );
-    } finally {
-      setIsSubmitting(false);
-    }
-  }
 
   if (done) {
     return (
@@ -111,7 +69,7 @@ export default function NewsletterSignup({
 
   return (
     <form
-      onSubmit={handleSubmit}
+      onSubmit={submit}
       noValidate
       className={`border p-7 lg:p-9 ${t.card} ${className}`}
     >

@@ -508,8 +508,8 @@ export default function PoznajSystem() {
               <p className="mt-5 text-[16px] leading-[1.85] text-white/70">
                 Urządzenia różnią się przeznaczeniem i poziomem zaawansowania - od
                 wspomaganego treningu w pozycji leżącej dla osób z dużymi
-                ograniczeniami, po intensywny trening całego ciała i fitness w VR. Trzy
-                z nich (Health, Guardian i Cloud) można połączyć w tzw. ICAROS Circle -
+                ograniczeniami, po intensywny trening całego ciała i fitness w VR. Cztery
+                z nich (I.S.T. Board, Health, Guardian i Cloud) tworzą zestaw ICAROS Circle,
                 komplet pokrywający całą ścieżkę: od pierwszej aktywacji, przez trening
                 równowagi na stojąco, aż po pełny trening po rehabilitacji. Poniżej
                 opisujemy każde z osobna.

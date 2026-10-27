@@ -5,6 +5,7 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { Activity, LayoutGrid, Building2, TrendingUp, HelpCircle, FileText, Briefcase, MapPin, Globe, ArrowUpRight } from "lucide-react";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+import { trackMapClick } from "@/lib/analytics/track";
 
 const entries = [
   {
@@ -18,8 +19,8 @@ const entries = [
   {
     href: "/produkty",
     label: "Urządzenia",
-    description: "Cztery urządzenia, jeden ekosystem ICAROS Circle.",
-    image: "/Full_Icaros_Circle_Display.webp",
+    description: "Pięć urządzeń, a cztery z nich tworzą zestaw ICAROS Circle.",
+    image: "/icaros-circle-zestaw.webp",
     icon: LayoutGrid,
     span: "",
   },
@@ -136,6 +137,9 @@ export default function KnowledgeBaseIndex() {
               >
                 <Link
                   href={entry.href}
+                  onClick={() => {
+                    if (entry.href === "/mapa") trackMapClick("baza-wiedzy");
+                  }}
                   className="group relative flex h-full min-h-[280px] flex-col justify-end overflow-hidden border border-white/[0.08] p-7 lg:min-h-[320px] lg:p-8"
                 >
                   <Image

@@ -5,16 +5,20 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Map as MapIcon } from "lucide-react";
 import AudienceSwitch from "@/components/AudienceSwitch";
 import SocialLinks from "@/components/SocialLinks";
 import { products } from "@/lib/products";
+import { trackBookingClick, trackMapClick } from "@/lib/analytics/track";
 
 type NavLink = { href: string; label: string };
 type NavGroup = { label: string; children: NavLink[]; align?: "left" | "right" };
 type NavEntry = NavLink | NavGroup;
 
 const isGroup = (e: NavEntry): e is NavGroup => "children" in e;
+
+/** Mapa placówek: w menu dostaje ikonę, żeby dało się ją wskazać przez telefon. */
+const isMapLink = (href: string) => href === "/mapa" || href === "/lokalizacje";
 
 /** Lista urządzeń do rozwijanego menu "Urządzenia" - wspólna dla obu stref. */
 const deviceChildren = (base: string): NavLink[] => [
@@ -175,17 +179,22 @@ function NavDropdown({
                     </Link>
                   );
                 }
+                const mapLink = isMapLink(c.href);
                 return (
                   <Link
                     key={c.href}
                     href={c.href}
-                    onClick={() => setOpen(false)}
-                    className={`block px-5 py-3 text-[13px] font-medium transition-colors duration-300 ${
+                    onClick={() => {
+                      setOpen(false);
+                      if (mapLink) trackMapClick("menu");
+                    }}
+                    className={`flex items-center gap-2 px-5 py-3 text-[13px] font-medium transition-colors duration-300 ${
                       dark
                         ? `${childActive ? "text-white bg-white/[0.06]" : "text-white/60 hover:text-white hover:bg-white/[0.05]"}`
                         : `${childActive ? "text-foreground bg-foreground/[0.04]" : "text-foreground/55 hover:text-foreground hover:bg-foreground/[0.03]"}`
                     }`}
                   >
+                    {mapLink && <MapIcon className="h-4 w-4 shrink-0" strokeWidth={1.75} />}
                     {c.label}
                   </Link>
                 );
@@ -300,6 +309,7 @@ export default function Navigation({
               {business ? (
                 <a
                   href="#kontakt"
+                  onClick={() => trackBookingClick("menu")}
                   className="whitespace-nowrap text-[13px] font-semibold text-white px-6 py-3 transition-all duration-500 tracking-[0.02em] hover:opacity-90"
                   style={{ background: "linear-gradient(135deg, #ff6600, #ff7b1f)" }}
                 >
@@ -375,9 +385,15 @@ export default function Navigation({
                           <Link
                             key={child.href}
                             href={child.href}
-                            onClick={() => setMobileOpen(false)}
-                            className={`py-2 text-[15px] transition-colors duration-300 ${mobileChild}`}
+                            onClick={() => {
+                              setMobileOpen(false);
+                              if (isMapLink(child.href)) trackMapClick("menu-mobile");
+                            }}
+                            className={`flex items-center gap-2 py-2 text-[15px] transition-colors duration-300 ${mobileChild}`}
                           >
+                            {isMapLink(child.href) && (
+                              <MapIcon className="h-[17px] w-[17px] shrink-0" strokeWidth={1.75} />
+                            )}
                             {child.label}
                           </Link>
                         ))}
@@ -404,7 +420,10 @@ export default function Navigation({
               {business ? (
                 <a
                   href="#kontakt"
-                  onClick={() => setMobileOpen(false)}
+                  onClick={() => {
+                    setMobileOpen(false);
+                    trackBookingClick("menu-mobile");
+                  }}
                   className="inline-flex text-base font-semibold text-white px-10 py-5 tracking-[0.01em] hover:opacity-90 transition-opacity duration-500"
                   style={{ background: "linear-gradient(135deg, #ff6600, #ff7b1f)" }}
                 >

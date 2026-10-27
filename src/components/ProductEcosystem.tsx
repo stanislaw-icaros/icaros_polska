@@ -24,11 +24,11 @@ const products: Product[] = [
     name: "ICAROS Circle",
     category: "Kompletny system",
     description:
-      "Zestaw łączący Health, Guardian i Cloud w jeden obieg rehabilitacyjny. Pełna ścieżka terapii, od treningu w podporze po ćwiczenia całego ciała, z jedną aplikacją do wszystkich urządzeń.",
+      "Zestaw czterech urządzeń: I.S.T. Board, Health, Guardian i Cloud, połączonych w jeden obieg rehabilitacyjny. Pełna ścieżka terapii, od aktywacji stóp na siedząco po ćwiczenia całego ciała, z jedną aplikacją do wszystkich urządzeń.",
     position: "Kompletny ekosystem",
-    indications: "Kliniki i centra rehabilitacji · Pełna ścieżka terapii",
-    image: "/Full_Icaros_Circle_Display.webp",
-    imageAlt: "ICAROS Circle - kompletny zestaw urządzeń Health, Guardian i Cloud",
+    indications: "Kliniki i centra rehabilitacji, pełna ścieżka terapii",
+    image: "/icaros-circle-zestaw.webp",
+    imageAlt: "ICAROS Circle - zestaw czterech urządzeń: I.S.T. Board, Guardian, Health i Cloud",
   },
   {
     step: "02",
@@ -74,7 +74,7 @@ const products: Product[] = [
     description:
       "Foot-controlled trening ICAROS do terapii i aktywacji: ultralekki, gotowy do użycia od razu. Balans, reakcja i koordynacja prowadzone przez aplikację - w sesjach indywidualnych lub w grupie.",
     position: "Siedząca - mobilna",
-    indications: "Terapia, profilaktyka, aktywacja grupowa · Ultralekki i kompaktowy · Aplikacja ICAROS",
+    indications: "Terapia, profilaktyka, aktywacja grupowa. Ultralekki i kompaktowy, z aplikacją ICAROS",
     image: "/icaros_ist_hero_1.webp",
     imageAlt: "ICAROS I.S.T. Board - trening stóp i nóg sterowany ruchem",
   },
@@ -121,8 +121,8 @@ export default function ProductEcosystem({
           </h2>
           <p className="mt-5 text-[16px] text-white/80 leading-[1.8]">
             Zaawansowane urządzenia w jednym zintegrowanym systemie. Pełna ścieżka
-            terapeutyczna - od kompletnego zestawu ICAROS Circle, przez wspomagany trening
-            i szybką aktywację, po intensywny trening całego ciała.
+            terapeutyczna: od czterourządzeniowego zestawu ICAROS Circle, przez wspomagany
+            trening i szybką aktywację, po intensywny trening całego ciała.
           </p>
         </motion.div>
 
