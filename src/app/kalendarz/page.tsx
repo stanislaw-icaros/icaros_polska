@@ -42,9 +42,9 @@ export default async function KalendarzPage({
   return (
     <>
       <Navigation />
-      <main className="relative overflow-hidden bg-white pb-24 pt-32 lg:pb-32 lg:pt-40">
+      <main className="relative overflow-hidden bg-surface pb-24 pt-28 lg:pb-32 lg:pt-36">
         <div
-          className="pointer-events-none absolute inset-0 opacity-[0.03]"
+          className="pointer-events-none absolute inset-0 opacity-[0.035]"
           style={{
             backgroundImage:
               "linear-gradient(rgba(0,0,0,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.08) 1px, transparent 1px)",
@@ -52,19 +52,19 @@ export default async function KalendarzPage({
           }}
         />
 
-        <div className="relative z-10 mx-auto w-full max-w-[1180px] px-6 lg:px-10">
+        <div className="relative z-10 mx-auto w-full max-w-[1000px] px-6 lg:px-8">
           <div className="max-w-[640px] animate-[fade-up_0.7s_ease-out_both]">
             <h1 className="text-[clamp(2rem,4.6vw,3.1rem)] font-bold leading-[1.03] tracking-[-0.04em] text-foreground">
-              Kiedy możemy zadzwonić?
+              Umów termin rozmowy
             </h1>
             <p className="mt-5 text-[15px] leading-[1.8] text-foreground/55 sm:text-[16px]">
-              Wybranie godziny zajmuje chwilę. Dzwonimy na podany numer i w {" "}
-              {dane.dlugoscMin} minut odpowiadamy na pytania o urządzenia, ceny, finansowanie
-              i o to, jak ICAROS wygląda w pracy placówki.
+              Wybierz termin poniżej. Zadzwonimy na podany numer i w {dane.dlugoscMin} minut
+              odpowiemy na pytania o urządzenia, ceny, finansowanie i o to, jak ICAROS wygląda
+              w pracy placówki.
             </p>
           </div>
 
-          <div className="mt-12 lg:mt-16">
+          <div className="mt-10 lg:mt-12">
             <KalendarzRozmowy poczatkowe={dane} osobaZAdresu={parametry.osoba} />
           </div>
         </div>

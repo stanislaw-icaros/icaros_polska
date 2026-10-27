@@ -47,7 +47,6 @@ export type Handlowiec = {
   klucz: KluczHandlowca;
   imie: string;
   pelneImie: string;
-  rola: string;
   /** Adres konta Google, którego kalendarz czytamy i w którym zapisujemy rozmowy. */
   kontoGoogle: string;
   /** Zmienna środowiskowa z tokenem odświeżania Google dla tej osoby. */
@@ -62,7 +61,6 @@ export const HANDLOWCY: Handlowiec[] = [
     klucz: "jarek",
     imie: "Jarosław",
     pelneImie: "Jarosław Łupieżowiec",
-    rola: "Rozwój sprzedaży",
     kontoGoogle: process.env.GCAL_KONTO_JAREK?.trim() || "",
     zmiennaTokenu: "GCAL_REFRESH_TOKEN_JAREK",
     zmiennaPipedrive: "PIPEDRIVE_OWNER_A_ID",
@@ -72,7 +70,6 @@ export const HANDLOWCY: Handlowiec[] = [
     klucz: "sebastian",
     imie: "Sebastian",
     pelneImie: "Sebastian Wilk",
-    rola: "Rozwój sprzedaży",
     kontoGoogle: process.env.GCAL_KONTO_SEBASTIAN?.trim() || "",
     zmiennaTokenu: "GCAL_REFRESH_TOKEN_SEBASTIAN",
     zmiennaPipedrive: "PIPEDRIVE_OWNER_B_ID",

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Loader2, Phone } from "lucide-react";
+import { ArrowRight, CalendarCheck, Loader2 } from "lucide-react";
 import ConsentFields from "@/components/ConsentFields";
 import { useSpamGuard } from "@/hooks/useSpamGuard";
 import { trackMetaEvent } from "@/lib/meta/track";
@@ -37,9 +37,24 @@ function parametryZrodla() {
 }
 
 const POLE =
-  "w-full border border-foreground/[0.12] bg-white px-4 py-3 text-[15px] text-foreground outline-none transition-colors placeholder:text-foreground/30 focus:border-brand-orange";
+  "w-full bg-foreground/[0.035] px-4 py-3.5 text-[14.5px] text-foreground outline-none transition-colors duration-300 placeholder:text-foreground/30 focus:bg-foreground/[0.06] focus-visible:ring-2 focus-visible:ring-brand-orange focus-visible:ring-offset-0";
 
-const ETYKIETA = "mb-1.5 block text-[12px] font-medium text-foreground/50";
+function Etykieta({
+  dla,
+  children,
+  opcjonalne = false,
+}: {
+  dla: string;
+  children: React.ReactNode;
+  opcjonalne?: boolean;
+}) {
+  return (
+    <label className="mb-2 flex items-baseline gap-2" htmlFor={dla}>
+      <span className="text-[12.5px] font-medium text-foreground/55">{children}</span>
+      {opcjonalne ? <span className="text-[11px] text-foreground/30">opcjonalnie</span> : null}
+    </label>
+  );
+}
 
 export default function FormularzRozmowy({
   termin,
@@ -145,30 +160,32 @@ export default function FormularzRozmowy({
   }
 
   return (
-    <form onSubmit={wyslij} className="animate-[fade-up_0.5s_ease-out_both]">
+    <form onSubmit={wyslij} className="animate-[fade-up_0.45s_ease-out_both]">
       {spamFields}
 
-      <div className="flex flex-wrap items-center justify-between gap-3 border border-brand-orange/25 bg-brand-orange/[0.04] px-5 py-4">
+      <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-3 bg-brand-orange/[0.07] px-5 py-4">
         <div className="flex items-center gap-3">
-          <Phone className="h-4 w-4 shrink-0 text-brand-orange" strokeWidth={1.75} />
-          <span className="text-[15px] font-semibold text-foreground">
+          <CalendarCheck className="h-[18px] w-[18px] shrink-0 text-brand-orange" strokeWidth={1.75} />
+          <span className="text-[15px] font-semibold tracking-[-0.01em] text-foreground">
             {etykietaPelna(new Date(termin))}
           </span>
         </div>
         <button
           type="button"
           onClick={onZmienTermin}
-          className="text-[13px] font-medium text-foreground/50 underline underline-offset-2 transition-colors hover:text-foreground"
+          className="text-[12.5px] font-medium text-foreground/50 underline underline-offset-[3px] transition-colors duration-300 hover:text-brand-orange"
         >
           Zmień termin
         </button>
       </div>
 
-      <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <div className="sm:col-span-2">
-          <label className={ETYKIETA} htmlFor="rozmowa-imie">
-            Imię i nazwisko
-          </label>
+      <h3 className="mt-8 text-[16px] font-semibold tracking-[-0.015em] text-foreground">
+        Dane do rozmowy
+      </h3>
+
+      <div className="mt-4 grid grid-cols-1 gap-x-5 gap-y-5 sm:grid-cols-2">
+        <div>
+          <Etykieta dla="rozmowa-imie">Imię i nazwisko</Etykieta>
           <input
             id="rozmowa-imie"
             className={POLE}
@@ -176,14 +193,12 @@ export default function FormularzRozmowy({
             onChange={ustaw("imie")}
             required
             autoComplete="name"
-            placeholder="Jan Kowalski"
+            placeholder="Jan Kowalski…"
           />
         </div>
 
         <div>
-          <label className={ETYKIETA} htmlFor="rozmowa-telefon">
-            Numer, na który mamy zadzwonić
-          </label>
+          <Etykieta dla="rozmowa-telefon">Numer, na który zadzwonimy</Etykieta>
           <input
             id="rozmowa-telefon"
             className={POLE}
@@ -193,14 +208,14 @@ export default function FormularzRozmowy({
             type="tel"
             inputMode="tel"
             autoComplete="tel"
-            placeholder="600 100 200"
+            placeholder="600 100 200…"
           />
         </div>
 
         <div>
-          <label className={ETYKIETA} htmlFor="rozmowa-email">
-            E-mail, żeby wysłać potwierdzenie
-          </label>
+          <Etykieta dla="rozmowa-email" opcjonalne>
+            E-mail
+          </Etykieta>
           <input
             id="rozmowa-email"
             className={POLE}
@@ -208,41 +223,45 @@ export default function FormularzRozmowy({
             onChange={ustaw("email")}
             type="email"
             autoComplete="email"
-            placeholder="jan.kowalski@placowka.pl"
+            spellCheck={false}
+            placeholder="jan.kowalski@placowka.pl…"
           />
+          <p className="mt-2 text-[11.5px] text-foreground/35">
+            Wyślemy potwierdzenie i przypomnienie
+          </p>
         </div>
 
-        <div className="sm:col-span-2">
-          <label className={ETYKIETA} htmlFor="rozmowa-firma">
+        <div>
+          <Etykieta dla="rozmowa-firma" opcjonalne>
             Placówka lub firma
-          </label>
+          </Etykieta>
           <input
             id="rozmowa-firma"
             className={POLE}
             value={dane.firma}
             onChange={ustaw("firma")}
             autoComplete="organization"
-            placeholder="Centrum Rehabilitacji Kraków"
+            placeholder="Centrum Rehabilitacji Kraków…"
           />
         </div>
 
         <div className="sm:col-span-2">
-          <label className={ETYKIETA} htmlFor="rozmowa-temat">
+          <Etykieta dla="rozmowa-temat" opcjonalne>
             O czym porozmawiać
-          </label>
+          </Etykieta>
           <textarea
             id="rozmowa-temat"
-            className={`${POLE} min-h-[84px] resize-y`}
+            className={`${POLE} min-h-[88px] resize-y`}
             value={dane.temat}
             onChange={ustaw("temat")}
-            placeholder="Interesuje mnie ICAROS Cloud do oddziału neurologii"
+            placeholder="Interesuje mnie ICAROS Cloud do oddziału neurologii…"
           />
         </div>
       </div>
 
       <ConsentFields
         tone="light"
-        className="mt-5"
+        className="mt-6"
         dataConsent={zgodaDanych}
         onDataConsentChange={setZgodaDanych}
         marketingConsent={zgodaMarketingowa}
@@ -250,30 +269,35 @@ export default function FormularzRozmowy({
         dataConsentText="Wyrażam zgodę na kontakt telefoniczny i przetwarzanie podanych danych."
       />
 
-      {blad ? (
-        <p className="mt-4 border border-red-200 bg-red-50 px-4 py-3 text-[13px] text-red-700">
-          {blad}
-        </p>
-      ) : null}
+      <div aria-live="polite">
+        {blad ? (
+          <p className="mt-5 bg-red-50 px-4 py-3 text-[13px] text-red-700">
+            {blad}
+          </p>
+        ) : null}
+      </div>
 
-      <button
-        type="submit"
-        disabled={wysylanie}
-        className="mt-6 inline-flex w-full items-center justify-center gap-2 bg-foreground px-8 py-4 text-[15px] font-semibold text-white transition-colors hover:bg-brand-orange disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
-      >
-        {wysylanie ? (
-          <>
+      <div className="mt-7 flex flex-wrap items-center gap-x-6 gap-y-3">
+        <button
+          type="submit"
+          disabled={wysylanie}
+          aria-busy={wysylanie}
+          className="group inline-flex w-full items-center justify-center gap-2.5 bg-foreground px-8 py-4 text-[14.5px] font-semibold text-white transition-colors duration-300 hover:bg-brand-orange disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
+        >
+          Potwierdź termin
+          {wysylanie ? (
             <Loader2 className="h-4 w-4 animate-spin" strokeWidth={2} />
-            Zapisujemy termin
-          </>
-        ) : (
-          <>Potwierdź termin</>
-        )}
-      </button>
-
-      <p className="mt-3 text-[12px] text-foreground/40">
-        Rozmowa trwa {dlugoscMin} minut. Nie trzeba zakładać konta ani niczego instalować.
-      </p>
+          ) : (
+            <ArrowRight
+              className="h-4 w-4 transition-transform duration-500 group-hover:translate-x-1"
+              strokeWidth={2}
+            />
+          )}
+        </button>
+        <p className="text-[12px] text-foreground/40">
+          Rozmowa trwa {dlugoscMin} minut, nic nie trzeba instalować
+        </p>
+      </div>
     </form>
   );
 }

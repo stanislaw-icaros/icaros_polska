@@ -45,6 +45,15 @@ const FORMAT_DNIA_TYGODNIA = new Intl.DateTimeFormat("pl-PL", {
   weekday: "short",
 });
 
+const FORMAT_MIESIACA_Z_ROKIEM = new Intl.DateTimeFormat("pl-PL", {
+  timeZone: "UTC",
+  month: "long",
+  year: "numeric",
+});
+
+/** Nagłówki kolumn w siatce miesiąca, tydzień zaczyna się w poniedziałek. */
+export const SKROTY_TYGODNIA = ["pn", "wt", "śr", "cz", "pt", "so", "nd"];
+
 /** „środa, 28 października”. */
 export function etykietaDnia(chwila: Date): string {
   return FORMAT_DNIA.format(chwila);
@@ -89,4 +98,11 @@ export function godzinaLokalna(chwila: Date): number {
       hour12: false,
     }).format(chwila)
   ) % 24;
+}
+
+/** „Październik 2026” z zapisu „2026-10”. */
+export function nazwaMiesiaca(miesiac: string): string {
+  const [rok, numer] = miesiac.split("-").map(Number);
+  const nazwa = FORMAT_MIESIACA_Z_ROKIEM.format(new Date(Date.UTC(rok, numer - 1, 1, 12)));
+  return nazwa.charAt(0).toUpperCase() + nazwa.slice(1);
 }

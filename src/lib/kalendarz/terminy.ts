@@ -39,7 +39,7 @@ export type Dzien = {
 
 export type Dostepnosc = {
   dni: Dzien[];
-  handlowcy: { klucz: KluczHandlowca; imie: string; rola: string }[];
+  handlowcy: { klucz: KluczHandlowca; imie: string }[];
   dlugoscMin: number;
   strefa: string;
   /** Problemy warte zalogowania, np. niepodłączony kalendarz. */
@@ -238,7 +238,6 @@ export async function policzDostepnosc(teraz = new Date()): Promise<Dostepnosc> 
     handlowcy: HANDLOWCY.map((osoba) => ({
       klucz: osoba.klucz,
       imie: osoba.imie,
-      rola: osoba.rola,
     })),
     dlugoscMin: DLUGOSC_ROZMOWY_MIN,
     strefa: STREFA,

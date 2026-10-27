@@ -7,6 +7,24 @@ zakłada zadanie w Pipedrive i wysyła potwierdzenie z plikiem do kalendarza.
 Dopóki kalendarze nie są podłączone, strona pokazuje komunikat z telefonem i mailem.
 Nic się nie psuje, po prostu nie ma czego rezerwować.
 
+## 0. Co trzeba ustalić i przysłać
+
+Do działania wystarczy pięć rzeczy. Reszta tego dokumentu to szczegóły.
+
+1. **Dwa adresy Google**, te, na których Jarek i Sebastian prowadzą swoje kalendarze.
+   Mogą być prywatne Gmaile. Wpisujemy je w `GCAL_KONTO_JAREK` i `GCAL_KONTO_SEBASTIAN`.
+2. **Dane z Google Cloud**: `GOOGLE_CLIENT_ID` i `GOOGLE_CLIENT_SECRET`, z punktu 2 poniżej.
+3. **Godziny pracy każdego z nich**. Dziś dla obu jest poniedziałek do czwartku
+   9:00 do 16:00 i piątek 9:00 do 15:00. Każdy może mieć własne.
+4. **Kliknięcie „Zezwól”** przez Jarka i Sebastiana na linku z punktu 4. To cała
+   ich robota, nic więcej nie ustawiają i niczego nie blokują ręcznie.
+5. **Decyzja o etapie w Pipedrive**: czy zakładamy „Umówiony call”. Jeśli tak,
+   przysyłasz jego identyfikator, a rezerwacja sama przestawia sprawę.
+
+Do potwierdzenia, bo da się zmienić w jednej linijce: rozmowa trwa 15 minut,
+najwcześniejszy termin to następny dzień, terminy widać na 21 dni do przodu,
+maksymalnie 6 rozmów dziennie na osobę.
+
 ## 1. Konta Google
 
 Sebastian i Jarek podłączają swoje własne kalendarze, te, których używają na co dzień.
