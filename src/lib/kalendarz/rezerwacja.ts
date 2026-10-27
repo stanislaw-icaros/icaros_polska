@@ -9,6 +9,7 @@ import { utworzRozmowe, zaktualizujRozmowe } from "./google";
 import { zbudujBilet } from "./podpis";
 import { sprawdzTermin, wybierzOsobe, wyczyscPamiec } from "./terminy";
 import { rozpoznajLeada, zapiszRozmowe } from "@/lib/pipedrive/rozmowa";
+import { ALWAYS_NOTIFY_EMAILS } from "@/lib/pipedrive/client";
 import {
   wyslijPotwierdzenieRozmowy,
   wyslijPowiadomienieOrozmowie,
@@ -175,7 +176,12 @@ export async function umowRozmowe(zgloszenie: Zgloszenie): Promise<WynikRezerwac
   // ale nie wolno im unieważnić zapisanego terminu.
   let linkDeala: string | undefined;
   let dealId: number | undefined;
-  let odbiorcy: string[] = [];
+  // Powiadomienie o umówionej rozmowie ma dojść zawsze, także wtedy gdy
+  // Pipedrive jest nieskonfigurowany albo nie odpowiada. Adresy z Pipedrive
+  // tylko dokładamy do tej listy.
+  let odbiorcy: string[] = [
+    ...new Set([osoba.kontoGoogle, ...ALWAYS_NOTIFY_EMAILS].filter(Boolean)),
+  ];
 
   try {
     const wynik = await zapiszRozmowe({
@@ -196,7 +202,7 @@ export async function umowRozmowe(zgloszenie: Zgloszenie): Promise<WynikRezerwac
     });
     linkDeala = wynik.link;
     dealId = wynik.dealId;
-    odbiorcy = wynik.emaileHandlowcow;
+    odbiorcy = [...new Set([...wynik.emaileHandlowcow, ...odbiorcy])];
   } catch (blad) {
     console.error(
       "[kalendarz] zapis rezerwacji w Pipedrive nie wyszedl:",

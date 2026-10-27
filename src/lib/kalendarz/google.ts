@@ -344,8 +344,9 @@ export async function utworzRozmowe(
         reminders: {
           useDefault: false,
           overrides: [
-            { method: "popup", minutes: 15 },
+            { method: "email", minutes: 24 * 60 },
             { method: "popup", minutes: 60 },
+            { method: "popup", minutes: 15 },
           ],
         },
         extendedProperties: {
