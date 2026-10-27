@@ -33,12 +33,13 @@ export const LIMIT_ROZMOW_NA_DZIEN = 6;
 export type OknoPracy = [string, string];
 export type GodzinyPracy = Partial<Record<1 | 2 | 3 | 4 | 5 | 6 | 7, OknoPracy[]>>;
 
+// Ustawienie wstepne, do potwierdzenia przez Jarka i Sebastiana.
 const GODZINY_STANDARDOWE: GodzinyPracy = {
-  1: [["09:00", "16:00"]],
-  2: [["09:00", "16:00"]],
-  3: [["09:00", "16:00"]],
-  4: [["09:00", "16:00"]],
-  5: [["09:00", "15:00"]],
+  1: [["09:00", "20:00"]],
+  2: [["09:00", "20:00"]],
+  3: [["09:00", "20:00"]],
+  4: [["09:00", "20:00"]],
+  5: [["09:00", "20:00"]],
 };
 
 export type KluczHandlowca = "jarek" | "sebastian";

@@ -128,7 +128,9 @@ async function zbierzZajetosc(
             ? blad.message
             : `Nie udało się odczytać kalendarza ${osoba.imie}.`;
         ostrzezenia.push(opis);
-        console.error(`[kalendarz] ${opis}`);
+        // Przy nieznanym błędzie dokładamy jego treść, inaczej w logach zostaje
+        // samo „nie udało się” i nie wiadomo, czego szukać.
+        console.error(`[kalendarz] ${opis}`, blad instanceof BladGoogle ? "" : blad);
         return null;
       }
     })

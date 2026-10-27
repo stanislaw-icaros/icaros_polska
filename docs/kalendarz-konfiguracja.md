@@ -99,7 +99,8 @@ Jeśli podłączysz w Vercel bazę Redis (Upstash ma darmowy plan), token zapisz
 i ten krok znika. Wystarczy, że w projekcie pojawią się zmienne `KV_REST_API_URL`
 i `KV_REST_API_TOKEN` albo ich odpowiedniki z Upstash.
 
-Link do podłączenia jest ważny 30 minut od wygenerowania.
+Sam link nie wygasa, bo klucz administratora jest w nim na stałe. Odliczanie
+zaczyna się od kliknięcia: od otwarcia linku do kliknięcia „Zezwól” jest 30 minut.
 
 ## 5. Przypomnienia
 
