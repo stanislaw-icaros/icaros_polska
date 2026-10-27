@@ -26,6 +26,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/kontakt-partner", priority: 0.6 },
     { path: "/faq", priority: 0.6 },
     { path: "/raport", priority: 0.6 },
+    { path: "/kalendarz", priority: 0.7 },
     { path: "/newsletter", priority: 0.6 },
     { path: "/newsletter-partner", priority: 0.5 },
   ];

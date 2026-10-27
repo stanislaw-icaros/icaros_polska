@@ -1,6 +1,20 @@
 import { NextResponse } from "next/server";
-import fs from "node:fs";
-import path from "node:path";
+import {
+  ALWAYS_NOTIFY_EMAILS,
+  callPipedrive,
+  createPerson,
+  dealUrl,
+  findPerson,
+  getEnv,
+  nextBusinessDay,
+  OWNER_A,
+  OWNER_B,
+  ownerEmails,
+  FALLBACK_OWNER,
+  PIPELINE_ID,
+  resolveOrganization,
+  STAGE_ID_NEW_LEAD,
+} from "@/lib/pipedrive/client";
 import { sendContactConfirmationEmail } from "@/lib/email/contactConfirmation";
 import { sendLeadNotificationEmail } from "@/lib/email/leadNotification";
 import { addContactToAudience } from "@/lib/email/audience";
@@ -28,141 +42,13 @@ type ContactPayload = {
   };
 };
 
-function parseEnvFile(filePath: string) {
-  if (!fs.existsSync(filePath)) return {};
-  const content = fs.readFileSync(filePath, "utf8");
-  const entries = content
-    .split(/\r?\n/)
-    .filter((line) => line.trim() && !line.trim().startsWith("#") && line.includes("="))
-    .map((line) => {
-      const index = line.indexOf("=");
-      return [line.slice(0, index).trim(), line.slice(index + 1).trim()] as const;
-    });
-  return Object.fromEntries(entries);
-}
-
-const localEnv = {
-  ...parseEnvFile(path.join(process.cwd(), ".env.pipedrive.local")),
-  ...parseEnvFile(path.join(process.cwd(), ".env.pipedrive.setup.local")),
-  ...parseEnvFile(path.join(process.cwd(), ".env.pipedrive.fields.local")),
-};
-
-function getEnv(name: string) {
-  return process.env[name] || (localEnv as Record<string, string>)[name];
-}
-
-const API_TOKEN = getEnv("PIPEDRIVE_API_TOKEN");
-const DOMAIN = getEnv("PIPEDRIVE_COMPANY_DOMAIN");
-const BASE_URL = DOMAIN ? `https://${DOMAIN}.pipedrive.com/api/v1` : "";
-
-const PIPELINE_ID = Number(getEnv("PIPEDRIVE_PIPELINE_ID") || "2");
-const STAGE_ID_NEW_LEAD = Number(getEnv("PIPEDRIVE_STAGE_ID_NEW_LEAD") || "6");
-
-const OWNER_A = Number(getEnv("PIPEDRIVE_OWNER_A_ID") || "25511085"); // Jaroslaw Lupiezowiec
-const OWNER_B = Number(getEnv("PIPEDRIVE_OWNER_B_ID") || "25511096"); // Sebastian Wilk
-const FALLBACK_OWNER = Number(getEnv("PIPEDRIVE_OWNER_FALLBACK_ID") || "25511096");
-
-/** Adresy zawsze powiadamiane o nowym leadzie (oprócz przypisanego handlowca). */
-const ALWAYS_NOTIFY_EMAILS = (
-  getEnv("LEAD_NOTIFY_EMAILS") || "stanislaw.drozniak@icaros.com.pl"
-)
-  .split(",")
-  .map((address) => address.trim().toLowerCase())
-  .filter(Boolean);
-
-type PipedriveResponse<T = unknown> = {
-  success?: boolean;
-  error?: string;
-  error_info?: string;
-  data?: T;
-  additional_data?: {
-    pagination?: {
-      more_items_in_collection?: boolean;
-      next_start?: number;
-    };
-  };
-};
-
-type SearchItem = {
-  item: {
-    id: number;
-    organization?: { id: number };
-  };
-};
-
 type DealListItem = {
   owner_id?: { id: number };
-};
-
-type PipedriveUser = {
-  id: number;
-  name?: string;
-  email?: string;
 };
 
 function toErrorMessage(error: unknown, fallback: string) {
   if (error instanceof Error) return error.message;
   return fallback;
-}
-
-/** Nastepny dzien roboczy w formacie YYYY-MM-DD (pomija sobote i niedziele). */
-function nextBusinessDay(): string {
-  const date = new Date();
-  date.setDate(date.getDate() + 1);
-  const weekday = date.getDay();
-  if (weekday === 6) date.setDate(date.getDate() + 2);
-  else if (weekday === 0) date.setDate(date.getDate() + 1);
-  return date.toISOString().slice(0, 10);
-}
-
-async function callPipedrive<T = unknown>(
-  endpoint: string,
-  options: RequestInit = {},
-  retries = 3
-): Promise<PipedriveResponse<T>> {
-  if (!API_TOKEN || !DOMAIN) {
-    throw new Error(
-      "Missing PIPEDRIVE_API_TOKEN or PIPEDRIVE_COMPANY_DOMAIN environment variables"
-    );
-  }
-
-  const separator = endpoint.includes("?") ? "&" : "?";
-  const url = `${BASE_URL}${endpoint}${separator}api_token=${encodeURIComponent(API_TOKEN)}`;
-
-  for (let attempt = 1; attempt <= retries; attempt += 1) {
-    const response = await fetch(url, {
-      ...options,
-      headers: {
-        "Content-Type": "application/json",
-        ...(options.headers || {}),
-      },
-      cache: "no-store",
-    });
-
-    if (response.status === 429 && attempt < retries) {
-      const retryAfter = Number(response.headers.get("Retry-After") || "2");
-      await new Promise((resolve) => setTimeout(resolve, retryAfter * 1000));
-      continue;
-    }
-
-    const text = await response.text();
-    let json: PipedriveResponse<T> = {};
-    try {
-      json = JSON.parse(text) as PipedriveResponse<T>;
-    } catch {
-      // keep raw text for richer errors
-    }
-
-    if (!response.ok || (json && json.success === false)) {
-      throw new Error(
-        `Pipedrive error ${response.status}: ${json?.error || json?.error_info || text}`
-      );
-    }
-
-    return json;
-  }
-
-  throw new Error("Pipedrive request failed after retries");
 }
 
 function getHashBasedOwner(seed: string) {
@@ -241,42 +127,12 @@ export async function POST(request: Request) {
     // deal is always linked to the placówka, also when the person already exists.
     const companyName = payload.company?.trim();
     if (companyName) {
-      const orgSearch = await callPipedrive<{ items?: SearchItem[] }>(
-        `/organizations/search?term=${encodeURIComponent(
-          companyName
-        )}&fields=name&exact_match=true&limit=1`
-      );
-
-      const orgItems = orgSearch.data?.items ?? [];
-      if (orgItems.length > 0) {
-        orgId = orgItems[0].item.id;
-      } else {
-        const createdOrg = await callPipedrive<{ id: number }>("/organizations", {
-          method: "POST",
-          body: JSON.stringify({
-            name: companyName,
-            owner_id: ownerId,
-          }),
-        });
-        orgId = createdOrg?.data?.id;
-      }
+      orgId = await resolveOrganization(companyName, ownerId);
     }
 
     // 2) Resolve the person - reuse an existing record or create a new one.
-    let personSearch: PipedriveResponse<{ items?: SearchItem[] }> | null = null;
-    if (email) {
-      personSearch = await callPipedrive(
-        `/persons/search?term=${encodeURIComponent(email)}&fields=email&exact_match=true&limit=1`
-      );
-    } else if (phone) {
-      personSearch = await callPipedrive(
-        `/persons/search?term=${encodeURIComponent(phone)}&fields=phone&exact_match=true&limit=1`
-      );
-    }
-
-    const personItems = personSearch?.data?.items ?? [];
-    if (personItems.length > 0) {
-      const existingPerson = personItems[0].item;
+    const existingPerson = await findPerson(email, phone);
+    if (existingPerson) {
       personId = existingPerson.id;
 
       if (!orgId) {
@@ -290,17 +146,7 @@ export async function POST(request: Request) {
         });
       }
     } else {
-      const createdPerson = await callPipedrive<{ id: number }>("/persons", {
-        method: "POST",
-        body: JSON.stringify({
-          name,
-          owner_id: ownerId,
-          org_id: orgId,
-          email: email ? [{ value: email, primary: true, label: "work" }] : undefined,
-          phone: phone ? [{ value: phone, primary: true, label: "work" }] : undefined,
-        }),
-      });
-      personId = createdPerson?.data?.id;
+      personId = await createPerson({ name, ownerId, orgId, email, phone });
     }
 
     if (!personId) {
@@ -419,14 +265,9 @@ export async function POST(request: Request) {
       // Powiadomienie e-mail do zespołu sprzedaży - trafia do obu handlowców,
       // z wyraźnym oznaczeniem, kto obsługuje tego leada (round-robin).
       try {
-        const usersResp = await callPipedrive<PipedriveUser[]>("/users");
-        const users = Array.isArray(usersResp?.data) ? usersResp.data : [];
+        const { users, emails } = await ownerEmails();
         const ownerUser = users.find((user) => user.id === ownerId);
-        const ownerEmails = [OWNER_A, OWNER_B]
-          .map((id) => users.find((user) => user.id === id)?.email)
-          .filter((value): value is string => Boolean(value))
-          .map((address) => address.toLowerCase());
-        const recipients = [...new Set([...ownerEmails, ...ALWAYS_NOTIFY_EMAILS])];
+        const recipients = [...new Set([...emails, ...ALWAYS_NOTIFY_EMAILS])];
 
         await sendLeadNotificationEmail({
           to: recipients,
@@ -439,7 +280,7 @@ export async function POST(request: Request) {
           role: payload.role,
           message: payload.message,
           formSource,
-          dealUrl: DOMAIN ? `https://${DOMAIN}.pipedrive.com/deal/${dealId}` : undefined,
+          dealUrl: dealUrl(dealId),
         });
       } catch (notifyError: unknown) {
         console.error(
