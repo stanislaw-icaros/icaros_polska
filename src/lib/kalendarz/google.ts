@@ -173,7 +173,8 @@ async function tokenDostepu(osoba: Handlowiec): Promise<string> {
 async function zapytanie<T>(
   osoba: Handlowiec,
   sciezka: string,
-  opcje: RequestInit = {}
+  opcje: RequestInit = {},
+  poNieudanymTokenie = false
 ): Promise<T> {
   const token = await tokenDostepu(osoba);
   const odpowiedz = await fetch(`${API_URL}${sciezka}`, {
@@ -188,6 +189,13 @@ async function zapytanie<T>(
 
   if (odpowiedz.status === 401) {
     pamiecTokenow.delete(osoba.klucz);
+    // Token dostępu mógł wygasnąć między sprawdzeniem terminu a zapisem.
+    // Jedno podejście z nowym tokenem, zanim uznamy, że Google nie wpuszcza:
+    // inaczej pojedyncze 401 przewraca całą rezerwację.
+    if (!poNieudanymTokenie) {
+      console.warn(`[kalendarz] token ${osoba.imie} odrzucony, biore nowy i probuje raz jeszcze`);
+      return zapytanie<T>(osoba, sciezka, opcje, true);
+    }
     throw new BladGoogle(`Google odrzucił dostęp do kalendarza ${osoba.imie}.`, osoba.klucz, true);
   }
 
