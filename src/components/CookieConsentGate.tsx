@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { ArrowLeft, Check } from "lucide-react";
 import {
   defaultCookieConsent,
   persistCookieConsent,
@@ -28,31 +29,88 @@ const PREFERENCE_OPTIONS: Array<{
     key: "analytics",
     label: "Analityczne",
     description:
-      "Google Analytics - liczba wejść na podstrony i kliknięć w mapę oraz kontakt.",
+      "Google Analytics: liczba wejść na podstrony oraz kliknięć w mapę i kontakt.",
   },
   {
     key: "marketing",
     label: "Marketingowe",
     description:
-      "Meta Pixel i Conversions API - pomiar konwersji i skuteczności reklam.",
+      "Meta Pixel i Conversions API: pomiar konwersji i skuteczności reklam.",
   },
 ];
+
+/* Pas zgody jest wspólny dla jasnego serwisu i ciemnego landingu /health,
+   dlatego ma własną, ciemną powierzchnię zamiast kolorów strony pod spodem. */
+const PAS = "bg-[#141418] text-white";
+/** Przyciemnienie wstaje od pasa i gaśnie w górę kadru. */
+const ZASLONA =
+  "fixed inset-0 z-[119] bg-[linear-gradient(to_top,rgba(7,7,10,0.78)_0%,rgba(7,7,10,0.42)_38%,rgba(7,7,10,0.2)_100%)]"; // taste-skill-ignore: neutralna zasłona pod bramą zgody
+const SZEROKOSC = "mx-auto w-full max-w-[1320px] px-5 sm:px-8";
+
+const PRZYCISK =
+  "inline-flex min-h-[48px] items-center justify-center whitespace-nowrap px-5 text-[15px] font-semibold outline-none transition-colors focus-visible:ring-2 focus-visible:ring-brand-orange focus-visible:ring-offset-2 focus-visible:ring-offset-[#141418] sm:px-6";
+const GLOWNY = `${PRZYCISK} bg-brand-orange text-[#0a0a0a] hover:bg-brand-orange-light`;
+const DRUGI = `${PRZYCISK} bg-white/10 text-white hover:bg-white/[0.18]`;
+const LINK =
+  "inline-flex min-h-[48px] items-center text-[15px] text-white/70 underline decoration-white/30 underline-offset-4 outline-none transition-colors hover:text-white focus-visible:ring-2 focus-visible:ring-brand-orange focus-visible:ring-offset-2 focus-visible:ring-offset-[#141418]";
+
+/** Kwadrat przełącznika. Prawdziwy checkbox siedzi pod spodem jako `sr-only`,
+ *  więc klawiatura i czytniki ekranu dostają zwykłą kontrolkę formularza. */
+const KWADRAT =
+  "relative mt-[2px] grid h-5 w-5 shrink-0 place-items-center border-[1.5px] border-white/40 transition-colors peer-checked:border-brand-orange peer-checked:bg-brand-orange peer-checked:[&_svg]:opacity-100 peer-focus-visible:ring-2 peer-focus-visible:ring-brand-orange peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-[#141418] peer-disabled:border-white/25 peer-disabled:bg-white/25";
 
 export default function CookieConsentGate() {
   const [isOpen, setIsOpen] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
   const [preferences, setPreferences] =
     useState<CookieConsentPreferences>(defaultCookieConsent);
+  const mniejRuchu = useReducedMotion();
+
+  const panelRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const saved = readCookieConsent();
-    if (saved) {
+    if (readCookieConsent()) {
       document.documentElement.dataset.cookieConsent = "granted";
-      setIsOpen(false);
       return;
     }
-    setIsOpen(true);
+    // Pierwszy ekran dostaje chwilę dla siebie. Brama wjeżdża zaraz po nim,
+    // zamiast witać odwiedzającego oknem zanim cokolwiek zobaczy.
+    const licznik = window.setTimeout(() => setIsOpen(true), 1100);
+    return () => window.clearTimeout(licznik);
   }, []);
+
+  // Dopóki brama stoi, klawiatura zostaje w środku. Tak zachowuje się okno
+  // modalne i tylko wtedy ma prawo zasłaniać stronę.
+  useEffect(() => {
+    if (!isOpen) return;
+    const panel = panelRef.current;
+    if (!panel) return;
+    const poprzedni = document.activeElement as HTMLElement | null;
+    panel.focus({ preventScroll: true });
+
+    const naKlawisz = (zdarzenie: KeyboardEvent) => {
+      if (zdarzenie.key !== "Tab") return;
+      const ogniskowalne = panel.querySelectorAll<HTMLElement>(
+        "a[href], button, input:not([disabled])"
+      );
+      if (ogniskowalne.length === 0) return;
+      const pierwszy = ogniskowalne[0];
+      const ostatni = ogniskowalne[ogniskowalne.length - 1];
+      if (zdarzenie.shiftKey && document.activeElement === pierwszy) {
+        zdarzenie.preventDefault();
+        ostatni.focus();
+      } else if (!zdarzenie.shiftKey && document.activeElement === ostatni) {
+        zdarzenie.preventDefault();
+        pierwszy.focus();
+      }
+    };
+
+    document.addEventListener("keydown", naKlawisz);
+    return () => {
+      document.removeEventListener("keydown", naKlawisz);
+      poprzedni?.focus?.();
+    };
+  }, [isOpen, showDetails]);
 
   function updatePreference(key: PreferenceKey, value: boolean) {
     setPreferences((current) => ({ ...current, [key]: value }));
@@ -66,156 +124,149 @@ export default function CookieConsentGate() {
   return (
     <AnimatePresence>
       {isOpen ? (
+        <>
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
+          aria-hidden
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          className={ZASLONA}
+        />
+        <motion.div
+          ref={panelRef}
+          tabIndex={-1}
+          initial={{ opacity: 0, y: mniejRuchu ? 0 : 40 }}
           animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: 24 }}
-          transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-          className="fixed inset-x-3 bottom-3 z-[120] sm:inset-auto sm:bottom-5 sm:right-5 sm:max-w-[440px]"
-          role="region"
-          aria-label="Zgoda na cookies"
+          exit={{ opacity: 0, y: mniejRuchu ? 0 : 40 }}
+          transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+          className={`fixed inset-x-0 bottom-0 z-[120] outline-none ${PAS}`}
+          style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="zgoda-naglowek"
         >
-          <div className="border border-white/12 bg-[#0b0b0b]/96 text-white shadow-[0_24px_70px_-22px_rgba(0,0,0,0.65)] backdrop-blur-xl">
-            <div
-              className="h-[2px] w-full"
-              style={{ background: "linear-gradient(90deg,#ff6600,#ff7b1f)" }}
-            />
-            <div className="p-3.5 sm:p-4">
-              <p className="text-[8.5px] font-semibold uppercase tracking-[0.22em] text-brand-orange">
-                Cookies
-              </p>
-
-              {!showDetails ? (
-                <>
-                  <p className="mt-1.5 text-[11.5px] leading-[1.5] text-white/80">
-                    Używamy cookies do statystyk odwiedzin (Google Analytics)
-                    i do pomiaru reklam (Meta Pixel).{" "}
-                    <Link
-                      href="/polityka-cookies"
-                      className="text-white/65 underline decoration-white/25 underline-offset-2 transition-colors hover:text-white"
-                    >
+          <div className={`${SZEROKOSC} max-h-[82svh] overflow-y-auto py-5 sm:py-7`}>
+            {!showDetails ? (
+              <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between lg:gap-12">
+                <div className="max-w-[58ch]">
+                  <p
+                    id="zgoda-naglowek"
+                    className="text-balance text-[clamp(1.05rem,1.5vw,1.3rem)] font-semibold leading-[1.3] tracking-[-0.02em]"
+                  >
+                    Zbieramy statystyki odwiedzin i&nbsp;mierzymy skuteczność reklam.
+                  </p>
+                  <p className="mt-2 text-[15px] leading-[1.55] text-white/70">
+                    Tylko za Twoją zgodą. Google Analytics oraz Meta Pixel.{" "}
+                    <Link href="/polityka-cookies" className="text-white underline decoration-white/35 underline-offset-4 hover:decoration-white">
                       Polityka cookies
                     </Link>
                   </p>
-                  <div className="mt-2.5 grid grid-cols-2 gap-1.5 sm:flex sm:items-center sm:gap-2">
-                    <button
-                      type="button"
-                      onClick={() => setShowDetails(true)}
-                      className="col-span-2 order-3 text-center text-[10.5px] text-white/55 underline decoration-white/20 underline-offset-4 transition-colors hover:text-white sm:col-auto sm:order-none sm:mr-auto sm:text-left"
-                    >
-                      Ustawienia
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => save(NECESSARY_ONLY)}
-                      className="order-1 px-3 py-1.5 text-[11.5px] font-semibold text-white/85 border border-white/15 transition-colors hover:bg-white/[0.04] hover:text-white sm:order-none"
-                    >
-                      Odrzuć
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => save(defaultCookieConsent)}
-                      className="order-2 px-3.5 py-1.5 text-[11.5px] font-semibold text-white transition-opacity hover:opacity-90 sm:order-none"
-                      style={{
-                        background: "linear-gradient(135deg, #ff6600, #ff7b1f)",
-                      }}
-                    >
-                      Akceptuję
-                    </button>
+                </div>
+
+                <div className="grid shrink-0 grid-cols-[1fr_auto] gap-x-4 gap-y-3 sm:flex sm:items-center">
+                  <button
+                    type="button"
+                    onClick={() => save(defaultCookieConsent)}
+                    className={`${GLOWNY} col-span-2 sm:order-3 sm:col-auto`}
+                  >
+                    Akceptuję
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => save(NECESSARY_ONLY)}
+                    className={`${DRUGI} sm:order-2`}
+                  >
+                    Tylko niezbędne
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setShowDetails(true)}
+                    className={`${LINK} justify-center sm:order-1 sm:mr-3`}
+                  >
+                    Ustawienia
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div>
+                <p
+                  id="zgoda-naglowek"
+                  className="text-[clamp(1.05rem,1.5vw,1.3rem)] font-semibold leading-[1.3] tracking-[-0.02em]"
+                >
+                  Zdecyduj, co zbieramy.
+                </p>
+
+                <div className="mt-6 grid grid-cols-1 gap-x-10 gap-y-6 sm:grid-cols-2 lg:grid-cols-3">
+                  <div className="flex items-start gap-3">
+                    <input type="checkbox" checked disabled readOnly className="peer sr-only" />
+                    <span className={KWADRAT} aria-hidden>
+                      <Check className="h-3.5 w-3.5 text-[#0a0a0a] opacity-0" strokeWidth={3} />
+                    </span>
+                    <span>
+                      <span className="block text-[15px] font-semibold">Niezbędne</span>
+                      <span className="mt-1 block text-[14px] leading-[1.5] text-white/70">
+                        Działanie serwisu i&nbsp;zapamiętanie tej zgody. Zawsze aktywne.
+                      </span>
+                    </span>
                   </div>
-                </>
-              ) : (
-                <>
-                  <p className="mt-1.5 text-[11.5px] leading-[1.5] text-white/80">
-                    Dostosuj zgody. Niezbędne są zawsze aktywne.
-                  </p>
-                  <div className="mt-2 space-y-1.5">
-                    <div className="flex items-start gap-2.5 border border-white/10 bg-white/[0.03] px-2.5 py-2">
+
+                  {PREFERENCE_OPTIONS.map((option) => (
+                    <label key={option.key} className="flex cursor-pointer items-start gap-3">
                       <input
                         type="checkbox"
-                        checked
-                        disabled
-                        className="mt-[3px] accent-brand-orange"
+                        checked={preferences[option.key]}
+                        onChange={(event) => updatePreference(option.key, event.target.checked)}
+                        className="peer sr-only"
                       />
+                      <span className={KWADRAT} aria-hidden>
+                        <Check className="h-3.5 w-3.5 text-[#0a0a0a] opacity-0" strokeWidth={3} />
+                      </span>
                       <span>
-                        <span className="block text-[11.5px] font-semibold">
-                          Niezbędne
-                        </span>
-                        <span className="mt-0.5 block text-[10px] leading-[1.45] text-white/60">
-                          Działanie serwisu i zapamiętanie zgody.
+                        <span className="block text-[15px] font-semibold">{option.label}</span>
+                        <span className="mt-1 block text-[14px] leading-[1.5] text-white/70">
+                          {option.description}
                         </span>
                       </span>
-                    </div>
-                    {PREFERENCE_OPTIONS.map((option) => (
-                      <label
-                        key={option.key}
-                        className="flex cursor-pointer items-start gap-2.5 border border-white/10 bg-white/[0.03] px-2.5 py-2 transition-colors hover:bg-white/[0.05]"
-                      >
-                        <input
-                          type="checkbox"
-                          checked={preferences[option.key]}
-                          onChange={(event) =>
-                            updatePreference(option.key, event.target.checked)
-                          }
-                          className="mt-[3px] accent-brand-orange"
-                        />
-                        <span>
-                          <span className="block text-[11.5px] font-semibold">
-                            {option.label}
-                          </span>
-                          <span className="mt-0.5 block text-[10px] leading-[1.45] text-white/60">
-                            {option.description}
-                          </span>
-                        </span>
-                      </label>
-                    ))}
-                  </div>
-                  <p className="mt-2 text-[10px] leading-[1.5] text-white/50">
-                    <Link
-                      href="/polityka-cookies"
-                      className="text-white/75 underline decoration-white/25 underline-offset-2 transition-colors hover:text-white"
-                    >
-                      Polityka cookies
-                    </Link>{" "}
-                    ·{" "}
-                    <Link
-                      href="/polityka-prywatnosci"
-                      className="text-white/75 underline decoration-white/25 underline-offset-2 transition-colors hover:text-white"
-                    >
-                      Polityka prywatności
-                    </Link>
-                  </p>
-                  <div className="mt-3 flex flex-col-reverse gap-1.5 sm:flex-row sm:items-center">
-                    <button
-                      type="button"
-                      onClick={() => setShowDetails(false)}
-                      className="text-[10.5px] text-white/55 underline decoration-white/20 underline-offset-4 transition-colors hover:text-white sm:mr-auto"
-                    >
-                      ← Wstecz
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => save(NECESSARY_ONLY)}
-                      className="px-3 py-1.5 text-[11.5px] font-semibold text-white/85 border border-white/15 transition-colors hover:bg-white/[0.04] hover:text-white"
-                    >
-                      Tylko niezbędne
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => save(preferences)}
-                      className="px-3.5 py-1.5 text-[11.5px] font-semibold text-white transition-opacity hover:opacity-90"
-                      style={{
-                        background: "linear-gradient(135deg, #ff6600, #ff7b1f)",
-                      }}
-                    >
-                      Zapisz
-                    </button>
-                  </div>
-                </>
-              )}
-            </div>
+                    </label>
+                  ))}
+                </div>
+
+                <div className="mt-6 grid grid-cols-2 gap-3 sm:mt-7 sm:flex sm:items-center">
+                  <button
+                    type="button"
+                    onClick={() => save(preferences)}
+                    className={`${GLOWNY} col-span-2 sm:order-4 sm:col-auto`}
+                  >
+                    Zapisz wybór
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => save(NECESSARY_ONLY)}
+                    className={`${DRUGI} col-span-2 sm:order-3 sm:col-auto`}
+                  >
+                    Tylko niezbędne
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setShowDetails(false)}
+                    className={`${LINK} justify-center gap-2 sm:order-1 sm:mr-auto`}
+                  >
+                    <ArrowLeft aria-hidden className="h-4 w-4" strokeWidth={2} />
+                    Wstecz
+                  </button>
+                  <Link
+                    href="/polityka-prywatnosci"
+                    className={`${LINK} justify-center sm:order-2 sm:mr-3`}
+                  >
+                    Polityka prywatności
+                  </Link>
+                </div>
+              </div>
+            )}
           </div>
         </motion.div>
+        </>
       ) : null}
     </AnimatePresence>
   );

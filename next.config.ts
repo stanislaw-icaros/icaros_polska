@@ -5,6 +5,9 @@ const nextConfig: NextConfig = {
     return [
       // Stary adres strony "Jak to działa". Slug nie zgadzał się z nazwą w menu.
       { source: "/rozwiazania", destination: "/jak-to-dziala", permanent: true },
+      // Landing kampanijny przeniesiony: strona mówi o systemie Circle,
+      // a nie o samym urządzeniu Health.
+      { source: "/health", destination: "/oferta", permanent: true },
     ];
   },
   async rewrites() {

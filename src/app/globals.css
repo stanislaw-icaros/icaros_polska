@@ -14,6 +14,19 @@
   --color-accent-subtle: #f4f4f5;
   --color-brand-orange: #ff6600;
   --color-brand-orange-light: #ff7b1f;
+  /* Landing /health: osobna, ciemna paleta zdjęta z filmu ICAROS PROMO.
+     Dwa stopnie akcentu, bo strona twardo przeskakuje między czarnym a papierem. */
+  --color-h-void: #07070a;
+  --color-h-night: #0e1016;
+  --color-h-ink: #f2efea;
+  --color-h-ink-soft: #9a9792;
+  --color-h-deep: #0b0c11;
+  --color-h-surface: #13151c;
+  --color-h-paper: #f1f1f2;
+  --color-h-dark: #111114;
+  --color-h-dark-soft: #55555b;
+  --color-h-accent: #ff6600;
+  --color-h-accent-deep: #c24700;
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
