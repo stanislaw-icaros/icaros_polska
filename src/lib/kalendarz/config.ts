@@ -36,8 +36,17 @@ export const PRZYPOMNIENIE_MIN_PRZED = 10;
 export type OknoPracy = [string, string];
 export type GodzinyPracy = Partial<Record<1 | 2 | 3 | 4 | 5 | 6 | 7, OknoPracy[]>>;
 
-// Ustawienie wstepne, do potwierdzenia przez Jarka i Sebastiana.
-const GODZINY_STANDARDOWE: GodzinyPracy = {
+// Godziny podane przez Jarka 28 października 2026.
+const GODZINY_JAREK: GodzinyPracy = {
+  1: [["08:00", "18:00"]],
+  2: [["08:00", "18:00"]],
+  3: [["08:00", "18:00"]],
+  4: [["08:00", "18:00"]],
+  5: [["08:00", "18:00"]],
+};
+
+// Ustawienie wstępne, dopóki Sebastian nie poda swoich godzin.
+const GODZINY_WSTEPNE: GodzinyPracy = {
   1: [["09:00", "20:00"]],
   2: [["09:00", "20:00"]],
   3: [["09:00", "20:00"]],
@@ -71,7 +80,7 @@ export const HANDLOWCY: Handlowiec[] = [
     emailPowiadomien: "jaroslaw.lupiezowiec@icaros.com.pl",
     zmiennaTokenu: "GCAL_REFRESH_TOKEN_JAREK",
     zmiennaPipedrive: "PIPEDRIVE_OWNER_A_ID",
-    godziny: GODZINY_STANDARDOWE,
+    godziny: GODZINY_JAREK,
   },
   {
     klucz: "sebastian",
@@ -81,7 +90,7 @@ export const HANDLOWCY: Handlowiec[] = [
     emailPowiadomien: "sebastian.wilk@icaros.com.pl",
     zmiennaTokenu: "GCAL_REFRESH_TOKEN_SEBASTIAN",
     zmiennaPipedrive: "PIPEDRIVE_OWNER_B_ID",
-    godziny: GODZINY_STANDARDOWE,
+    godziny: GODZINY_WSTEPNE,
   },
 ];
 
