@@ -2,6 +2,7 @@ import { Resend } from "resend";
 import { escapeHtml, imieZNazwy, kopertaHtml, POMARANCZOWY, type Wiersz } from "./szablon";
 import { etykietaGodziny, etykietaPelna } from "@/lib/kalendarz/czas";
 import { zbudujIcs } from "@/lib/kalendarz/ics";
+import { SITE_URL } from "@/lib/email/unsubscribe";
 import type { Handlowiec } from "@/lib/kalendarz/config";
 
 /**
@@ -93,8 +94,10 @@ export async function wyslijPotwierdzenieRozmowy(dane: DaneMailaRozmowy): Promis
         etykietaPelna(dane.start)
       )}</strong> na podany numer telefonu.`,
       `Rozmowa trwa ${dane.dlugoscMin} minut. To zwykła rozmowa telefoniczna, nie trzeba nic instalować ani nigdzie się logować.`,
+      "Zanim zadzwonimy, prosimy o zajrzenie na stronę z urządzeniami. Opisujemy tam Circle, Health, Cloud, Guardian i I.S.T. Board, razem z filmami. Dzięki temu rozmowa zacznie się od konkretów zamiast od tłumaczenia, czym jest każde z nich.",
     ],
     ramka: { naglowek: "Szczegóły", wiersze: wierszeTerminu(dane) },
+    przycisk: { etykieta: "Zobacz urządzenia ICAROS", url: `${SITE_URL}/urzadzenia` },
     dopiski: [
       "W załączniku jest plik, który dodaje tę rozmowę do kalendarza w telefonie lub w poczcie.",
       dane.linkOdwolania

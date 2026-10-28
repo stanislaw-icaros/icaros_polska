@@ -1,8 +1,10 @@
 "use client";
 
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
+  ArrowRight,
   CalendarCheck,
   CalendarX,
   Check,
@@ -502,13 +504,33 @@ function Karta({ children }: { children: React.ReactNode }) {
   );
 }
 
+/** Dokąd prowadzimy klienta po rezerwacji i po ilu sekundach. */
+const STRONA_PRZYGOTOWANIA = "/urzadzenia";
+const SEKUND_DO_PRZEJSCIA = 7;
+
 function Potwierdzenie({ wynik }: { wynik: WynikRezerwacji }) {
+  const router = useRouter();
   const [odwolywanie, setOdwolywanie] = useState(false);
   const [odwolane, setOdwolane] = useState(false);
   const [bladOdwolania, setBladOdwolania] = useState("");
+  const [sekundy, setSekundy] = useState(SEKUND_DO_PRZEJSCIA);
+  const [odliczanie, setOdliczanie] = useState(true);
+
+  // Odliczanie do strony z urządzeniami. Klient może je zatrzymać, bo na tym
+  // ekranie jest jeszcze odwołanie terminu i nie wolno go zabrać pod ręką.
+  useEffect(() => {
+    if (!odliczanie || odwolane || odwolywanie) return;
+    if (sekundy <= 0) {
+      router.push(STRONA_PRZYGOTOWANIA);
+      return;
+    }
+    const licznik = window.setTimeout(() => setSekundy((ile) => ile - 1), 1000);
+    return () => window.clearTimeout(licznik);
+  }, [odliczanie, odwolane, odwolywanie, sekundy, router]);
 
   async function odwolaj() {
     if (!wynik.linkOdwolania || odwolywanie) return;
+    setOdliczanie(false);
     setOdwolywanie(true);
     setBladOdwolania("");
 
@@ -553,21 +575,23 @@ function Potwierdzenie({ wynik }: { wynik: WynikRezerwacji }) {
     );
   }
 
+  const postep = ((SEKUND_DO_PRZEJSCIA - sekundy) / SEKUND_DO_PRZEJSCIA) * 100;
+
   return (
-    <div className="mx-auto max-w-[620px]">
+    <div className="mx-auto max-w-[720px]">
       <Karta>
-        <div className="p-8 sm:p-12">
+        <div className="p-8 sm:p-14">
           <div className="text-center">
             <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-brand-orange/10">
               <Check className="h-7 w-7 text-brand-orange" strokeWidth={2.25} />
             </span>
-            <h2 className="mt-6 text-[clamp(1.5rem,3vw,2.05rem)] font-bold leading-[1.15] tracking-[-0.03em] text-foreground">
-              Termin jest zapisany
+            <h2 className="mt-6 text-[clamp(1.75rem,4vw,2.6rem)] font-bold leading-[1.1] tracking-[-0.035em] text-foreground">
+              Dziękujemy, termin jest zapisany
             </h2>
           </div>
 
-          <div className="mt-8 bg-surface px-6 py-6 text-center">
-            <p className="text-[16.5px] font-semibold tracking-[-0.015em] text-foreground">
+          <div className="mt-8 bg-surface px-6 py-7 text-center">
+            <p className="text-[17.5px] font-semibold tracking-[-0.015em] text-foreground">
               {etykietaPelna(new Date(wynik.start))}
             </p>
             <p className="mt-2 text-[13.5px] text-foreground/55">
@@ -593,6 +617,51 @@ function Potwierdzenie({ wynik }: { wynik: WynikRezerwacji }) {
               Zadzwonimy z polskiego numeru, dokładnie w wybranej godzinie.
             </li>
           </ul>
+
+          <div className="mt-10 bg-brand-orange/[0.07] p-6 sm:p-8">
+            <h3 className="text-[19px] font-semibold tracking-[-0.025em] text-foreground">
+              Prosimy o zapoznanie się z urządzeniami przed rozmową
+            </h3>
+            <p className="mt-3 text-[14.5px] leading-[1.75] text-foreground/65">
+              Za chwilę pokażemy stronę, na której opisujemy Circle, Health, Cloud, Guardian
+              i I.S.T. Board. Kilka minut tam sprawia, że rozmowa jest konkretna od pierwszego
+              zdania, bo nie trzeba zaczynać od tłumaczenia, czym jest każde urządzenie.
+            </p>
+
+            <Link
+              href={STRONA_PRZYGOTOWANIA}
+              className="group mt-7 inline-flex w-full items-center justify-center gap-2.5 bg-foreground px-8 py-4 text-[14.5px] font-semibold text-white transition-colors duration-300 hover:bg-brand-orange sm:w-auto"
+            >
+              Zobacz urządzenia ICAROS
+              <ArrowRight
+                className="h-4 w-4 transition-transform duration-500 group-hover:translate-x-1"
+                strokeWidth={2}
+              />
+            </Link>
+
+            {odliczanie && !odwolywanie ? (
+              <div className="mt-7">
+                <div className="h-[3px] w-full bg-foreground/10">
+                  <div
+                    className="h-full bg-brand-orange transition-[width] duration-1000 ease-linear motion-reduce:transition-none"
+                    style={{ width: `${postep}%` }}
+                  />
+                </div>
+                <div className="mt-3 flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
+                  <p className="text-[13px] text-foreground/50">
+                    Przejdziemy tam za {sekundy} s
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => setOdliczanie(false)}
+                    className="text-[13px] font-medium text-foreground/50 underline underline-offset-[3px] transition-colors duration-300 hover:text-foreground"
+                  >
+                    Zostaw mnie na tej stronie
+                  </button>
+                </div>
+              </div>
+            ) : null}
+          </div>
 
           {wynik.linkOdwolania ? (
             <div className="mt-9 text-center">
