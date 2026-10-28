@@ -46,6 +46,8 @@ export type DaneKalendarza = {
   dni: Dzien[];
   handlowcy: Handlowiec[];
   dlugoscMin: number;
+  /** Czy klient sam wybiera osobę, czy przydzielamy ją po cichu. */
+  wyborOsoby: boolean;
   awaria: boolean;
 };
 
@@ -258,7 +260,7 @@ export default function KalendarzRozmowy({
               ))}
             </ul>
 
-            {dane.handlowcy.length > 1 ? (
+            {dane.wyborOsoby && dane.handlowcy.length > 1 ? (
               <div className="mt-8">
                 <p className="text-[13px] font-medium text-h-ink-soft">Kto zadzwoni</p>
                 <div
@@ -300,6 +302,10 @@ export default function KalendarzRozmowy({
                   })}
                 </div>
               </div>
+            ) : wybrany ? (
+              <p className="mt-8 text-[13px] text-h-ink-soft">
+                Rozmowę poprowadzi {wybrany.imie}
+              </p>
             ) : null}
           </div>
 

@@ -1,5 +1,6 @@
 import {
   DLUGOSC_ROZMOWY_MIN,
+  PREFEROWANY_HANDLOWIEC,
   PRZYPOMNIENIE_MIN_PRZED,
   handlowiec,
   opisZrodla,
@@ -135,9 +136,11 @@ export async function umowRozmowe(zgloszenie: Zgloszenie): Promise<WynikRezerwac
   if (osoby.length === 0) return { status: "zajety" };
 
   const kontekst = await rozpoznajLeada({ email, telefon });
+  // Kolejność ma znaczenie: wybór klienta, potem opiekun, który już prowadzi
+  // tego klienta w Pipedrive, dopiero na końcu preferencja z konfiguracji.
   const wybrany = wybierzOsobe(
     osoby,
-    zgloszenie.osoba || kontekst.wlascicielSprawy,
+    zgloszenie.osoba || kontekst.wlascicielSprawy || PREFEROWANY_HANDLOWIEC || undefined,
     obciazenie,
     ostatniaRozmowa
   );

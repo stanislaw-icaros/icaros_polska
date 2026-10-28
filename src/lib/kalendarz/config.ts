@@ -56,6 +56,20 @@ const GODZINY_WSTEPNE: GodzinyPracy = {
 
 export type KluczHandlowca = "jarek" | "sebastian";
 
+/**
+ * Kto dostaje rozmowę, gdy klient nikogo nie wskazał, a obaj są wolni.
+ * `null` oznacza równy podział po liczbie umówionych rozmów. Ustawienie nie
+ * przebija ani wyboru klienta, ani opiekuna, który prowadzi go w Pipedrive.
+ */
+export const PREFEROWANY_HANDLOWIEC: KluczHandlowca | null = "jarek";
+
+/**
+ * Czy na stronie pokazujemy listę osób do wyboru. Przy wyłączonej liście
+ * klient widzi jeden kalendarz, a osobę można nadal wskazać adresem
+ * `/kalendarz?osoba=jarek`, na przykład w SMS-ie do leada.
+ */
+export const WYBOR_OSOBY_NA_STRONIE = true;
+
 export type Handlowiec = {
   klucz: KluczHandlowca;
   imie: string;
