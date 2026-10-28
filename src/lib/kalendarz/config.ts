@@ -53,6 +53,8 @@ export type Handlowiec = {
   pelneImie: string;
   /** Adres konta Google, którego kalendarz czytamy i w którym zapisujemy rozmowy. */
   kontoGoogle: string;
+  /** Adres służbowy, na który idą powiadomienia o umówionych rozmowach. */
+  emailPowiadomien: string;
   /** Zmienna środowiskowa z tokenem odświeżania Google dla tej osoby. */
   zmiennaTokenu: string;
   /** Identyfikator użytkownika w Pipedrive. */
@@ -66,6 +68,7 @@ export const HANDLOWCY: Handlowiec[] = [
     imie: "Jarosław",
     pelneImie: "Jarosław Łupieżowiec",
     kontoGoogle: process.env.GCAL_KONTO_JAREK?.trim() || "",
+    emailPowiadomien: "jaroslaw.lupiezowiec@icaros.com.pl",
     zmiennaTokenu: "GCAL_REFRESH_TOKEN_JAREK",
     zmiennaPipedrive: "PIPEDRIVE_OWNER_A_ID",
     godziny: GODZINY_STANDARDOWE,
@@ -75,6 +78,7 @@ export const HANDLOWCY: Handlowiec[] = [
     imie: "Sebastian",
     pelneImie: "Sebastian Wilk",
     kontoGoogle: process.env.GCAL_KONTO_SEBASTIAN?.trim() || "",
+    emailPowiadomien: "sebastian.wilk@icaros.com.pl",
     zmiennaTokenu: "GCAL_REFRESH_TOKEN_SEBASTIAN",
     zmiennaPipedrive: "PIPEDRIVE_OWNER_B_ID",
     godziny: GODZINY_STANDARDOWE,

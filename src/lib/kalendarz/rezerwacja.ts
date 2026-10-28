@@ -180,7 +180,7 @@ export async function umowRozmowe(zgloszenie: Zgloszenie): Promise<WynikRezerwac
   // Pipedrive jest nieskonfigurowany albo nie odpowiada. Adresy z Pipedrive
   // tylko dokładamy do tej listy.
   let odbiorcy: string[] = [
-    ...new Set([osoba.kontoGoogle, ...ALWAYS_NOTIFY_EMAILS].filter(Boolean)),
+    ...new Set([osoba.emailPowiadomien, ...ALWAYS_NOTIFY_EMAILS].filter(Boolean)),
   ];
 
   try {
