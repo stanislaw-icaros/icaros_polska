@@ -11,6 +11,11 @@ export const metadata: Metadata = {
   alternates: { canonical: "/kalendarz" },
 };
 
+/** Pasek przeglądarki w kolorze strony, tak jak na landingu kampanijnym. */
+export const viewport = {
+  themeColor: "#07070a",
+};
+
 // Wolne godziny czytamy z kalendarzy Google przy każdym wejściu.
 export const dynamic = "force-dynamic";
 
@@ -41,30 +46,32 @@ export default async function KalendarzPage({
 
   return (
     <>
-      <Navigation />
-      <main className="relative overflow-hidden bg-surface pb-24 pt-28 lg:pb-32 lg:pt-36">
+      <Navigation variant="business" />
+      <main className="relative overflow-hidden bg-h-void pb-24 pt-28 text-h-ink lg:pb-32 lg:pt-36">
+        {/* Światło sceny zdjęte z landingu, żeby czerń nie była płaska. */}
         <div
-          className="pointer-events-none absolute inset-0 opacity-[0.035]"
+          aria-hidden
+          className="pointer-events-none absolute inset-0"
           style={{
+            // taste-skill-ignore: światło sceny, nie ozdobna plama
             backgroundImage:
-              "linear-gradient(rgba(0,0,0,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.08) 1px, transparent 1px)",
-            backgroundSize: "80px 80px",
+              "radial-gradient(70% 55% at 8% 26%, rgba(255,102,0,0.09), transparent 70%)",
           }}
         />
 
-        <div className="relative z-10 mx-auto w-full max-w-[1000px] px-6 lg:px-8">
-          <div className="max-w-[640px] animate-[fade-up_0.7s_ease-out_both]">
-            <h1 className="text-[clamp(2rem,4.6vw,3.1rem)] font-bold leading-[1.03] tracking-[-0.04em] text-foreground">
+        <div className="relative z-10 mx-auto w-full max-w-[1100px] px-6 lg:px-8">
+          <div className="max-w-[760px] animate-[fade-up_0.7s_ease-out_both]">
+            <h1 className="text-balance text-[clamp(2rem,4.2vw,3.4rem)] font-semibold leading-[1.02] tracking-[-0.035em] text-h-ink">
               Umów termin rozmowy
             </h1>
-            <p className="mt-5 text-[15px] leading-[1.8] text-foreground/55 sm:text-[16px]">
+            <p className="mt-6 max-w-[62ch] text-pretty text-[17px] leading-[1.68] text-h-ink-soft">
               Wybierz termin poniżej. Zadzwonimy na podany numer i w {dane.dlugoscMin} minut
               odpowiemy na pytania o urządzenia, ceny, finansowanie i o to, jak ICAROS wygląda
               w pracy placówki.
             </p>
           </div>
 
-          <div className="mt-10 lg:mt-12">
+          <div className="mt-12 lg:mt-14">
             <KalendarzRozmowy poczatkowe={dane} osobaZAdresu={parametry.osoba} />
           </div>
         </div>

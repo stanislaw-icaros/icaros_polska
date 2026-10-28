@@ -196,12 +196,12 @@ export default function KalendarzRozmowy({
     return (
       <Karta>
         <div className="p-8 sm:p-14">
-          <h2 className="text-[21px] font-semibold tracking-[-0.025em] text-foreground">
+          <h2 className="text-[21px] font-semibold tracking-[-0.025em] text-h-ink">
             {dane.awaria
               ? "Nie możemy teraz pokazać wolnych godzin"
               : "Najbliższe tygodnie są zajęte"}
           </h2>
-          <p className="mt-3.5 max-w-[480px] text-[14.5px] leading-[1.75] text-foreground/55">
+          <p className="mt-3.5 max-w-[480px] text-[14.5px] leading-[1.75] text-h-ink-soft">
             {dane.awaria
               ? "Kalendarz chwilowo nie odpowiada. Najszybciej dogadamy termin telefonicznie albo mailem, odpowiadamy w jednym dniu roboczym."
               : "W widocznym okresie nie ma już wolnych godzin. Napisz albo zadzwoń, znajdziemy termin poza kalendarzem."}
@@ -209,14 +209,14 @@ export default function KalendarzRozmowy({
           <div className="mt-8 flex flex-wrap gap-3">
             <a
               href={`tel:${COMPANY_PHONE_HREF}`}
-              className="inline-flex items-center gap-2 bg-foreground px-7 py-3.5 text-[14px] font-semibold text-white transition-colors duration-300 hover:bg-brand-orange"
+              className="inline-flex items-center gap-2 bg-h-accent px-7 py-3.5 text-[14px] font-semibold text-h-void transition-colors duration-300 hover:bg-[#ff7b1f]"
             >
               <Phone className="h-4 w-4" strokeWidth={1.75} />
               {COMPANY_PHONE}
             </a>
             <a
               href={`mailto:${COMPANY_EMAIL}`}
-              className="inline-flex items-center gap-2 bg-foreground/[0.05] px-7 py-3.5 text-[14px] font-semibold text-foreground transition-colors duration-300 hover:bg-foreground/[0.09]"
+              className="inline-flex items-center gap-2 bg-white/[0.06] px-7 py-3.5 text-[14px] font-semibold text-h-ink transition-colors duration-300 hover:bg-white/[0.11]"
             >
               Napisz do nas
             </a>
@@ -236,11 +236,8 @@ export default function KalendarzRozmowy({
             termin ? "lg:grid-cols-[300px_minmax(0,1fr)]" : "lg:grid-cols-[300px_minmax(0,1fr)_228px]"
           }`}
         >
-          <div className="bg-surface p-7 sm:p-8">
-            <p className="text-[12px] font-medium tracking-[0.02em] text-foreground/40">
-              ICAROS Polska
-            </p>
-            <h2 className="mt-1.5 text-[21px] font-semibold leading-[1.2] tracking-[-0.03em] text-foreground">
+          <div className="bg-h-surface p-7 sm:p-8">
+            <h2 className="text-[21px] font-semibold leading-[1.2] tracking-[-0.03em] text-h-ink">
               Rozmowa telefoniczna
             </h2>
 
@@ -253,9 +250,9 @@ export default function KalendarzRozmowy({
               ].map((punkt) => (
                 <li
                   key={punkt.tekst}
-                  className="flex items-center gap-2.5 text-[13.5px] text-foreground/60"
+                  className="flex items-center gap-2.5 text-[13.5px] text-h-ink-soft"
                 >
-                  <punkt.ikona className="h-4 w-4 shrink-0 text-brand-orange" strokeWidth={1.75} />
+                  <punkt.ikona className="h-4 w-4 shrink-0 text-h-accent" strokeWidth={1.75} />
                   {punkt.tekst}
                 </li>
               ))}
@@ -263,7 +260,7 @@ export default function KalendarzRozmowy({
 
             {dane.handlowcy.length > 1 ? (
               <div className="mt-8">
-                <p className="text-[12px] font-medium text-foreground/45">Kto zadzwoni</p>
+                <p className="text-[13px] font-medium text-h-ink-soft">Kto zadzwoni</p>
                 <div
                   className="mt-3 grid grid-cols-2 gap-2 lg:grid-cols-1"
                   role="group"
@@ -287,14 +284,14 @@ export default function KalendarzRozmowy({
                           opcja.klucz === DOWOLNA ? "col-span-2 lg:col-span-1" : ""
                         } ${
                           aktywny
-                            ? "bg-white text-foreground shadow-[0_1px_3px_rgba(10,10,10,0.07)]"
-                            : "bg-white/55 text-foreground/70 hover:bg-white hover:text-foreground"
+                            ? "bg-white/[0.10] text-h-ink"
+                            : "bg-white/[0.04] text-h-ink-soft hover:bg-white/[0.08] hover:text-h-ink"
                         }`}
                       >
                         <span className="truncate text-[13.5px] font-medium">{opcja.nazwa}</span>
                         {aktywny ? (
                           <Check
-                            className="ml-auto h-4 w-4 shrink-0 text-brand-orange"
+                            className="ml-auto h-4 w-4 shrink-0 text-h-accent"
                             strokeWidth={2.25}
                           />
                         ) : null}
@@ -308,16 +305,16 @@ export default function KalendarzRozmowy({
 
           {brakDlaOsoby ? (
             <div className="p-7 sm:p-8">
-              <h3 className="text-[16.5px] font-semibold tracking-[-0.015em] text-foreground">
+              <h3 className="text-[16.5px] font-semibold tracking-[-0.015em] text-h-ink">
                 {wybrany ? `${wybrany.imie} nie ma teraz wolnych godzin` : "Brak wolnych godzin"}
               </h3>
-              <p className="mt-3 text-[14px] leading-[1.7] text-foreground/55">
+              <p className="mt-3 text-[14px] leading-[1.7] text-h-ink-soft">
                 Po wybraniu {nazwaZespolu} pokażą się wszystkie terminy.
               </p>
               <button
                 type="button"
                 onClick={() => wybierzOsobe(DOWOLNA)}
-                className="mt-6 inline-flex items-center gap-2 bg-foreground px-7 py-3.5 text-[14px] font-semibold text-white transition-colors duration-300 hover:bg-brand-orange"
+                className="mt-6 inline-flex items-center gap-2 bg-h-accent px-7 py-3.5 text-[14px] font-semibold text-h-void transition-colors duration-300 hover:bg-[#ff7b1f]"
               >
                 Pokaż wszystkie terminy
               </button>
@@ -339,7 +336,7 @@ export default function KalendarzRozmowy({
             <>
               <div className="p-7 sm:p-9">
                 <div className="flex items-center justify-between gap-3">
-                  <p className="text-[16px] font-semibold tracking-[-0.02em] text-foreground">
+                  <p className="text-[16px] font-semibold tracking-[-0.02em] text-h-ink">
                     {nazwaMiesiaca(miesiac)}
                   </p>
                   <div className="flex gap-1.5">
@@ -355,7 +352,7 @@ export default function KalendarzRozmowy({
                           aria-label={strzalka.opis}
                           disabled={!docelowy}
                           onClick={() => wybierzMiesiac(docelowy)}
-                          className="flex h-9 w-9 items-center justify-center bg-foreground/[0.04] text-foreground/70 transition-colors duration-300 hover:bg-foreground/[0.09] hover:text-foreground disabled:cursor-not-allowed disabled:bg-transparent disabled:text-foreground/15"
+                          className="flex h-9 w-9 items-center justify-center bg-white/[0.05] text-h-ink-soft transition-colors duration-300 hover:bg-white/[0.11] hover:text-h-ink disabled:cursor-not-allowed disabled:bg-transparent disabled:text-white/15"
                         >
                           <strzalka.ikona className="h-4 w-4" strokeWidth={2} />
                         </button>
@@ -368,7 +365,7 @@ export default function KalendarzRozmowy({
                   {SKROTY_TYGODNIA.map((skrot) => (
                     <span
                       key={skrot}
-                      className="pb-2 text-center text-[11px] font-medium text-foreground/35"
+                      className="pb-2 text-center text-[12.5px] font-medium text-h-ink-soft"
                     >
                       {skrot}
                     </span>
@@ -380,7 +377,7 @@ export default function KalendarzRozmowy({
                       return (
                         <span
                           key={komorka.data}
-                          className="flex h-11 items-center justify-center text-[14px] tabular-nums text-foreground/20"
+                          className="flex h-11 items-center justify-center text-[14px] tabular-nums text-white/35"
                         >
                           {komorka.numer}
                         </span>
@@ -399,8 +396,8 @@ export default function KalendarzRozmowy({
                         }}
                         className={`flex h-11 items-center justify-center text-[14px] font-semibold tabular-nums transition-colors duration-300 ${
                           aktywny
-                            ? "bg-brand-orange text-white"
-                            : "bg-foreground/[0.06] text-foreground hover:bg-foreground/[0.13]"
+                            ? "bg-h-accent text-h-void"
+                            : "bg-white/[0.06] text-h-ink hover:bg-white/[0.12]"
                         }`}
                       >
                         {komorka.numer}
@@ -414,10 +411,10 @@ export default function KalendarzRozmowy({
                 {dzienAktywny ? (
                   <>
                     <div className="flex items-baseline justify-between gap-2 lg:block">
-                      <p className="text-[14.5px] font-semibold tracking-[-0.01em] text-foreground">
+                      <p className="text-[14.5px] font-semibold tracking-[-0.01em] text-h-ink">
                         {etykietaKrotka(new Date(`${dzienAktywny.data}T12:00:00Z`))}
                       </p>
-                      <p className="flex items-center gap-1.5 text-[11.5px] text-foreground/40 lg:mt-1.5">
+                      <p className="flex items-center gap-1.5 text-[13px] text-h-ink-soft lg:mt-1.5">
                         {odswiezanie ? (
                           <Loader2 className="h-3 w-3 animate-spin" strokeWidth={2} />
                         ) : null}
@@ -425,10 +422,10 @@ export default function KalendarzRozmowy({
                       </p>
                     </div>
 
-                    <div className="mt-4 space-y-5 lg:max-h-[372px] lg:overflow-y-auto lg:pr-2 [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-thumb]:bg-foreground/15">
+                    <div className="mt-4 space-y-5 lg:max-h-[372px] lg:overflow-y-auto lg:pr-2 [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-thumb]:bg-white/15">
                       {grupy.map((grupa) => (
                         <div key={grupa.nazwa}>
-                          <p className="mb-2.5 text-[11px] font-medium text-foreground/35">
+                          <p className="mb-2.5 text-[12.5px] font-medium text-h-ink-soft">
                             {grupa.nazwa}
                           </p>
                           <div className="grid grid-cols-3 gap-2 sm:grid-cols-4 lg:grid-cols-1">
@@ -437,7 +434,7 @@ export default function KalendarzRozmowy({
                                 key={wpis.start}
                                 type="button"
                                 onClick={() => wybierzTermin(wpis.start)}
-                                className="bg-foreground/[0.05] py-3 text-[13.5px] font-semibold tabular-nums text-foreground transition-colors duration-300 hover:bg-brand-orange hover:text-white"
+                                className="bg-white/[0.06] py-3 text-[13.5px] font-semibold tabular-nums text-h-ink transition-colors duration-300 hover:bg-h-accent hover:text-h-void"
                               >
                                 {etykietaGodziny(new Date(wpis.start))}
                               </button>
@@ -455,7 +452,7 @@ export default function KalendarzRozmowy({
       </Karta>
 
       {komunikat ? (
-        <p className="mt-4 bg-brand-orange/[0.07] px-5 py-3.5 text-[13px] text-foreground/70">
+        <p className="mt-4 bg-h-accent/[0.10] px-5 py-3.5 text-[13px] text-h-ink-soft">
           {komunikat}
         </p>
       ) : null}
@@ -468,26 +465,26 @@ export default function KalendarzRozmowy({
         ].map((punkt) => (
           <p
             key={punkt.tekst}
-            className="flex items-center gap-2.5 text-[12.5px] text-foreground/45"
+            className="flex items-center gap-2.5 text-[13px] text-h-ink-soft"
           >
-            <punkt.ikona className="h-4 w-4 shrink-0 text-brand-orange/70" strokeWidth={1.75} />
+            <punkt.ikona className="h-4 w-4 shrink-0 text-h-accent/70" strokeWidth={1.75} />
             {punkt.tekst}
           </p>
         ))}
       </div>
 
-      <p className="mt-4 text-[13px] text-foreground/45">
+      <p className="mt-4 text-[13px] text-h-ink-soft">
         Wolisz od razu zadzwonić{" "}
         <a
           href={`tel:${COMPANY_PHONE_HREF}`}
-          className="font-medium text-foreground/75 transition-colors duration-300 hover:text-brand-orange"
+          className="font-medium text-h-ink transition-colors duration-300 hover:text-h-accent"
         >
           {COMPANY_PHONE}
         </a>{" "}
         lub napisz na{" "}
         <a
           href={`mailto:${COMPANY_EMAIL}`}
-          className="font-medium text-foreground/75 transition-colors duration-300 hover:text-brand-orange"
+          className="font-medium text-h-ink transition-colors duration-300 hover:text-h-accent"
         >
           {COMPANY_EMAIL}
         </a>
@@ -496,10 +493,10 @@ export default function KalendarzRozmowy({
   );
 }
 
-/** Biała płyta na jasnym tle. Bez pasków i linii, cała struktura stoi na odstępach. */
+/** Płyta kalendarza: o stopień jaśniejsza od tła, bez linii i bez cienia. */
 function Karta({ children }: { children: React.ReactNode }) {
   return (
-    <div className="animate-[fade-up_0.6s_ease-out_both] overflow-hidden bg-white shadow-[0_1px_2px_rgba(10,10,10,0.04),0_32px_72px_-36px_rgba(10,10,10,0.22)] ring-1 ring-foreground/[0.06]">
+    <div className="animate-[fade-up_0.6s_ease-out_both] overflow-hidden bg-h-night">
       {children}
     </div>
   );
@@ -543,14 +540,13 @@ function PelnyEkran({ children }: { children: React.ReactNode }) {
       aria-modal="true"
       aria-labelledby="kalendarz-potwierdzenie"
       tabIndex={-1}
-      className="fixed inset-0 z-[125] overflow-y-auto bg-surface outline-none"
+      className="fixed inset-0 z-[125] overflow-y-auto bg-h-void text-h-ink outline-none"
     >
       <div
-        className="pointer-events-none absolute inset-0 opacity-[0.035]"
+        className="pointer-events-none absolute inset-0"
         style={{
           backgroundImage:
-            "linear-gradient(rgba(0,0,0,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.08) 1px, transparent 1px)",
-          backgroundSize: "80px 80px",
+            "radial-gradient(70% 55% at 50% 0%, rgba(255,102,0,0.10), transparent 70%)",
         }}
       />
       <div className="relative flex min-h-full items-center justify-center px-6 py-16 sm:py-20">
@@ -608,19 +604,19 @@ function Potwierdzenie({ wynik }: { wynik: WynikRezerwacji }) {
     return (
       <PelnyEkran>
         <div className="text-center">
-          <CalendarX className="mx-auto h-11 w-11 text-foreground/25" strokeWidth={1.25} />
+          <CalendarX className="mx-auto h-11 w-11 text-white/35" strokeWidth={1.25} />
           <h2
             id="kalendarz-potwierdzenie"
-            className="mt-7 text-[clamp(1.75rem,4.4vw,2.75rem)] font-bold leading-[1.08] tracking-[-0.035em] text-foreground"
+            className="mt-7 text-[clamp(1.75rem,4.4vw,2.75rem)] font-bold leading-[1.08] tracking-[-0.035em] text-h-ink"
           >
             Termin został odwołany
           </h2>
-          <p className="mx-auto mt-4 max-w-[420px] text-[15px] leading-[1.75] text-foreground/55">
+          <p className="mx-auto mt-4 max-w-[420px] text-[15px] leading-[1.75] text-h-ink-soft">
             Nikt nie zadzwoni w tej godzinie. Nowy termin można wybrać w każdej chwili.
           </p>
           <Link
             href="/kalendarz"
-            className="mt-9 inline-flex items-center gap-2 bg-foreground px-8 py-4 text-[14.5px] font-semibold text-white transition-colors duration-300 hover:bg-brand-orange"
+            className="mt-9 inline-flex items-center gap-2 bg-h-accent px-8 py-4 text-[14.5px] font-semibold text-h-void transition-colors duration-300 hover:bg-[#ff7b1f]"
           >
             Wybierz nowy termin
           </Link>
@@ -634,22 +630,22 @@ function Potwierdzenie({ wynik }: { wynik: WynikRezerwacji }) {
   return (
     <PelnyEkran>
       <div className="text-center">
-        <span className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-brand-orange/10">
-          <Check className="h-8 w-8 text-brand-orange" strokeWidth={2.25} />
+        <span className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-h-accent/15">
+          <Check className="h-8 w-8 text-h-accent" strokeWidth={2.25} />
         </span>
         <h2
           id="kalendarz-potwierdzenie"
-          className="mt-7 text-[clamp(1.85rem,4.8vw,3rem)] font-bold leading-[1.06] tracking-[-0.04em] text-foreground"
+          className="mt-7 text-[clamp(1.85rem,4.8vw,3rem)] font-bold leading-[1.06] tracking-[-0.04em] text-h-ink"
         >
           Dziękujemy, termin jest zapisany
         </h2>
       </div>
 
-      <div className="mt-9 bg-white px-6 py-7 text-center shadow-[0_1px_2px_rgba(10,10,10,0.04)]">
-        <p className="text-[17.5px] font-semibold tracking-[-0.015em] text-foreground">
+      <div className="mt-9 bg-h-surface px-6 py-7 text-center">
+        <p className="text-[17.5px] font-semibold tracking-[-0.015em] text-h-ink">
           {etykietaPelna(new Date(wynik.start))}
         </p>
-        <p className="mt-2 text-[13.5px] text-foreground/55">
+        <p className="mt-2 text-[13.5px] text-h-ink-soft">
           {wynik.osoba.pelneImie
             ? `Zadzwoni ${wynik.osoba.pelneImie}`
             : "Zadzwonimy w umówionym momencie"}
@@ -657,10 +653,10 @@ function Potwierdzenie({ wynik }: { wynik: WynikRezerwacji }) {
         </p>
       </div>
 
-      <ul className="mt-7 space-y-3 text-[13.5px] leading-[1.65] text-foreground/60">
+      <ul className="mt-7 space-y-3 text-[13.5px] leading-[1.65] text-h-ink-soft">
         <li className="flex gap-3">
           <CalendarCheck
-            className="mt-[2px] h-4 w-4 shrink-0 text-brand-orange"
+            className="mt-[2px] h-4 w-4 shrink-0 text-h-accent"
             strokeWidth={1.75}
           />
           {wynik.email
@@ -668,23 +664,23 @@ function Potwierdzenie({ wynik }: { wynik: WynikRezerwacji }) {
             : "Termin jest wpisany w nasz kalendarz. Warto go sobie zanotować."}
         </li>
         <li className="flex gap-3">
-          <Phone className="mt-[2px] h-4 w-4 shrink-0 text-brand-orange" strokeWidth={1.75} />
+          <Phone className="mt-[2px] h-4 w-4 shrink-0 text-h-accent" strokeWidth={1.75} />
           Zadzwonimy z polskiego numeru, dokładnie w wybranej godzinie.
         </li>
       </ul>
 
-      <div className="mt-9 bg-brand-orange/[0.08] p-6 sm:p-8">
-        <h3 className="text-[19px] font-semibold tracking-[-0.025em] text-foreground">
+      <div className="mt-9 bg-h-accent/[0.10] p-6 sm:p-8">
+        <h3 className="text-[19px] font-semibold tracking-[-0.025em] text-h-ink">
           Prosimy o zapoznanie się z urządzeniami
         </h3>
-        <p className="mt-3 text-[14.5px] leading-[1.75] text-foreground/65">
+        <p className="mt-3 text-[14.5px] leading-[1.75] text-h-ink-soft">
           Za chwilę pokażemy stronę z opisem Circle, Health, Cloud, Guardian i I.S.T. Board.
           Kilka minut tam i rozmowa zaczyna się od konkretów.
         </p>
 
         <Link
           href={STRONA_PRZYGOTOWANIA}
-          className="group mt-7 inline-flex w-full items-center justify-center gap-2.5 bg-foreground px-8 py-4 text-[14.5px] font-semibold text-white transition-colors duration-300 hover:bg-brand-orange sm:w-auto"
+          className="group mt-7 inline-flex w-full items-center justify-center gap-2.5 bg-h-accent px-8 py-4 text-[14.5px] font-semibold text-h-void transition-colors duration-300 hover:bg-[#ff7b1f] sm:w-auto"
         >
           Zobacz urządzenia
           <ArrowRight
@@ -695,18 +691,18 @@ function Potwierdzenie({ wynik }: { wynik: WynikRezerwacji }) {
 
         {odliczanie && !odwolywanie ? (
           <div className="mt-7">
-            <div className="h-1 w-full bg-foreground/10">
+            <div className="h-1 w-full bg-white/10">
               <div
-                className="h-full bg-brand-orange transition-[width] duration-1000 ease-linear motion-reduce:transition-none"
+                className="h-full bg-h-accent transition-[width] duration-1000 ease-linear motion-reduce:transition-none"
                 style={{ width: `${postep}%` }}
               />
             </div>
             <div className="mt-3 flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
-              <p className="text-[13px] text-foreground/50">Przejdziemy tam za {sekundy} s</p>
+              <p className="text-[13px] text-h-ink-soft">Przejdziemy tam za {sekundy} s</p>
               <button
                 type="button"
                 onClick={() => setOdliczanie(false)}
-                className="text-[13px] font-medium text-foreground/50 underline underline-offset-[3px] transition-colors duration-300 hover:text-foreground"
+                className="text-[13px] font-medium text-h-ink-soft underline underline-offset-[3px] transition-colors duration-300 hover:text-h-ink"
               >
                 Zostaw mnie tutaj
               </button>
@@ -718,13 +714,13 @@ function Potwierdzenie({ wynik }: { wynik: WynikRezerwacji }) {
       {wynik.linkOdwolania ? (
         <div className="mt-8 text-center">
           {bladOdwolania ? (
-            <p className="mb-3 text-[13px] text-red-700">{bladOdwolania}</p>
+            <p className="mb-3 text-[13px] text-red-300">{bladOdwolania}</p>
           ) : null}
           <button
             type="button"
             onClick={odwolaj}
             disabled={odwolywanie}
-            className="inline-flex items-center gap-2 text-[13px] font-medium text-foreground/50 underline underline-offset-[3px] transition-colors duration-300 hover:text-foreground disabled:opacity-60"
+            className="inline-flex items-center gap-2 text-[13px] font-medium text-h-ink-soft underline underline-offset-[3px] transition-colors duration-300 hover:text-h-ink disabled:opacity-60"
           >
             {odwolywanie ? <Loader2 className="h-3.5 w-3.5 animate-spin" strokeWidth={2} /> : null}
             Odwołaj ten termin

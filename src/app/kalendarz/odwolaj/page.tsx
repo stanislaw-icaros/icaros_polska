@@ -11,6 +11,10 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
+export const viewport = {
+  themeColor: "#07070a",
+};
+
 export const dynamic = "force-dynamic";
 
 type Parametry = { b?: string; t?: string };
@@ -42,8 +46,8 @@ export default async function OdwolajPage({
 
   return (
     <>
-      <Navigation />
-      <main className="bg-white pb-24 pt-32 lg:pb-32 lg:pt-40">
+      <Navigation variant="business" />
+      <main className="bg-h-void pb-24 pt-32 text-h-ink lg:pb-32 lg:pt-40">
         <div className="mx-auto w-full max-w-[640px] px-6 lg:px-10">
           <OdwolanieTerminu {...dane} />
         </div>

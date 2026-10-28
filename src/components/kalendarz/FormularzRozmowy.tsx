@@ -37,7 +37,7 @@ function parametryZrodla() {
 }
 
 const POLE =
-  "w-full bg-foreground/[0.035] px-4 py-3.5 text-[14.5px] text-foreground outline-none transition-colors duration-300 placeholder:text-foreground/30 focus:bg-foreground/[0.06] focus-visible:ring-2 focus-visible:ring-brand-orange focus-visible:ring-offset-0";
+  "w-full bg-white/[0.05] px-4 py-3.5 text-[14.5px] text-h-ink outline-none transition-colors duration-300 placeholder:text-white/35 focus:bg-white/[0.09] focus-visible:ring-2 focus-visible:ring-h-accent focus-visible:ring-inset";
 
 function Etykieta({
   dla,
@@ -50,8 +50,8 @@ function Etykieta({
 }) {
   return (
     <label className="mb-2 flex items-baseline gap-2" htmlFor={dla}>
-      <span className="text-[12.5px] font-medium text-foreground/55">{children}</span>
-      {opcjonalne ? <span className="text-[11px] text-foreground/30">opcjonalnie</span> : null}
+      <span className="text-[13px] font-medium text-h-ink-soft">{children}</span>
+      {opcjonalne ? <span className="text-[11px] text-h-ink-soft">opcjonalnie</span> : null}
     </label>
   );
 }
@@ -163,23 +163,23 @@ export default function FormularzRozmowy({
     <form onSubmit={wyslij} className="animate-[fade-up_0.45s_ease-out_both]">
       {spamFields}
 
-      <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-3 bg-brand-orange/[0.07] px-5 py-4">
+      <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-3 bg-h-accent/[0.10] px-5 py-4">
         <div className="flex items-center gap-3">
-          <CalendarCheck className="h-[18px] w-[18px] shrink-0 text-brand-orange" strokeWidth={1.75} />
-          <span className="text-[15px] font-semibold tracking-[-0.01em] text-foreground">
+          <CalendarCheck className="h-[18px] w-[18px] shrink-0 text-h-accent" strokeWidth={1.75} />
+          <span className="text-[15px] font-semibold tracking-[-0.01em] text-h-ink">
             {etykietaPelna(new Date(termin))}
           </span>
         </div>
         <button
           type="button"
           onClick={onZmienTermin}
-          className="text-[12.5px] font-medium text-foreground/50 underline underline-offset-[3px] transition-colors duration-300 hover:text-brand-orange"
+          className="text-[12.5px] font-medium text-h-ink-soft underline underline-offset-[3px] transition-colors duration-300 hover:text-h-accent"
         >
           Zmień termin
         </button>
       </div>
 
-      <h3 className="mt-8 text-[16px] font-semibold tracking-[-0.015em] text-foreground">
+      <h3 className="mt-8 text-[16px] font-semibold tracking-[-0.015em] text-h-ink">
         Dane do rozmowy
       </h3>
 
@@ -226,7 +226,7 @@ export default function FormularzRozmowy({
             spellCheck={false}
             placeholder="jan.kowalski@placowka.pl…"
           />
-          <p className="mt-2 text-[11.5px] text-foreground/35">
+          <p className="mt-2 text-[13px] text-h-ink-soft">
             Wyślemy potwierdzenie i przypomnienie
           </p>
         </div>
@@ -260,7 +260,7 @@ export default function FormularzRozmowy({
       </div>
 
       <ConsentFields
-        tone="light"
+        tone="dark"
         className="mt-6"
         dataConsent={zgodaDanych}
         onDataConsentChange={setZgodaDanych}
@@ -271,7 +271,7 @@ export default function FormularzRozmowy({
 
       <div aria-live="polite">
         {blad ? (
-          <p className="mt-5 bg-red-50 px-4 py-3 text-[13px] text-red-700">
+          <p className="mt-5 bg-red-500/10 px-4 py-3 text-[13px] text-red-300">
             {blad}
           </p>
         ) : null}
@@ -282,7 +282,7 @@ export default function FormularzRozmowy({
           type="submit"
           disabled={wysylanie}
           aria-busy={wysylanie}
-          className="group inline-flex w-full items-center justify-center gap-2.5 bg-foreground px-8 py-4 text-[14.5px] font-semibold text-white transition-colors duration-300 hover:bg-brand-orange disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
+          className="group inline-flex min-h-[52px] w-full items-center justify-center gap-2.5 bg-h-accent px-8 text-[15px] font-semibold tracking-[0.01em] text-h-void transition-colors duration-300 hover:bg-[#ff7b1f] disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
         >
           Potwierdź termin
           {wysylanie ? (
@@ -294,7 +294,7 @@ export default function FormularzRozmowy({
             />
           )}
         </button>
-        <p className="text-[12px] text-foreground/40">
+        <p className="text-[13px] text-h-ink-soft">
           Rozmowa trwa {dlugoscMin} minut, nic nie trzeba instalować
         </p>
       </div>
