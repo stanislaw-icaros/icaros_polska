@@ -67,6 +67,18 @@ function wygladz(t: number) {
   return t * t * (3 - 2 * t);
 }
 
+/**
+ * Wygaszenie krawędzi marginesu w kadrze mobilnym.
+ *
+ * Kadr na telefon ma wpieczony margines w kolorze tła u góry i u dołu: dzięki
+ * niemu `object-cover` pokazuje więcej sceny, zamiast przycinać ją do wąskiego
+ * paska. Margines zajmuje zawsze 16,5 procent wysokości ekranu, bo przy każdej
+ * proporcji telefonu to wysokość decyduje o skali. Styk marginesu ze zdjęciem
+ * widać jednak jako kreskę, więc przykrywamy go miękkim przejściem.
+ */
+const WYGASZENIE_KADRU =
+  "linear-gradient(to bottom, #07070a 0%, #07070a 17%, rgba(7,7,10,0) 31%, rgba(7,7,10,0) 69%, #07070a 83%, #07070a 100%)"; // taste-skill-ignore: wygaszenie styku kadru, nie wypełnienie
+
 export function ScenaProvider({ children }: { children: ReactNode }) {
   const horyzont = useMotionValue(0);
   const [recznie, ustawRecznieStan] = useState(false);
@@ -300,6 +312,13 @@ function Tlo({
           style={{ opacity: filmWidoczny ? 1 : 0 }}
         />
       ) : null}
+
+      {/* Styk wpieczonego marginesu ze zdjęciem. Tylko telefon: na większych
+          ekranach kadr jest poziomy i marginesu nie ma. */}
+      <div
+        className="absolute inset-0 lg:hidden"
+        style={{ backgroundImage: WYGASZENIE_KADRU }}
+      />
 
       {/* Ziarno: płaska czerń pasuje się na realnych ekranach. */}
       <div

@@ -433,3 +433,11 @@ zostaje bez zmian.
   przy `object-cover` pokazywał ledwie 370 pikseli szerokości. Nowy kadr bierze
   z filmu szerszy wycinek, skaluje go i dokłada margines w kolorze tła, więc
   widać półtora raza więcej sceny, a pojawienie się Alp czyta się lepiej.
+
+### Styk marginesu w kadrze mobilnym (2026-10-28)
+
+Margines wpieczony w kadr na telefon odcinał się od zdjęcia wyraźną kreską
+u góry ekranu. Zajmuje on zawsze 16,5 procent wysokości, bo przy każdej
+proporcji telefonu to wysokość decyduje o skali `object-cover`, więc styk
+da się przykryć stałym przejściem. Scena dostała nakładkę wygaszającą górę
+i dół, widoczną tylko poniżej 1024 px.
