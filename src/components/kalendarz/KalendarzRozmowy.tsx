@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
+import { createPortal } from "react-dom";
 import { useRouter } from "next/navigation";
 import {
   ArrowRight,
@@ -508,6 +509,58 @@ function Karta({ children }: { children: React.ReactNode }) {
 const STRONA_PRZYGOTOWANIA = "/urzadzenia";
 const SEKUND_DO_PRZEJSCIA = 7;
 
+/**
+ * Ekran po rezerwacji zasłania całą stronę. Klient ma go nie przeoczyć,
+ * bo to jedyne miejsce, w którym prosimy o zapoznanie się z urządzeniami
+ * i w którym można jeszcze odwołać termin.
+ */
+function PelnyEkran({ children }: { children: React.ReactNode }) {
+  const kontener = useRef<HTMLDivElement>(null);
+  const [osadzony, setOsadzony] = useState(false);
+
+  // Portal do body, bo strona kalendarza ma własny kontekst nakładania
+  // i nakładka zostałaby pod nawigacją niezależnie od z-index.
+  useEffect(() => {
+    setOsadzony(true);
+    const poprzedni = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = poprzedni;
+    };
+  }, []);
+
+  // Czytnik ekranu zaczyna od nakładki, a nie od miejsca, w którym był.
+  useEffect(() => {
+    if (osadzony) kontener.current?.focus();
+  }, [osadzony]);
+
+  if (!osadzony) return null;
+
+  return createPortal(
+    <div
+      ref={kontener}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="kalendarz-potwierdzenie"
+      tabIndex={-1}
+      className="fixed inset-0 z-[125] overflow-y-auto bg-surface outline-none"
+    >
+      <div
+        className="pointer-events-none absolute inset-0 opacity-[0.035]"
+        style={{
+          backgroundImage:
+            "linear-gradient(rgba(0,0,0,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.08) 1px, transparent 1px)",
+          backgroundSize: "80px 80px",
+        }}
+      />
+      <div className="relative flex min-h-full items-center justify-center px-6 py-16 sm:py-20">
+        <div className="w-full max-w-[620px] animate-[fade-up_0.6s_ease-out_both]">{children}</div>
+      </div>
+    </div>,
+    document.body
+  );
+}
+
 function Potwierdzenie({ wynik }: { wynik: WynikRezerwacji }) {
   const router = useRouter();
   const [odwolywanie, setOdwolywanie] = useState(false);
@@ -553,135 +606,131 @@ function Potwierdzenie({ wynik }: { wynik: WynikRezerwacji }) {
 
   if (odwolane) {
     return (
-      <div className="mx-auto max-w-[620px]">
-        <Karta>
-          <div className="p-10 text-center sm:p-14">
-            <CalendarX className="mx-auto h-10 w-10 text-foreground/25" strokeWidth={1.25} />
-            <h2 className="mt-6 text-[clamp(1.5rem,3vw,2rem)] font-bold tracking-[-0.03em] text-foreground">
-              Termin został odwołany
-            </h2>
-            <p className="mt-3 text-[15px] leading-[1.75] text-foreground/55">
-              Nikt nie zadzwoni w tej godzinie. Nowy termin można wybrać w każdej chwili.
-            </p>
-            <Link
-              href="/kalendarz"
-              className="mt-8 inline-flex items-center gap-2 bg-foreground px-7 py-3.5 text-[14px] font-semibold text-white transition-colors duration-300 hover:bg-brand-orange"
-            >
-              Wybierz nowy termin
-            </Link>
-          </div>
-        </Karta>
-      </div>
+      <PelnyEkran>
+        <div className="text-center">
+          <CalendarX className="mx-auto h-11 w-11 text-foreground/25" strokeWidth={1.25} />
+          <h2
+            id="kalendarz-potwierdzenie"
+            className="mt-7 text-[clamp(1.75rem,4.4vw,2.75rem)] font-bold leading-[1.08] tracking-[-0.035em] text-foreground"
+          >
+            Termin został odwołany
+          </h2>
+          <p className="mx-auto mt-4 max-w-[420px] text-[15px] leading-[1.75] text-foreground/55">
+            Nikt nie zadzwoni w tej godzinie. Nowy termin można wybrać w każdej chwili.
+          </p>
+          <Link
+            href="/kalendarz"
+            className="mt-9 inline-flex items-center gap-2 bg-foreground px-8 py-4 text-[14.5px] font-semibold text-white transition-colors duration-300 hover:bg-brand-orange"
+          >
+            Wybierz nowy termin
+          </Link>
+        </div>
+      </PelnyEkran>
     );
   }
 
   const postep = ((SEKUND_DO_PRZEJSCIA - sekundy) / SEKUND_DO_PRZEJSCIA) * 100;
 
   return (
-    <div className="mx-auto max-w-[720px]">
-      <Karta>
-        <div className="p-8 sm:p-14">
-          <div className="text-center">
-            <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-brand-orange/10">
-              <Check className="h-7 w-7 text-brand-orange" strokeWidth={2.25} />
-            </span>
-            <h2 className="mt-6 text-[clamp(1.75rem,4vw,2.6rem)] font-bold leading-[1.1] tracking-[-0.035em] text-foreground">
-              Dziękujemy, termin jest zapisany
-            </h2>
-          </div>
+    <PelnyEkran>
+      <div className="text-center">
+        <span className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-brand-orange/10">
+          <Check className="h-8 w-8 text-brand-orange" strokeWidth={2.25} />
+        </span>
+        <h2
+          id="kalendarz-potwierdzenie"
+          className="mt-7 text-[clamp(1.85rem,4.8vw,3rem)] font-bold leading-[1.06] tracking-[-0.04em] text-foreground"
+        >
+          Dziękujemy, termin jest zapisany
+        </h2>
+      </div>
 
-          <div className="mt-8 bg-surface px-6 py-7 text-center">
-            <p className="text-[17.5px] font-semibold tracking-[-0.015em] text-foreground">
-              {etykietaPelna(new Date(wynik.start))}
-            </p>
-            <p className="mt-2 text-[13.5px] text-foreground/55">
-              {wynik.osoba.pelneImie
-                ? `Zadzwoni ${wynik.osoba.pelneImie}`
-                : "Zadzwonimy w umówionym momencie"}
-              , rozmowa trwa {wynik.dlugoscMin} minut
-            </p>
-          </div>
+      <div className="mt-9 bg-white px-6 py-7 text-center shadow-[0_1px_2px_rgba(10,10,10,0.04)]">
+        <p className="text-[17.5px] font-semibold tracking-[-0.015em] text-foreground">
+          {etykietaPelna(new Date(wynik.start))}
+        </p>
+        <p className="mt-2 text-[13.5px] text-foreground/55">
+          {wynik.osoba.pelneImie
+            ? `Zadzwoni ${wynik.osoba.pelneImie}`
+            : "Zadzwonimy w umówionym momencie"}
+          , rozmowa trwa {wynik.dlugoscMin} minut
+        </p>
+      </div>
 
-          <ul className="mt-8 space-y-3 text-[13.5px] leading-[1.65] text-foreground/60">
-            <li className="flex gap-3">
-              <CalendarCheck
-                className="mt-[2px] h-4 w-4 shrink-0 text-brand-orange"
-                strokeWidth={1.75}
+      <ul className="mt-7 space-y-3 text-[13.5px] leading-[1.65] text-foreground/60">
+        <li className="flex gap-3">
+          <CalendarCheck
+            className="mt-[2px] h-4 w-4 shrink-0 text-brand-orange"
+            strokeWidth={1.75}
+          />
+          {wynik.email
+            ? "Potwierdzenie z plikiem do kalendarza poszło na podany adres e-mail."
+            : "Termin jest wpisany w nasz kalendarz. Warto go sobie zanotować."}
+        </li>
+        <li className="flex gap-3">
+          <Phone className="mt-[2px] h-4 w-4 shrink-0 text-brand-orange" strokeWidth={1.75} />
+          Zadzwonimy z polskiego numeru, dokładnie w wybranej godzinie.
+        </li>
+      </ul>
+
+      <div className="mt-9 bg-brand-orange/[0.08] p-6 sm:p-8">
+        <h3 className="text-[19px] font-semibold tracking-[-0.025em] text-foreground">
+          Prosimy o zapoznanie się z urządzeniami
+        </h3>
+        <p className="mt-3 text-[14.5px] leading-[1.75] text-foreground/65">
+          Za chwilę pokażemy stronę z opisem Circle, Health, Cloud, Guardian i I.S.T. Board.
+          Kilka minut tam i rozmowa zaczyna się od konkretów.
+        </p>
+
+        <Link
+          href={STRONA_PRZYGOTOWANIA}
+          className="group mt-7 inline-flex w-full items-center justify-center gap-2.5 bg-foreground px-8 py-4 text-[14.5px] font-semibold text-white transition-colors duration-300 hover:bg-brand-orange sm:w-auto"
+        >
+          Zobacz urządzenia
+          <ArrowRight
+            className="h-4 w-4 transition-transform duration-500 group-hover:translate-x-1"
+            strokeWidth={2}
+          />
+        </Link>
+
+        {odliczanie && !odwolywanie ? (
+          <div className="mt-7">
+            <div className="h-1 w-full bg-foreground/10">
+              <div
+                className="h-full bg-brand-orange transition-[width] duration-1000 ease-linear motion-reduce:transition-none"
+                style={{ width: `${postep}%` }}
               />
-              {wynik.email
-                ? "Potwierdzenie z plikiem do kalendarza poszło na podany adres e-mail."
-                : "Termin jest wpisany w nasz kalendarz. Warto go sobie zanotować."}
-            </li>
-            <li className="flex gap-3">
-              <Phone className="mt-[2px] h-4 w-4 shrink-0 text-brand-orange" strokeWidth={1.75} />
-              Zadzwonimy z polskiego numeru, dokładnie w wybranej godzinie.
-            </li>
-          </ul>
-
-          <div className="mt-10 bg-brand-orange/[0.07] p-6 sm:p-8">
-            <h3 className="text-[19px] font-semibold tracking-[-0.025em] text-foreground">
-              Prosimy o zapoznanie się z urządzeniami
-            </h3>
-            <p className="mt-3 text-[14.5px] leading-[1.75] text-foreground/65">
-              Za chwilę pokażemy stronę z opisem Circle, Health, Cloud, Guardian i I.S.T.
-              Board. Kilka minut tam i rozmowa zaczyna się od konkretów.
-            </p>
-
-            <Link
-              href={STRONA_PRZYGOTOWANIA}
-              className="group mt-7 inline-flex w-full items-center justify-center gap-2.5 bg-foreground px-8 py-4 text-[14.5px] font-semibold text-white transition-colors duration-300 hover:bg-brand-orange sm:w-auto"
-            >
-              Zobacz urządzenia
-              <ArrowRight
-                className="h-4 w-4 transition-transform duration-500 group-hover:translate-x-1"
-                strokeWidth={2}
-              />
-            </Link>
-
-            {odliczanie && !odwolywanie ? (
-              <div className="mt-7">
-                <div className="h-[3px] w-full bg-foreground/10">
-                  <div
-                    className="h-full bg-brand-orange transition-[width] duration-1000 ease-linear motion-reduce:transition-none"
-                    style={{ width: `${postep}%` }}
-                  />
-                </div>
-                <div className="mt-3 flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
-                  <p className="text-[13px] text-foreground/50">
-                    Przejdziemy tam za {sekundy} s
-                  </p>
-                  <button
-                    type="button"
-                    onClick={() => setOdliczanie(false)}
-                    className="text-[13px] font-medium text-foreground/50 underline underline-offset-[3px] transition-colors duration-300 hover:text-foreground"
-                  >
-                    Zostaw mnie na tej stronie
-                  </button>
-                </div>
-              </div>
-            ) : null}
-          </div>
-
-          {wynik.linkOdwolania ? (
-            <div className="mt-9 text-center">
-              {bladOdwolania ? (
-                <p className="mb-3 text-[13px] text-red-700">{bladOdwolania}</p>
-              ) : null}
+            </div>
+            <div className="mt-3 flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
+              <p className="text-[13px] text-foreground/50">Przejdziemy tam za {sekundy} s</p>
               <button
                 type="button"
-                onClick={odwolaj}
-                disabled={odwolywanie}
-                className="inline-flex items-center gap-2 text-[13px] font-medium text-foreground/50 underline underline-offset-[3px] transition-colors duration-300 hover:text-foreground disabled:opacity-60"
+                onClick={() => setOdliczanie(false)}
+                className="text-[13px] font-medium text-foreground/50 underline underline-offset-[3px] transition-colors duration-300 hover:text-foreground"
               >
-                {odwolywanie ? (
-                  <Loader2 className="h-3.5 w-3.5 animate-spin" strokeWidth={2} />
-                ) : null}
-                Odwołaj ten termin
+                Zostaw mnie tutaj
               </button>
             </div>
+          </div>
+        ) : null}
+      </div>
+
+      {wynik.linkOdwolania ? (
+        <div className="mt-8 text-center">
+          {bladOdwolania ? (
+            <p className="mb-3 text-[13px] text-red-700">{bladOdwolania}</p>
           ) : null}
+          <button
+            type="button"
+            onClick={odwolaj}
+            disabled={odwolywanie}
+            className="inline-flex items-center gap-2 text-[13px] font-medium text-foreground/50 underline underline-offset-[3px] transition-colors duration-300 hover:text-foreground disabled:opacity-60"
+          >
+            {odwolywanie ? <Loader2 className="h-3.5 w-3.5 animate-spin" strokeWidth={2} /> : null}
+            Odwołaj ten termin
+          </button>
         </div>
-      </Karta>
-    </div>
+      ) : null}
+    </PelnyEkran>
   );
 }
