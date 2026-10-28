@@ -620,19 +620,18 @@ function Potwierdzenie({ wynik }: { wynik: WynikRezerwacji }) {
 
           <div className="mt-10 bg-brand-orange/[0.07] p-6 sm:p-8">
             <h3 className="text-[19px] font-semibold tracking-[-0.025em] text-foreground">
-              Prosimy o zapoznanie się z urządzeniami przed rozmową
+              Prosimy o zapoznanie się z urządzeniami
             </h3>
             <p className="mt-3 text-[14.5px] leading-[1.75] text-foreground/65">
-              Za chwilę pokażemy stronę, na której opisujemy Circle, Health, Cloud, Guardian
-              i I.S.T. Board. Kilka minut tam sprawia, że rozmowa jest konkretna od pierwszego
-              zdania, bo nie trzeba zaczynać od tłumaczenia, czym jest każde urządzenie.
+              Za chwilę pokażemy stronę z opisem Circle, Health, Cloud, Guardian i I.S.T.
+              Board. Kilka minut tam i rozmowa zaczyna się od konkretów.
             </p>
 
             <Link
               href={STRONA_PRZYGOTOWANIA}
               className="group mt-7 inline-flex w-full items-center justify-center gap-2.5 bg-foreground px-8 py-4 text-[14.5px] font-semibold text-white transition-colors duration-300 hover:bg-brand-orange sm:w-auto"
             >
-              Zobacz urządzenia ICAROS
+              Zobacz urządzenia
               <ArrowRight
                 className="h-4 w-4 transition-transform duration-500 group-hover:translate-x-1"
                 strokeWidth={2}
