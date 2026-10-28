@@ -89,11 +89,14 @@ export default function Film() {
             )}
             <div aria-hidden className={ZASLONA} />
 
-            {/* Duży, wyśrodkowany przycisk. Poprzedni, mały i w rogu, ginął. */}
-            <div className="absolute inset-0 flex items-center justify-center">
+            {/* Duży, wyśrodkowany przycisk. Poprzedni, mały i w rogu, ginął.
+                Na telefonie kadr jest niski, więc krążek siada wyżej, żeby nie
+                wchodził na tytuł nagrania u dołu. */}
+            <div className="absolute inset-x-0 bottom-[30%] top-0 flex items-center justify-center lg:inset-0">
               <button
                 type="button"
                 onClick={() => ustawGra(true)}
+                aria-label="Odtwórz film"
                 className="group flex flex-col items-center gap-5 rounded-full outline-none focus-visible:ring-2 focus-visible:ring-h-accent focus-visible:ring-offset-8 focus-visible:ring-offset-h-void"
               >
                 <span className="flex h-[88px] w-[88px] items-center justify-center rounded-full bg-h-accent text-h-void transition-transform duration-300 group-hover:scale-110 motion-reduce:transition-none motion-reduce:group-hover:scale-100 lg:h-[112px] lg:w-[112px]">
@@ -103,7 +106,9 @@ export default function Film() {
                     strokeWidth={0}
                   />
                 </span>
-                <span className="text-[16px] font-semibold text-h-ink">
+                {/* Na telefonie zostaje sam krążek: podpis zderzał się
+                    z tytułem nagrania u dołu kadru. */}
+                <span aria-hidden className="hidden text-[16px] font-semibold text-h-ink sm:block">
                   Odtwórz film
                 </span>
               </button>

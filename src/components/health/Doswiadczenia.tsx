@@ -63,8 +63,10 @@ export default function Doswiadczenia() {
                     tabIndex={indeks === aktywne ? 0 : -1}
                     onClick={() => ustawAktywne(indeks)}
                     onMouseEnter={() => ustawAktywne(indeks)}
-                    className={`flex min-h-[52px] w-full flex-col items-start gap-0.5 py-2 text-left outline-none transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-h-accent focus-visible:ring-offset-4 focus-visible:ring-offset-h-void ${
-                      indeks === aktywne ? "text-h-accent" : "text-h-ink hover:text-h-accent"
+                    className={`flex min-h-[52px] w-full flex-col items-start gap-0.5 rounded-lg px-4 py-2.5 text-left outline-none transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-h-accent focus-visible:ring-offset-4 focus-visible:ring-offset-h-void lg:rounded-none lg:px-0 lg:py-2 ${
+                      indeks === aktywne
+                        ? "bg-h-ink/10 text-h-accent lg:bg-transparent"
+                        : "text-h-ink hover:text-h-accent"
                     }`}
                   >
                     <span className="text-[clamp(1.1rem,1.8vw,1.5rem)] font-semibold tracking-[-0.02em]">
@@ -72,13 +74,33 @@ export default function Doswiadczenia() {
                     </span>
                     <span className="text-[14px] text-h-ink-soft">{pozycja.miejsce}</span>
                   </button>
+
+                  {/* Na telefonie kadr pokazuje się przy klikniętej trasie.
+                      Wcześniej zmieniał się na dole listy, więc trzeba było
+                      przewinąć w dół i z powrotem, żeby cokolwiek zobaczyć. */}
+                  {indeks === aktywne ? (
+                    <div className="mb-2 mt-3 lg:hidden">
+                      <Image
+                        key={pozycja.obraz}
+                        src={pozycja.obraz}
+                        alt={pozycja.obrazAlt}
+                        width={1800}
+                        height={1013}
+                        sizes="100vw"
+                        className="aspect-[16/9] w-full rounded-lg bg-h-night object-cover"
+                      />
+                      <p className="mt-4 text-pretty text-[17px] leading-[1.6] text-h-ink">
+                        {pozycja.opis}
+                      </p>
+                    </div>
+                  ) : null}
                 </li>
               ))}
             </ul>
             </Podpowiedz>
           </Wejscie>
 
-          <div className="lg:col-span-8">
+          <div className="hidden lg:col-span-8 lg:block">
             <Image
               key={wybrane.obraz}
               src={wybrane.obraz}

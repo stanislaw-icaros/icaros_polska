@@ -403,3 +403,33 @@ okno ze skrótem o urządzeniu, złożonym z `products.ts`, czyli tego samego
 cztery efekty dla pacjenta, wymiary i odnośnik do pełnego opisu. Okno zamyka
 Escape i kliknięcie w tło, klawiatura z niego nie wychodzi, a po zamknięciu
 wraca na kafelek, z którego wyszło.
+
+---
+
+## 17. Runda mobilna (2026-10-28)
+
+Strona była projektowana od dużego ekranu i na telefonie kilka rzeczy nie
+miało sensu. Poprawki dotyczą wyłącznie wąskich ekranów, układ na komputerze
+zostaje bez zmian.
+
+- **Panel terapeuty** miał sztywną proporcję 16:10, która na wąskim ekranie
+  ściskała zawartość tak, że kafelki nachodziły na siebie. Proporcja wchodzi
+  teraz dopiero od tabletu, niżej panel ma naturalną wysokość.
+- **Przebieg sesji**: zakładki były zwykłym tekstem i nie wyglądały na
+  klikalne, a „Wynik" spadał do drugiego wiersza. Teraz to pastylki w jednym,
+  przewijanym rzędzie. Kadr przeniósł się nad opis, bo wcześniej zmieniał się
+  poniżej parametrów i klikanie nie dawało widocznego efektu.
+- **Trasy i gry**: zdjęcie zmieniało się pod listą siedmiu pozycji, więc po
+  kliknięciu trzeba było przewinąć w dół i z powrotem. Teraz kadr i opis
+  rozwijają się przy klikniętej trasie.
+- **Co zmienia trening na ICAROS**: zestawienie jest długie i na telefonie
+  przewijało się bez wyjaśnienia, po co. Chowa się za przyciskiem „Zobacz
+  porównanie". Zwykły `<details>`, więc działa też bez skryptu; na dużym
+  ekranie tabela stoi otwarta, bez przycisku.
+- **Film**: podpis przycisku odtwarzania zderzał się z tytułem nagrania.
+  Na telefonie zostaje sam krążek (nazwa w `aria-label`), a krążek siada wyżej,
+  żeby nie wchodził na tytuł.
+- **Scena w hero** była na telefonie mocno zbliżona, bo kadr pionowy 603 × 804
+  przy `object-cover` pokazywał ledwie 370 pikseli szerokości. Nowy kadr bierze
+  z filmu szerszy wycinek, skaluje go i dokłada margines w kolorze tła, więc
+  widać półtora raza więcej sceny, a pojawienie się Alp czyta się lepiej.

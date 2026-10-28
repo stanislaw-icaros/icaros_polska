@@ -37,7 +37,7 @@ export default function PanelTerapeuty() {
     <figure className="m-0">
       <div
         data-ui
-        className="flex aspect-[16/10] w-full animate-[fade-up_0.45s_ease-out] flex-col gap-3 rounded-lg border border-white/8 bg-[#111420] p-4 sm:gap-4 sm:p-6"
+        className="flex w-full animate-[fade-up_0.45s_ease-out] flex-col gap-4 rounded-lg border border-white/8 bg-[#111420] p-5 sm:aspect-[16/10] sm:gap-4 sm:p-6"
       >
         <div className="flex items-baseline justify-between">
           <p className="text-[13px] font-semibold text-h-ink">Dziś</p>
@@ -90,7 +90,7 @@ export default function PanelTerapeuty() {
             </ul>
           </div>
 
-          <div className="flex min-h-0 flex-col rounded-md bg-[#171b28] p-3 sm:col-span-2 sm:p-4">
+          <div className="flex min-h-[8rem] flex-col rounded-md bg-[#171b28] p-3 sm:col-span-2 sm:min-h-0 sm:p-4">
             <p className="text-[12px] text-h-ink-soft">Aktywność</p>
             <div className="mt-2 flex min-h-0 flex-1 items-end gap-1.5 sm:mt-3 sm:gap-2">
               {TYDZIEN.map((dzien) => (

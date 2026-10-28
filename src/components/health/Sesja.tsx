@@ -49,12 +49,12 @@ export default function Sesja() {
         </Wejscie>
 
         <Wejscie opoznienie={0.06}>
-          <Podpowiedz className="mt-[clamp(2.5rem,5vw,4rem)] inline-block">
+          <Podpowiedz className="mt-[clamp(2.5rem,5vw,4rem)] block lg:inline-block">
           <div
             role="tablist"
             aria-label="Etapy sesji"
             onKeyDown={klawisz}
-            className="flex flex-wrap gap-x-10 gap-y-2"
+            className="-mx-5 flex gap-1.5 overflow-x-auto px-5 pb-1 sm:-mx-8 sm:px-8 lg:mx-0 lg:flex-wrap lg:gap-x-10 lg:gap-y-2 lg:overflow-visible lg:px-0"
           >
             {sesja.map((pozycja, indeks) => (
               <button
@@ -68,8 +68,10 @@ export default function Sesja() {
                 tabIndex={indeks === aktywny ? 0 : -1}
                 onClick={() => ustawAktywny(indeks)}
                 onMouseEnter={() => ustawAktywny(indeks)}
-                className={`relative min-h-[44px] text-[clamp(1.1rem,1.8vw,1.5rem)] font-semibold tracking-[-0.02em] outline-none transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-h-accent focus-visible:ring-offset-4 focus-visible:ring-offset-h-void ${
-                  indeks === aktywny ? "text-h-accent" : "text-h-ink hover:text-h-accent"
+                className={`relative min-h-[44px] shrink-0 rounded-full px-3.5 text-[15px] font-semibold tracking-[-0.02em] outline-none transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-h-accent focus-visible:ring-offset-4 focus-visible:ring-offset-h-void lg:rounded-none lg:px-0 lg:text-[clamp(1.1rem,1.8vw,1.5rem)] ${
+                  indeks === aktywny
+                    ? "bg-h-accent text-h-void lg:bg-transparent lg:text-h-accent"
+                    : "bg-h-ink/10 text-h-ink hover:text-h-accent lg:bg-transparent"
                 }`}
               >
                 {pozycja.nazwa}
@@ -79,8 +81,8 @@ export default function Sesja() {
           </Podpowiedz>
         </Wejscie>
 
-        <div className="mt-[clamp(2rem,4vw,3.25rem)] grid grid-cols-1 gap-x-12 gap-y-10 lg:grid-cols-12">
-          <div className="lg:col-span-5">
+        <div className="mt-[clamp(2rem,4vw,3.25rem)] grid grid-cols-1 gap-x-12 gap-y-8 lg:grid-cols-12 lg:gap-y-10">
+          <div className="order-2 lg:order-none lg:col-span-5 lg:col-start-1 lg:row-start-1">
             <p
               role="tabpanel"
               aria-live="polite"
@@ -106,7 +108,7 @@ export default function Sesja() {
             </dl>
           </div>
 
-          <div className="lg:col-span-7">
+          <div className="order-1 lg:order-none lg:col-span-7 lg:col-start-6 lg:row-start-1">
             {krok.panel ? (
               <PanelTerapeuty />
             ) : (
