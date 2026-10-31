@@ -510,8 +510,9 @@ function Karta({ children }: { children: React.ReactNode }) {
 
 /** Dokąd prowadzimy klienta po rezerwacji i po ilu sekundach. */
 const STRONA_PRZYGOTOWANIA = "/oferta";
-// Siedem sekund nie starczało na przeczytanie tego, o co prosimy.
-const SEKUND_DO_PRZEJSCIA = 20;
+// Siedem sekund nie starczało na przeczytanie tego, o co prosimy, dwadzieścia
+// też było za mało. Kto nie chce czekać, ma przycisk nad odliczaniem.
+const SEKUND_DO_PRZEJSCIA = 40;
 
 /**
  * Ekran po rezerwacji zasłania całą stronę. Klient ma go nie przeoczyć,
