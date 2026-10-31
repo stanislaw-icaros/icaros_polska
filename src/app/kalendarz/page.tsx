@@ -78,7 +78,7 @@ export default async function KalendarzPage({
           </div>
         </div>
       </main>
-      <Footer variant="business" />
+      <Footer variant="business" cta={false} />
     </>
   );
 }

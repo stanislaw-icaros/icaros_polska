@@ -94,10 +94,10 @@ export async function wyslijPotwierdzenieRozmowy(dane: DaneMailaRozmowy): Promis
         etykietaPelna(dane.start)
       )}</strong> na podany numer telefonu.`,
       `Rozmowa trwa ${dane.dlugoscMin} minut. To zwykła rozmowa telefoniczna, nie trzeba nic instalować ani nigdzie się logować.`,
-      "Zanim zadzwonimy, prosimy o zajrzenie na stronę o ICAROS Circle. Są tam cztery urządzenia, filmy z sesji i wyniki badań. Dzięki temu rozmowa zacznie się od konkretów zamiast od tłumaczenia, czym jest każde z nich.",
+      "Zanim zadzwonimy, prosimy o zajrzenie na stronę o ICAROS. Są tam cztery urządzenia, filmy z sesji i wyniki badań. Dzięki temu rozmowa zacznie się od konkretów zamiast od tłumaczenia, czym jest każde z nich.",
     ],
     ramka: { naglowek: "Szczegóły", wiersze: wierszeTerminu(dane) },
-    przycisk: { etykieta: "Zobacz ICAROS Circle", url: `${SITE_URL}/oferta` },
+    przycisk: { etykieta: "Zobacz, jak działa ICAROS", url: `${SITE_URL}/oferta` },
     dopiski: [
       "W załączniku jest plik, który dodaje tę rozmowę do kalendarza w telefonie lub w poczcie.",
       dane.linkOdwolania

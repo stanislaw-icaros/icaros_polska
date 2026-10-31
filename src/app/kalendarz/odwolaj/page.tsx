@@ -52,7 +52,7 @@ export default async function OdwolajPage({
           <OdwolanieTerminu {...dane} />
         </div>
       </main>
-      <Footer variant="business" />
+      <Footer variant="business" cta={false} />
     </>
   );
 }

@@ -38,14 +38,18 @@ const footerLinks = {
 
 export default function Footer({
   variant = "business",
+  cta = true,
 }: {
   variant?: "patient" | "business";
+  /** Pasek z zachętą do kontaktu. Zbędny tam, gdzie strona sama o to prosi. */
+  cta?: boolean;
 }) {
   const { ref, isVisible } = useScrollAnimation();
   const patient = variant === "patient";
 
   return (
     <footer ref={ref} className="bg-foreground text-white">
+      {cta ? (
       <div className="border-b border-white/[0.06]">
         <div className="max-w-[1400px] mx-auto px-6 lg:px-10 py-16 lg:py-20">
           <motion.div
@@ -79,6 +83,7 @@ export default function Footer({
           </motion.div>
         </div>
       </div>
+      ) : null}
 
       <div className="max-w-[1400px] mx-auto px-6 lg:px-10 py-16 lg:py-20">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">

@@ -45,13 +45,14 @@ const GODZINY_JAREK: GodzinyPracy = {
   5: [["08:00", "18:00"]],
 };
 
-// Ustawienie wstępne, dopóki Sebastian nie poda swoich godzin.
-const GODZINY_WSTEPNE: GodzinyPracy = {
-  1: [["09:00", "20:00"]],
-  2: [["09:00", "20:00"]],
-  3: [["09:00", "20:00"]],
-  4: [["09:00", "20:00"]],
-  5: [["09:00", "20:00"]],
+// Godziny podane przez Sebastiana 28 października 2026, z sobotą.
+const GODZINY_SEBASTIAN: GodzinyPracy = {
+  1: [["08:00", "20:00"]],
+  2: [["08:00", "20:00"]],
+  3: [["08:00", "20:00"]],
+  4: [["08:00", "20:00"]],
+  5: [["08:00", "20:00"]],
+  6: [["08:00", "20:00"]],
 };
 
 export type KluczHandlowca = "jarek" | "sebastian";
@@ -112,7 +113,7 @@ export const HANDLOWCY: Handlowiec[] = [
     emailPowiadomien: "sebastian.wilk@icaros.com.pl",
     zmiennaTokenu: "GCAL_REFRESH_TOKEN_SEBASTIAN",
     zmiennaPipedrive: "PIPEDRIVE_OWNER_B_ID",
-    godziny: GODZINY_WSTEPNE,
+    godziny: GODZINY_SEBASTIAN,
   },
 ];
 

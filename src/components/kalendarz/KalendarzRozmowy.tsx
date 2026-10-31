@@ -510,7 +510,8 @@ function Karta({ children }: { children: React.ReactNode }) {
 
 /** Dokąd prowadzimy klienta po rezerwacji i po ilu sekundach. */
 const STRONA_PRZYGOTOWANIA = "/oferta";
-const SEKUND_DO_PRZEJSCIA = 7;
+// Siedem sekund nie starczało na przeczytanie tego, o co prosimy.
+const SEKUND_DO_PRZEJSCIA = 20;
 
 /**
  * Ekran po rezerwacji zasłania całą stronę. Klient ma go nie przeoczyć,
@@ -680,17 +681,17 @@ function Potwierdzenie({ wynik }: { wynik: WynikRezerwacji }) {
           Prosimy o zapoznanie się z materiałami
         </h3>
         <p className="mt-3 text-[14.5px] leading-[1.75] text-h-ink-soft">
-          Za chwilę pokażemy stronę o ICAROS Circle: cztery urządzenia, filmy z sesji
-          i wyniki badań. Kilka minut tam i rozmowa zaczyna się od konkretów.
+          Za chwilę pokażemy stronę o ICAROS: cztery urządzenia, filmy z sesji i wyniki
+          badań. Kilka minut tam i rozmowa zaczyna się od konkretów.
         </p>
 
         <Link
           href={STRONA_PRZYGOTOWANIA}
-          className="group mt-7 inline-flex w-full items-center justify-center gap-2.5 bg-h-accent px-8 py-4 text-[14.5px] font-semibold text-h-void transition-colors duration-300 hover:bg-[#ff7b1f] sm:w-auto"
+          className="group mt-7 inline-flex min-h-[64px] w-full items-center justify-center gap-3 bg-h-accent px-10 text-[17px] font-semibold tracking-[0.01em] text-h-void transition-colors duration-300 hover:bg-[#ff7b1f]"
         >
-          Zobacz ICAROS Circle
+          Zobacz, jak działa ICAROS
           <ArrowRight
-            className="h-4 w-4 transition-transform duration-500 group-hover:translate-x-1"
+            className="h-5 w-5 transition-transform duration-500 group-hover:translate-x-1"
             strokeWidth={2}
           />
         </Link>
