@@ -13,7 +13,7 @@ export const DLUGOSC_ROZMOWY_MIN = 15;
 /** Co ile minut startuje kolejny możliwy termin. */
 export const KROK_MIN = 15;
 
-/** Odstęp doklejany do zajętych wpisów, żeby rozmowa nie startowała sekundę po spotkaniu. */
+/** Odstęp doklejany do naszych własnych rozmów, żeby nie szły jedna po drugiej. */
 export const ODSTEP_MIN = 10;
 
 /** Najwcześniejszy termin: pełne godziny wyprzedzenia i nie dzisiaj. */
@@ -78,6 +78,12 @@ export type Handlowiec = {
   kontoGoogle: string;
   /** Adres służbowy, na który idą powiadomienia o umówionych rozmowach. */
   emailPowiadomien: string;
+  /**
+   * Ile minut przed cudzym wpisem w kalendarzu i po nim zostaje zablokowane.
+   * To czas na dojazd dla kogoś, kto jeździ na spotkania. Wokół naszych
+   * własnych rozmów telefonicznych zostaje zwykły ODSTEP_MIN.
+   */
+  buforMin?: number;
   /** Zmienna środowiskowa z tokenem odświeżania Google dla tej osoby. */
   zmiennaTokenu: string;
   /** Identyfikator użytkownika w Pipedrive. */
@@ -92,6 +98,8 @@ export const HANDLOWCY: Handlowiec[] = [
     pelneImie: "Jarosław Łupieżowiec",
     kontoGoogle: process.env.GCAL_KONTO_JAREK?.trim() || "",
     emailPowiadomien: "jaroslaw.lupiezowiec@icaros.com.pl",
+    // Jarek dojeżdża na spotkania, więc wokół każdego wpisu zostaje mu godzina.
+    buforMin: 60,
     zmiennaTokenu: "GCAL_REFRESH_TOKEN_JAREK",
     zmiennaPipedrive: "PIPEDRIVE_OWNER_A_ID",
     godziny: GODZINY_JAREK,

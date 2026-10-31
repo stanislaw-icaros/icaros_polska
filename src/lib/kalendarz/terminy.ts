@@ -60,14 +60,22 @@ export type Zajetosc = {
   ostatniaRozmowa: number;
 };
 
-function naPrzedzialy(wpisy: WpisKalendarza[]): Przedzial[] {
-  const odstep = ODSTEP_MIN * 60_000;
+/**
+ * Zajęte przedziały z marginesem. Przy cudzych wpisach margines jest tym, co
+ * handlowiec ustawił sobie na dojazd; przy naszych rozmowach telefonicznych
+ * wystarczy zwykły odstęp, bo nikt po nich nigdzie nie jedzie. Wpisy całodniowe
+ * zostają bez marginesu, inaczej zabierałyby wieczór dnia poprzedniego.
+ */
+function naPrzedzialy(wpisy: WpisKalendarza[], buforMin: number): Przedzial[] {
   return wpisy
     .filter((wpis) => wpis.blokuje)
-    .map((wpis) => ({
-      od: wpis.start.getTime() - (wpis.calodniowy ? 0 : odstep),
-      do: wpis.koniec.getTime() + (wpis.calodniowy ? 0 : odstep),
-    }))
+    .map((wpis) => {
+      const odstep = (wpis.nasza ? ODSTEP_MIN : buforMin) * 60_000;
+      return {
+        od: wpis.start.getTime() - (wpis.calodniowy ? 0 : odstep),
+        do: wpis.koniec.getTime() + (wpis.calodniowy ? 0 : odstep),
+      };
+    })
     .sort((a, b) => a.od - b.od);
 }
 
@@ -117,7 +125,7 @@ async function zbierzZajetosc(
 
         return {
           osoba,
-          przedzialy: naPrzedzialy(wpisy),
+          przedzialy: naPrzedzialy(wpisy, osoba.buforMin ?? ODSTEP_MIN),
           rozmowyWDniu,
           rozmowyRazem,
           ostatniaRozmowa,

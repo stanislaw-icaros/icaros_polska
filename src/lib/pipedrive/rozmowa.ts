@@ -161,6 +161,57 @@ function trescNotatki(dane: DaneRozmowy): string {
     .join("\n");
 }
 
+/** Ostatnie dziewięć cyfr, żeby „+48 792 491 196" i „792491196" były tym samym. */
+function trzonNumeru(numer: string): string {
+  return numer.replace(/\D/g, "").slice(-9);
+}
+
+/**
+ * Dopisuje numer i adres do istniejącego kontaktu.
+ *
+ * Numer trafiał dotąd tylko do notatki i do opisu zadania, bo pola kontaktu
+ * wypełnialiśmy wyłącznie przy zakładaniu nowej osoby. Handlowiec musiał więc
+ * przeklikiwać numer ręcznie, zanim mógł zadzwonić z Pipedrive.
+ *
+ * Pipedrive przy zapisie podmienia całą listę numerów, więc najpierw czytamy,
+ * co już tam jest, i tylko dokładamy brakujące pozycje.
+ */
+async function uzupelnijKontakt(
+  personId: number,
+  dane: { telefon?: string; email?: string; orgId?: number }
+): Promise<void> {
+  type Pozycja = { value?: string; label?: string; primary?: boolean };
+  const zmiany: Record<string, unknown> = {};
+  if (dane.orgId) zmiany.org_id = dane.orgId;
+
+  if (dane.telefon || dane.email) {
+    const osoba = await callPipedrive<{ phone?: Pozycja[]; email?: Pozycja[] }>(
+      `/persons/${personId}`
+    );
+    const numery = (osoba.data?.phone || []).filter((pozycja) => pozycja.value);
+    const adresy = (osoba.data?.email || []).filter((pozycja) => pozycja.value);
+
+    if (dane.telefon && !numery.some((p) => trzonNumeru(p.value || "") === trzonNumeru(dane.telefon!))) {
+      zmiany.phone = [
+        ...numery,
+        { value: dane.telefon, label: "work", primary: numery.length === 0 },
+      ];
+    }
+    if (dane.email && !adresy.some((e) => (e.value || "").toLowerCase() === dane.email!.toLowerCase())) {
+      zmiany.email = [
+        ...adresy,
+        { value: dane.email, label: "work", primary: adresy.length === 0 },
+      ];
+    }
+  }
+
+  if (Object.keys(zmiany).length === 0) return;
+  await callPipedrive(`/persons/${personId}`, {
+    method: "PUT",
+    body: JSON.stringify(zmiany),
+  });
+}
+
 /** Zakłada lub aktualizuje sprawę, dopisuje notatkę i zadanie telefoniczne. */
 export async function zapiszRozmowe(dane: DaneRozmowy): Promise<WynikPipedrive> {
   const ownerId = idPipedrive(dane.handlowiec);
@@ -184,10 +235,11 @@ export async function zapiszRozmowe(dane: DaneRozmowy): Promise<WynikPipedrive> 
       email: dane.email,
       phone: dane.telefon,
     });
-  } else if (orgId && !dane.kontekst.orgId) {
-    await callPipedrive(`/persons/${personId}`, {
-      method: "PUT",
-      body: JSON.stringify({ org_id: orgId }),
+  } else {
+    await uzupelnijKontakt(personId, {
+      telefon: dane.telefon,
+      email: dane.email,
+      orgId: orgId && !dane.kontekst.orgId ? orgId : undefined,
     });
   }
 
