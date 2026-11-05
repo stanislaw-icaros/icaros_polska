@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { Wallet, CalendarClock, Building2 } from "lucide-react";
+import { CEL_KONTAKTU } from "@/lib/kontakt";
 
 const options = [
   {
@@ -136,12 +137,12 @@ export default function Finansowanie() {
               >
                 Otwórz kalkulator ROI
               </Link>
-              <a
-                href="#kontakt"
+              <Link
+                href={CEL_KONTAKTU}
                 className="inline-flex items-center gap-2 border border-white/15 px-6 py-3 text-[13px] font-semibold text-white transition-colors hover:bg-white/[0.06]"
               >
                 Zapytaj o finansowanie
-              </a>
+              </Link>
             </div>
           </motion.div>
         </div>

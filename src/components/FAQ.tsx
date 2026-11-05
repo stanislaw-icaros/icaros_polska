@@ -5,6 +5,7 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import { trackMapClick } from "@/lib/analytics/track";
+import { CEL_KONTAKTU, KONTAKT_PACJENTA } from "@/lib/kontakt";
 
 type QA = { question: string; answer: ReactNode };
 type Category = { label: string; items: QA[] };
@@ -286,14 +287,14 @@ export default function FAQ({
               </>
             )}
             <a
-              href={audience === "business" ? "#kontakt" : "/kontakt"}
+              href={audience === "business" ? CEL_KONTAKTU : KONTAKT_PACJENTA}
               className={`font-semibold underline underline-offset-4 ${
                 dark
                   ? "text-white decoration-white/30 hover:decoration-white"
                   : "text-foreground decoration-foreground/20 hover:decoration-foreground"
               }`}
             >
-              Napisz do nas
+              {audience === "business" ? "Umów rozmowę" : "Napisz do nas"}
             </a>
             .
           </p>

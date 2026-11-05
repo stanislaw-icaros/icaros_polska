@@ -41,10 +41,11 @@ export default function Sesja() {
 
       <div className="mx-auto max-w-[1320px]">
         <Wejscie>
-          <Naglowek className="max-w-[16ch]">Przebieg sesji</Naglowek>
+          <Naglowek className="max-w-[20ch]">Przebieg sesji na ICAROS Health</Naglowek>
           <Akapit className="mt-6">
-            Sesja trwa od kilku do kilkunastu minut i prowadzi ją terapeuta
-            z&nbsp;tabletu. Poniżej jej cztery etapy.
+            Sesja trwa od kilku do kilkunastu minut. Program ćwiczeń terapeuta
+            może ułożyć wcześniej w&nbsp;aplikacji na tablecie. Poniżej trzy
+            etapy samej sesji.
           </Akapit>
         </Wejscie>
 

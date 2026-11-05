@@ -8,6 +8,7 @@ import SocialLinks from "@/components/SocialLinks";
 import { COMPANY_ADDRESS, COMPANY_NAME, DISCLAIMER_MEDICAL_DEVICES, KRS, NIP } from "@/lib/legal";
 import { Map as MapIcon } from "lucide-react";
 import { products } from "@/lib/products";
+import { CEL_KONTAKTU, KONTAKT_PACJENTA } from "@/lib/kontakt";
 import { trackBookingClick, trackContactClick, trackMapClick } from "@/lib/analytics/track";
 
 const footerLinks = {
@@ -64,18 +65,18 @@ export default function Footer({
               </h3>
               <p className="mt-3 text-white/75 text-[15px]">
                 {patient
-                  ? "Napisz do nas albo znajdź placówkę z ICAROS w pobliżu."
-                  : "Umów bezpłatną prezentację i zobacz, jak ICAROS zmienia zasady gry."}
+                  ? "Wybierz termin krótkiej rozmowy albo znajdź placówkę z ICAROS w pobliżu."
+                  : "Wybierz termin 15-minutowej rozmowy telefonicznej."}
               </p>
             </div>
             <a
-              href={patient ? "/kontakt" : "#kontakt"}
+              href={patient ? KONTAKT_PACJENTA : CEL_KONTAKTU}
               onClick={() =>
                 patient ? trackContactClick("stopka") : trackBookingClick("stopka")
               }
               className="group inline-flex items-center gap-3 px-8 py-4 bg-white text-foreground text-[14px] font-semibold hover:bg-white/90 transition-all duration-500 shrink-0"
             >
-              {patient ? "Skontaktuj się" : "Umów prezentację"}
+              {patient ? "Skontaktuj się" : "Umów rozmowę"}
               <svg className="w-4 h-4 transition-transform duration-500 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>

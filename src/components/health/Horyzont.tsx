@@ -10,6 +10,7 @@
 import { useRef } from "react";
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { Akcja } from "./czesci";
+import { AKCJA_OTWARCIA } from "./PrzyciskWRogu";
 import { Znacznik } from "./Scena";
 
 /** Zasłona pod tekstem otwarcia: pas u dołu, a od 1024 px róg przy lewej krawędzi. */
@@ -49,7 +50,7 @@ export default function Horyzont() {
           {/* Ktoś tu trafia z reklamy i chce najpierw wiedzieć, co ogląda.
               Nazwa, potem jednym zdaniem czym to jest, dopiero potem reszta. */}
           <h1 className="text-[clamp(2.6rem,7vw,6rem)] font-semibold leading-[0.95] tracking-[-0.045em] text-h-ink">
-            ICAROS Circle
+            ICAROS
           </h1>
 
           <p className="mt-3 max-w-[22ch] text-balance text-[clamp(1.4rem,3vw,2.25rem)] font-medium leading-[1.1] tracking-[-0.03em] text-h-ink-soft">
@@ -63,7 +64,11 @@ export default function Horyzont() {
             i&nbsp;steruje lotem, przechylając ciało.
           </p>
 
-          <Akcja className="mt-9" />
+          {/* Ten przycisk obserwuje PrzyciskWRogu: kiedy zjedzie z ekranu,
+              ten sam przycisk wraca w prawym dolnym rogu. */}
+          <div id={AKCJA_OTWARCIA} className="mt-9 inline-block">
+            <Akcja />
+          </div>
         </motion.div>
       </div>
 

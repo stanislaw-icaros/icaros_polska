@@ -1,6 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Link from "next/link";
+import { CEL_KONTAKTU } from "@/lib/kontakt";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import ROICalculator from "./ROICalculator";
 
@@ -51,15 +53,15 @@ export default function BusinessCase() {
           transition={{ delay: 0.3, duration: 0.6 }}
           className="mt-12 text-center"
         >
-          <a
-            href="#kontakt"
+          <Link
+            href={CEL_KONTAKTU}
             className="group inline-flex items-center gap-3 text-[13px] font-semibold text-foreground/40 hover:text-foreground transition-colors duration-500 tracking-[0.02em]"
           >
             Porozmawiaj z nami o kalkulacji dla Twojej placówki
             <svg className="w-4 h-4 transition-transform duration-500 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
             </svg>
-          </a>
+          </Link>
         </motion.div>
       </div>
     </section>

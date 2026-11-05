@@ -104,7 +104,7 @@ export default function Budowa() {
 
         <div className="relative z-10 flex h-full flex-col justify-between px-5 pb-[clamp(4rem,8vw,6.5rem)] pt-[clamp(5.5rem,10vw,8rem)] sm:px-8 lg:pl-32 lg:pr-32">
           <Wejscie>
-            <Naglowek className="max-w-[16ch]">Budowa urządzenia</Naglowek>
+            <Naglowek className="max-w-[16ch]">Budowa ICAROS Health</Naglowek>
           </Wejscie>
 
           {/* Opisy leżą dokładnie jeden na drugim i przenikają się. */}

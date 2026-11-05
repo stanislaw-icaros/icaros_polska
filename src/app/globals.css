@@ -35,6 +35,25 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Brama z potwierdzeniem statusu profesjonalisty. Atrybut ustawia skrypt
+   w layoucie, jeszcze przed pierwszym malowaniem, a zdejmuje go potwierdzenie
+   w `src/lib/profesjonalista.ts`. Do tego czasu nie widać treści strony
+   i nie da się jej przewinąć. */
+html[data-brama="zamknieta"] #site-content {
+  visibility: hidden;
+}
+
+html[data-brama="zamknieta"] body {
+  overflow: hidden;
+}
+
+/* Zanim brama zdąży się pojawić, zostaje samo tło. Bez tego przez moment
+   widać biel strony z ukrytą treścią, co wygląda na błąd. */
+html[data-brama="zamknieta"],
+html[data-brama="zamknieta"] body {
+  background: #07070a;
+}
+
 body {
   background: var(--color-background);
   color: var(--color-foreground);

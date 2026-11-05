@@ -112,7 +112,7 @@ export default function Komercjalizacja() {
       </section>
 
       {/* Zapis na listę zaraz pod belką argumentów. Niżej w hierarchii niż
-          "Umów prezentację" z paska i sekcji kontaktu, ale wysoko na stronie. */}
+          „Umów rozmowę" z paska, ale wysoko na stronie. */}
       <div className="relative z-10">
         <NewsletterStrip variant="dark" form source="komercjalizacja" />
       </div>

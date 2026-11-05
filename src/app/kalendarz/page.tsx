@@ -3,7 +3,6 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import KalendarzRozmowy, { type DaneKalendarza } from "@/components/kalendarz/KalendarzRozmowy";
 import { dostepnoscZPamieci } from "@/lib/kalendarz/terminy";
-import { WYBOR_OSOBY_NA_STRONIE } from "@/lib/kalendarz/config";
 
 export const metadata: Metadata = {
   title: "Umów rozmowę | ICAROS Polska",
@@ -27,7 +26,6 @@ async function pobierzDane(): Promise<DaneKalendarza> {
       dni: dostepnosc.dni,
       handlowcy: dostepnosc.handlowcy,
       dlugoscMin: dostepnosc.dlugoscMin,
-      wyborOsoby: WYBOR_OSOBY_NA_STRONIE,
       awaria: dostepnosc.dni.length === 0 && dostepnosc.ostrzezenia.length > 0,
     };
   } catch (blad) {
@@ -35,7 +33,7 @@ async function pobierzDane(): Promise<DaneKalendarza> {
       "[kalendarz] strona nie dostala terminow:",
       blad instanceof Error ? blad.message : blad
     );
-    return { dni: [], handlowcy: [], dlugoscMin: 15, wyborOsoby: false, awaria: true };
+    return { dni: [], handlowcy: [], dlugoscMin: 15, awaria: true };
   }
 }
 

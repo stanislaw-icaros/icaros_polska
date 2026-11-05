@@ -40,10 +40,13 @@ export default function Doswiadczenia() {
 
       <div className="mx-auto max-w-[1320px]">
         <Wejscie>
-          <Naglowek className="max-w-[16ch]">Trasy i gry</Naglowek>
+          <Naglowek className="max-w-[24ch]">
+            Trasy i gry w wirtualnej rzeczywistości na ICAROS Health
+          </Naglowek>
           <Akapit className="mt-6">
-            Oprogramowanie obejmuje loty nad prawdziwym terenem, zwiedzanie miast
-            i&nbsp;tryby zadaniowe. Pacjent wybiera trasę, terapeuta poziom trudności.
+            Oprogramowanie obejmuje loty nad prawdziwym terenem, zwiedzanie
+            kilkunastu miast i&nbsp;tryby zadaniowe. Pacjent wybiera trasę,
+            terapeuta poziom trudności.
           </Akapit>
         </Wejscie>
 

@@ -9,6 +9,7 @@ import { ChevronDown, Map as MapIcon } from "lucide-react";
 import AudienceSwitch from "@/components/AudienceSwitch";
 import SocialLinks from "@/components/SocialLinks";
 import { products } from "@/lib/products";
+import { CEL_KONTAKTU, KONTAKT_PACJENTA } from "@/lib/kontakt";
 import { trackBookingClick, trackMapClick } from "@/lib/analytics/track";
 
 type NavLink = { href: string; label: string };
@@ -47,8 +48,10 @@ const patientNav: NavEntry[] = [
       { href: "/newsletter", label: "Newsletter" },
     ],
   },
-  { href: "/kontakt", label: "Kontakt" },
 ];
+
+/** Kontakt jest jedynym wyróżnionym przyciskiem w pasku, w obu strefach. */
+const KONTAKT_PACJENT = { href: KONTAKT_PACJENTA, label: "Kontakt" };
 
 const businessNav: NavEntry[] = [
   { href: "/komercjalizacja", label: "Komercjalizacja" },
@@ -65,8 +68,9 @@ const businessNav: NavEntry[] = [
       { href: "/newsletter-partner", label: "Newsletter" },
     ],
   },
-  { href: "/kontakt-partner", label: "Kontakt" },
 ];
+
+const KONTAKT_BIZNES = { href: CEL_KONTAKTU, label: "Kontakt" };
 
 function NavItemLink({
   href,
@@ -218,6 +222,7 @@ export default function Navigation({
 
   const business = variant === "business";
   const navEntries = business ? businessNav : patientNav;
+  const kontakt = business ? KONTAKT_BIZNES : KONTAKT_PACJENT;
   const solid = business || scrolled || pathname !== "/";
 
   useEffect(() => {
@@ -304,23 +309,25 @@ export default function Navigation({
               )}
             </div>
 
-            {/* Po odchudzeniu paska prawa kolumna mieści się już na 1280 px w obu strefach. */}
-            <div className="hidden xl:flex items-center">
-              {business ? (
-                <a
-                  href="#kontakt"
-                  onClick={() => trackBookingClick("menu")}
-                  className="whitespace-nowrap text-[13px] font-semibold text-white px-6 py-3 transition-all duration-500 tracking-[0.02em] hover:opacity-90"
-                  style={{ background: "linear-gradient(135deg, #ff6600, #ff7b1f)" }}
-                >
-                  Umów prezentację
-                </a>
-              ) : (
+            {/* Kontakt jest w obu strefach jedynym wyróżnionym przyciskiem.
+                Ikony społecznościowe mieszczą się obok dopiero od 1536 px,
+                niżej zostają w stopce i na stronie kontaktu. */}
+            <div className="hidden xl:flex items-center gap-6">
+              {!business && (
                 <SocialLinks
+                  className="hidden 2xl:flex"
                   iconSize="h-[18px] w-[18px]"
                   itemClassName="text-foreground/40 hover:text-foreground"
                 />
               )}
+              <Link
+                href={kontakt.href}
+                onClick={() => trackBookingClick("menu")}
+                className="whitespace-nowrap text-[13px] font-semibold text-white px-6 py-3 transition-all duration-500 tracking-[0.02em] hover:opacity-90"
+                style={{ background: "linear-gradient(135deg, #ff6600, #ff7b1f)" }}
+              >
+                {kontakt.label}
+              </Link>
             </div>
 
             <button
@@ -417,20 +424,20 @@ export default function Navigation({
               transition={{ delay: 0.3, duration: 0.4 }}
               className="pt-8"
             >
-              {business ? (
-                <a
-                  href="#kontakt"
-                  onClick={() => {
-                    setMobileOpen(false);
-                    trackBookingClick("menu-mobile");
-                  }}
-                  className="inline-flex text-base font-semibold text-white px-10 py-5 tracking-[0.01em] hover:opacity-90 transition-opacity duration-500"
-                  style={{ background: "linear-gradient(135deg, #ff6600, #ff7b1f)" }}
-                >
-                  Umów prezentację
-                </a>
-              ) : (
-                <div>
+              <Link
+                href={kontakt.href}
+                onClick={() => {
+                  setMobileOpen(false);
+                  trackBookingClick("menu-mobile");
+                }}
+                className="inline-flex text-base font-semibold text-white px-10 py-5 tracking-[0.01em] hover:opacity-90 transition-opacity duration-500"
+                style={{ background: "linear-gradient(135deg, #ff6600, #ff7b1f)" }}
+              >
+                {kontakt.label}
+              </Link>
+
+              {!business && (
+                <div className="mt-10">
                   <p className="text-[11px] font-semibold uppercase tracking-[0.25em] text-foreground/40">
                     Odwiedź nas
                   </p>

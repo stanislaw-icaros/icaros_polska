@@ -30,13 +30,13 @@ export default function Film() {
 
   return (
     <section id="film" className="relative z-10 bg-h-void text-h-ink">
-      <Znacznik wartosc={0.7} />
+      <Znacznik wartosc={0.1} />
 
       <div className="px-5 pb-[clamp(2.5rem,5vw,4rem)] pt-[clamp(5rem,11vw,9.5rem)] sm:px-8 lg:pl-32 lg:pr-32">
         <Wejscie>
-          <Naglowek className="max-w-[18ch]">Film</Naglowek>
+          <Naglowek className="max-w-[18ch]">ICAROS Health na filmie</Naglowek>
           <p className="mt-6 max-w-[52ch] text-pretty text-[17px] leading-[1.68] text-h-ink">
-            Wolisz oglądać? Zobacz, jak wygląda ICAROS na filmie.
+            Wolisz oglądać? Minuta nagrania z sesji i z sali.
           </p>
         </Wejscie>
       </div>

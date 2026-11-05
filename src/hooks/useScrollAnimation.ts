@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface ScrollAnimationOptions {
   threshold?: number;
@@ -19,7 +19,11 @@ export function useScrollAnimation(options: ScrollAnimationOptions = {}) {
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
+        // Wejście w ekran, ale też sytuacja, w której sekcja została już
+        // minięta: tak jest po wejściu z kotwicą, np. /kontakt-partner#kalendarz.
+        // Bez tego treść nad kotwicą zostawała niewidoczna.
+        const minieta = entry.boundingClientRect.bottom <= 0;
+        if (entry.isIntersecting || minieta) {
           setIsVisible(true);
           if (triggerOnce) observer.unobserve(element);
         } else if (!triggerOnce) {

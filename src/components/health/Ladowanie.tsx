@@ -63,15 +63,11 @@ export default function Ladowanie() {
   );
 }
 
-/** Zamknięcie strony: nazwa wraca na pełną szerokość, pod nią drobne sprawy. */
+/** Zamknięcie strony: odnośniki i drobne sprawy, bez wielkiej nazwy nad nimi. */
 export function Stopka() {
   return (
     <footer className="relative z-10 bg-h-void px-5 pb-10 pt-16 text-h-ink sm:px-8 lg:pl-32 lg:pr-32">
-      <p className="text-[clamp(2.9rem,11vw,9rem)] font-semibold leading-[0.85] tracking-[-0.05em] text-h-ink">
-        ICAROS Polska
-      </p>
-
-      <div className="mt-14 flex flex-col gap-5 text-[14px] text-h-ink-soft sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex flex-col gap-5 text-[14px] text-h-ink-soft sm:flex-row sm:items-center sm:justify-between">
         <nav className="flex flex-wrap gap-x-7 gap-y-2">
           <Link href="/" className="hover:text-h-ink">
             Strona główna

@@ -15,15 +15,14 @@ import {
   Globe,
   Loader2,
   Phone,
-  UserRound,
 } from "lucide-react";
 import FormularzRozmowy, { type WynikRezerwacji } from "@/components/kalendarz/FormularzRozmowy";
+import { AKCENT_TEKST, TOKENY, type MotywKalendarza } from "@/components/kalendarz/motyw";
 import { COMPANY_EMAIL, COMPANY_PHONE, COMPANY_PHONE_HREF } from "@/lib/legal";
 import {
+  etykietaDnia,
   etykietaGodziny,
-  etykietaKrotka,
   etykietaPelna,
-  godzinaLokalna,
   nazwaMiesiaca,
   SKROTY_TYGODNIA,
 } from "@/lib/kalendarz/formaty";
@@ -33,9 +32,13 @@ import {
  *
  * Terminy przychodzą już policzone ze serwera, więc strona od razu pokazuje
  * wolne dni. Lista odświeża się tylko wtedy, kiedy ktoś inny zdąży zająć
- * wybrany termin. Domyślnie widać sumę wolnych godzin obu handlowców.
+ * wybrany termin.
  *
- * Układ trzyma się jednej zasady: kolumny rozdziela odstęp i tło, nie kreski.
+ * Po uwagach z 4 listopada 2026 zostały tu dwie rzeczy do kliknięcia: dzień
+ * i godzina. Wyboru osoby nie ma (klient nie wie, kto to Jarosław i kto
+ * Sebastian), nie ma też liczby wolnych godzin ani podziału na przed i po
+ * południu. Osobę nadal da się wskazać adresem `?osoba=jarek`, na przykład
+ * w SMS-ie do leada.
  */
 
 export type Termin = { start: string; osoby: string[] };
@@ -46,8 +49,6 @@ export type DaneKalendarza = {
   dni: Dzien[];
   handlowcy: Handlowiec[];
   dlugoscMin: number;
-  /** Czy klient sam wybiera osobę, czy przydzielamy ją po cichu. */
-  wyborOsoby: boolean;
   awaria: boolean;
 };
 
@@ -69,29 +70,27 @@ function siatkaMiesiaca(miesiac: string): (Komorka | null)[] {
   return komorki;
 }
 
-function liczbaGodzin(ile: number): string {
-  if (ile === 1) return "1 wolna godzina";
-  const jednostki = ile % 10;
-  const dziesiatki = ile % 100;
-  if (jednostki >= 2 && jednostki <= 4 && (dziesiatki < 12 || dziesiatki > 14)) {
-    return `${ile} wolne godziny`;
-  }
-  return `${ile} wolnych godzin`;
-}
-
 export default function KalendarzRozmowy({
   poczatkowe,
   osobaZAdresu,
+  motyw = "ciemny",
+  wariant = "business",
 }: {
   poczatkowe: DaneKalendarza;
   osobaZAdresu?: string;
+  motyw?: MotywKalendarza;
+  /** Strefa pacjenta nie pyta o placówkę ani o NIP. */
+  wariant?: "patient" | "business";
 }) {
+  const t = TOKENY[motyw];
+  const akcentTekst = AKCENT_TEKST[motyw];
+
   const [dane, setDane] = useState<DaneKalendarza>(poczatkowe);
   const [odswiezanie, setOdswiezanie] = useState(false);
 
   // Wybory trzymamy jako „co kliknął użytkownik”, a to, co widać, wyliczamy
-  // z aktualnej listy. Zmiana osoby albo odświeżenie godzin nie wymaga wtedy
-  // sprzątania stanu w efektach.
+  // z aktualnej listy. Odświeżenie godzin nie wymaga wtedy sprzątania stanu
+  // w efektach.
   const [osobaWybrana, setOsobaWybrana] = useState<string | null>(null);
   const [dzienWybrany, setDzienWybrany] = useState<string | null>(null);
   const [terminWybrany, setTerminWybrany] = useState<string | null>(null);
@@ -140,21 +139,6 @@ export default function KalendarzRozmowy({
       ? terminWybrany
       : null;
 
-  const grupy = useMemo(() => {
-    const terminy = dzienAktywny?.terminy || [];
-    return [
-      {
-        nazwa: "Przed południem",
-        terminy: terminy.filter((wpis) => godzinaLokalna(new Date(wpis.start)) < 12),
-      },
-      {
-        nazwa: "Po południu",
-        terminy: terminy.filter((wpis) => godzinaLokalna(new Date(wpis.start)) >= 12),
-      },
-    ].filter((grupa) => grupa.terminy.length > 0);
-  }, [dzienAktywny]);
-
-  const nazwaZespolu = dane.handlowcy.map((element) => element.imie).join(" i ");
   const wybrany = dane.handlowcy.find((element) => element.klucz === osoba);
 
   function wybierzTermin(start: string) {
@@ -163,11 +147,6 @@ export default function KalendarzRozmowy({
     requestAnimationFrame(() => {
       sekcjaFormularza.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
     });
-  }
-
-  function wybierzOsobe(klucz: string) {
-    setOsobaWybrana(klucz);
-    setTerminWybrany(null);
   }
 
   /** Zmiana miesiąca od razu ustawia pierwszy wolny dzień, żeby lista godzin nie została w tyle. */
@@ -196,14 +175,14 @@ export default function KalendarzRozmowy({
 
   if (dane.awaria || dane.dni.length === 0) {
     return (
-      <Karta>
+      <Karta t={t}>
         <div className="p-8 sm:p-14">
-          <h2 className="text-[21px] font-semibold tracking-[-0.025em] text-h-ink">
+          <h2 className={`text-[21px] font-semibold tracking-[-0.025em] ${t.mocny}`}>
             {dane.awaria
               ? "Nie możemy teraz pokazać wolnych godzin"
               : "Najbliższe tygodnie są zajęte"}
           </h2>
-          <p className="mt-3.5 max-w-[480px] text-[14.5px] leading-[1.75] text-h-ink-soft">
+          <p className={`mt-3.5 max-w-[480px] text-[14.5px] leading-[1.75] ${t.slaby}`}>
             {dane.awaria
               ? "Kalendarz chwilowo nie odpowiada. Najszybciej dogadamy termin telefonicznie albo mailem, odpowiadamy w jednym dniu roboczym."
               : "W widocznym okresie nie ma już wolnych godzin. Napisz albo zadzwoń, znajdziemy termin poza kalendarzem."}
@@ -211,14 +190,14 @@ export default function KalendarzRozmowy({
           <div className="mt-8 flex flex-wrap gap-3">
             <a
               href={`tel:${COMPANY_PHONE_HREF}`}
-              className="inline-flex items-center gap-2 bg-h-accent px-7 py-3.5 text-[14px] font-semibold text-h-void transition-colors duration-300 hover:bg-[#ff7b1f]"
+              className={`inline-flex items-center gap-2 px-7 py-3.5 text-[14px] font-semibold transition-colors duration-300 ${t.akcent}`}
             >
               <Phone className="h-4 w-4" strokeWidth={1.75} />
               {COMPANY_PHONE}
             </a>
             <a
               href={`mailto:${COMPANY_EMAIL}`}
-              className="inline-flex items-center gap-2 bg-white/[0.06] px-7 py-3.5 text-[14px] font-semibold text-h-ink transition-colors duration-300 hover:bg-white/[0.11]"
+              className={`inline-flex items-center gap-2 px-7 py-3.5 text-[14px] font-semibold transition-colors duration-300 ${t.kafelek}`}
             >
               Napisz do nas
             </a>
@@ -232,265 +211,194 @@ export default function KalendarzRozmowy({
 
   return (
     <>
-      <Karta>
-        <div
-          className={`lg:grid ${
-            termin ? "lg:grid-cols-[300px_minmax(0,1fr)]" : "lg:grid-cols-[300px_minmax(0,1fr)_228px]"
-          }`}
-        >
-          <div className="bg-h-surface p-7 sm:p-8">
-            <h2 className="text-[21px] font-semibold leading-[1.2] tracking-[-0.03em] text-h-ink">
-              Rozmowa telefoniczna
-            </h2>
+      <Karta t={t}>
+        {/* Co to za rozmowa, jednym pasem nad kalendarzem. Wcześniej stało to
+            w osobnej kolumnie po lewej i zabierało siatce połowę szerokości. */}
+        <div className={`${t.pasek} px-7 py-6 sm:px-9`}>
+          <h2 className={`text-[19px] font-semibold leading-[1.2] tracking-[-0.03em] ${t.mocny}`}>
+            Rozmowa telefoniczna
+          </h2>
+          <ul className="mt-4 flex flex-wrap gap-x-8 gap-y-2.5">
+            {[
+              { ikona: Clock, tekst: `${dane.dlugoscMin} minut` },
+              { ikona: Phone, tekst: "Zadzwonimy na podany numer" },
+              { ikona: Globe, tekst: "Godziny w czasie polskim" },
+            ].map((punkt) => (
+              <li key={punkt.tekst} className={`flex items-center gap-2.5 text-[13.5px] ${t.slaby}`}>
+                <punkt.ikona className={`h-4 w-4 shrink-0 ${akcentTekst}`} strokeWidth={1.75} />
+                {punkt.tekst}
+              </li>
+            ))}
+          </ul>
+        </div>
 
-            {/* Na telefonie szczegóły lecą w jednym wierszu, żeby kalendarz był wyżej. */}
-            <ul className="mt-5 flex flex-wrap gap-x-6 gap-y-2.5 lg:block lg:space-y-3">
-              {[
-                { ikona: Clock, tekst: `${dane.dlugoscMin} minut` },
-                { ikona: Phone, tekst: "Zadzwonimy na podany numer" },
-                { ikona: Globe, tekst: "Godziny w czasie polskim" },
-              ].map((punkt) => (
-                <li
-                  key={punkt.tekst}
-                  className="flex items-center gap-2.5 text-[13.5px] text-h-ink-soft"
-                >
-                  <punkt.ikona className="h-4 w-4 shrink-0 text-h-accent" strokeWidth={1.75} />
-                  {punkt.tekst}
-                </li>
-              ))}
-            </ul>
-
-            {dane.wyborOsoby && dane.handlowcy.length > 1 ? (
-              <div className="mt-8">
-                <p className="text-[13px] font-medium text-h-ink-soft">Kto zadzwoni</p>
-                <div
-                  className="mt-3 grid grid-cols-2 gap-2 lg:grid-cols-1"
-                  role="group"
-                  aria-label="Wybór osoby"
-                >
+        {brakDlaOsoby ? (
+          <div className="p-7 sm:p-9">
+            <h3 className={`text-[16.5px] font-semibold tracking-[-0.015em] ${t.mocny}`}>
+              {wybrany ? `${wybrany.imie} nie ma teraz wolnych godzin` : "Brak wolnych godzin"}
+            </h3>
+            <p className={`mt-3 text-[14px] leading-[1.7] ${t.slaby}`}>
+              Pokażemy wszystkie terminy, jakie mamy w najbliższych tygodniach.
+            </p>
+            <button
+              type="button"
+              onClick={() => {
+                setOsobaWybrana(DOWOLNA);
+                setTerminWybrany(null);
+              }}
+              className={`mt-6 inline-flex items-center gap-2 px-7 py-3.5 text-[14px] font-semibold transition-colors duration-300 ${t.akcent}`}
+            >
+              Pokaż wszystkie terminy
+            </button>
+          </div>
+        ) : termin ? (
+          <div ref={sekcjaFormularza} className="scroll-mt-28 p-7 sm:p-9">
+            <FormularzRozmowy
+              termin={termin}
+              dlugoscMin={dane.dlugoscMin}
+              motyw={motyw}
+              wariant={wariant}
+              wybranaOsoba={osoba === DOWOLNA ? undefined : osoba}
+              onZmienTermin={() => setTerminWybrany(null)}
+              onSukces={setWynik}
+              onZajety={() =>
+                odswiez("Ten termin właśnie ktoś zajął. Lista godzin jest już odświeżona.")
+              }
+            />
+          </div>
+        ) : (
+          <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_300px]">
+            <div className="p-7 sm:p-9">
+              <div className="flex items-center justify-between gap-3">
+                <p className={`text-[16px] font-semibold tracking-[-0.02em] ${t.mocny}`}>
+                  {nazwaMiesiaca(miesiac)}
+                </p>
+                <div className="flex gap-1.5">
                   {[
-                    { klucz: DOWOLNA, nazwa: nazwaZespolu },
-                    ...dane.handlowcy.map((element) => ({
-                      klucz: element.klucz,
-                      nazwa: element.imie,
-                    })),
-                  ].map((opcja) => {
-                    const aktywny = osoba === opcja.klucz;
+                    { ikona: ChevronLeft, krok: -1, opis: "Poprzedni miesiąc" },
+                    { ikona: ChevronRight, krok: 1, opis: "Następny miesiąc" },
+                  ].map((strzalka) => {
+                    const docelowy = miesiace[indeksMiesiaca + strzalka.krok];
                     return (
                       <button
-                        key={opcja.klucz}
+                        key={strzalka.opis}
                         type="button"
-                        aria-pressed={aktywny}
-                        onClick={() => wybierzOsobe(opcja.klucz)}
-                        className={`flex w-full items-center gap-2 px-3.5 py-3 text-left transition-colors duration-300 ${
-                          opcja.klucz === DOWOLNA ? "col-span-2 lg:col-span-1" : ""
-                        } ${
-                          aktywny
-                            ? "bg-white/[0.10] text-h-ink"
-                            : "bg-white/[0.04] text-h-ink-soft hover:bg-white/[0.08] hover:text-h-ink"
-                        }`}
+                        aria-label={strzalka.opis}
+                        disabled={!docelowy}
+                        onClick={() => wybierzMiesiac(docelowy)}
+                        className={`flex h-11 w-11 items-center justify-center transition-colors duration-300 disabled:cursor-not-allowed ${t.kafelek} ${t.wygaszony}`}
                       >
-                        <span className="truncate text-[13.5px] font-medium">{opcja.nazwa}</span>
-                        {aktywny ? (
-                          <Check
-                            className="ml-auto h-4 w-4 shrink-0 text-h-accent"
-                            strokeWidth={2.25}
-                          />
-                        ) : null}
+                        <strzalka.ikona className="h-[18px] w-[18px]" strokeWidth={2.25} />
                       </button>
                     );
                   })}
                 </div>
               </div>
-            ) : wybrany ? (
-              <p className="mt-8 text-[13px] text-h-ink-soft">
-                Rozmowę poprowadzi {wybrany.imie}
-              </p>
-            ) : null}
-          </div>
 
-          {brakDlaOsoby ? (
-            <div className="p-7 sm:p-8">
-              <h3 className="text-[16.5px] font-semibold tracking-[-0.015em] text-h-ink">
-                {wybrany ? `${wybrany.imie} nie ma teraz wolnych godzin` : "Brak wolnych godzin"}
-              </h3>
-              <p className="mt-3 text-[14px] leading-[1.7] text-h-ink-soft">
-                Po wybraniu {nazwaZespolu} pokażą się wszystkie terminy.
-              </p>
-              <button
-                type="button"
-                onClick={() => wybierzOsobe(DOWOLNA)}
-                className="mt-6 inline-flex items-center gap-2 bg-h-accent px-7 py-3.5 text-[14px] font-semibold text-h-void transition-colors duration-300 hover:bg-[#ff7b1f]"
-              >
-                Pokaż wszystkie terminy
-              </button>
-            </div>
-          ) : termin ? (
-            <div ref={sekcjaFormularza} className="scroll-mt-28 p-7 sm:p-9">
-              <FormularzRozmowy
-                termin={termin}
-                dlugoscMin={dane.dlugoscMin}
-                wybranaOsoba={osoba === DOWOLNA ? undefined : osoba}
-                onZmienTermin={() => setTerminWybrany(null)}
-                onSukces={setWynik}
-                onZajety={() =>
-                  odswiez("Ten termin właśnie ktoś zajął. Lista godzin jest już odświeżona.")
-                }
-              />
-            </div>
-          ) : (
-            <>
-              <div className="p-7 sm:p-9">
-                <div className="flex items-center justify-between gap-3">
-                  <p className="text-[16px] font-semibold tracking-[-0.02em] text-h-ink">
-                    {nazwaMiesiaca(miesiac)}
-                  </p>
-                  <div className="flex gap-1.5">
-                    {[
-                      { ikona: ChevronLeft, krok: -1, opis: "Poprzedni miesiąc" },
-                      { ikona: ChevronRight, krok: 1, opis: "Następny miesiąc" },
-                    ].map((strzalka) => {
-                      const docelowy = miesiace[indeksMiesiaca + strzalka.krok];
-                      return (
-                        <button
-                          key={strzalka.opis}
-                          type="button"
-                          aria-label={strzalka.opis}
-                          disabled={!docelowy}
-                          onClick={() => wybierzMiesiac(docelowy)}
-                          className="flex h-9 w-9 items-center justify-center bg-white/[0.05] text-h-ink-soft transition-colors duration-300 hover:bg-white/[0.11] hover:text-h-ink disabled:cursor-not-allowed disabled:bg-transparent disabled:text-white/15"
-                        >
-                          <strzalka.ikona className="h-4 w-4" strokeWidth={2} />
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-
-                <div className="mt-7 grid grid-cols-7 gap-1.5">
-                  {SKROTY_TYGODNIA.map((skrot) => (
-                    <span
-                      key={skrot}
-                      className="pb-2 text-center text-[12.5px] font-medium text-h-ink-soft"
-                    >
-                      {skrot}
-                    </span>
-                  ))}
-                  {komorki.map((komorka, numerKomorki) => {
-                    if (!komorka) return <span key={`puste-${numerKomorki}`} />;
-                    const wpis = mapaDni.get(komorka.data);
-                    if (!wpis) {
-                      return (
-                        <span
-                          key={komorka.data}
-                          className="flex h-11 items-center justify-center text-[14px] tabular-nums text-white/35"
-                        >
-                          {komorka.numer}
-                        </span>
-                      );
-                    }
-                    const aktywny = komorka.data === dzien;
+              <div className="mt-7 grid grid-cols-7 gap-1.5">
+                {SKROTY_TYGODNIA.map((skrot) => (
+                  <span
+                    key={skrot}
+                    className={`pb-2 text-center text-[12.5px] font-medium ${t.slaby}`}
+                  >
+                    {skrot}
+                  </span>
+                ))}
+                {komorki.map((komorka, numerKomorki) => {
+                  if (!komorka) return <span key={`puste-${numerKomorki}`} />;
+                  const wpis = mapaDni.get(komorka.data);
+                  if (!wpis) {
                     return (
-                      <button
+                      <span
                         key={komorka.data}
-                        type="button"
-                        aria-pressed={aktywny}
-                        aria-label={`${wpis.etykieta}, ${liczbaGodzin(wpis.terminy.length)}`}
-                        onClick={() => {
-                          setDzienWybrany(komorka.data);
-                          setTerminWybrany(null);
-                        }}
-                        className={`flex h-11 items-center justify-center text-[14px] font-semibold tabular-nums transition-colors duration-300 ${
-                          aktywny
-                            ? "bg-h-accent text-h-void"
-                            : "bg-white/[0.06] text-h-ink hover:bg-white/[0.12]"
-                        }`}
+                        className={`flex h-12 items-center justify-center text-[14px] tabular-nums ${t.pusty}`}
                       >
                         {komorka.numer}
-                      </button>
+                      </span>
                     );
-                  })}
-                </div>
+                  }
+                  const aktywny = komorka.data === dzien;
+                  return (
+                    <button
+                      key={komorka.data}
+                      type="button"
+                      aria-pressed={aktywny}
+                      aria-label={wpis.etykieta}
+                      onClick={() => {
+                        setDzienWybrany(komorka.data);
+                        setTerminWybrany(null);
+                      }}
+                      className={`flex h-12 items-center justify-center text-[15px] font-semibold tabular-nums transition-colors duration-300 ${
+                        aktywny ? t.akcent : t.kafelek
+                      }`}
+                    >
+                      {komorka.numer}
+                    </button>
+                  );
+                })}
               </div>
+            </div>
 
-              <div className="p-7 pt-0 sm:p-9 sm:pt-0 lg:pt-9">
-                {dzienAktywny ? (
-                  <>
-                    <div className="flex items-baseline justify-between gap-2 lg:block">
-                      <p className="text-[14.5px] font-semibold tracking-[-0.01em] text-h-ink">
-                        {etykietaKrotka(new Date(`${dzienAktywny.data}T12:00:00Z`))}
-                      </p>
-                      <p className="flex items-center gap-1.5 text-[13px] text-h-ink-soft lg:mt-1.5">
-                        {odswiezanie ? (
-                          <Loader2 className="h-3 w-3 animate-spin" strokeWidth={2} />
-                        ) : null}
-                        {liczbaGodzin(dzienAktywny.terminy.length)}
-                      </p>
-                    </div>
+            <div className="p-7 pt-0 sm:p-9 sm:pt-0 lg:pt-9">
+              {dzienAktywny ? (
+                <>
+                  <p
+                    className={`flex items-center gap-2 text-[15px] font-semibold tracking-[-0.01em] ${t.mocny}`}
+                  >
+                    {etykietaDnia(new Date(`${dzienAktywny.data}T12:00:00Z`))}
+                    {odswiezanie ? (
+                      <Loader2 className="h-3.5 w-3.5 animate-spin" strokeWidth={2} />
+                    ) : null}
+                  </p>
 
-                    <div className="mt-4 space-y-5 lg:max-h-[372px] lg:overflow-y-auto lg:pr-2 [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-thumb]:bg-white/15">
-                      {grupy.map((grupa) => (
-                        <div key={grupa.nazwa}>
-                          <p className="mb-2.5 text-[12.5px] font-medium text-h-ink-soft">
-                            {grupa.nazwa}
-                          </p>
-                          <div className="grid grid-cols-3 gap-2 sm:grid-cols-4 lg:grid-cols-1">
-                            {grupa.terminy.map((wpis) => (
-                              <button
-                                key={wpis.start}
-                                type="button"
-                                onClick={() => wybierzTermin(wpis.start)}
-                                className="bg-white/[0.06] py-3 text-[13.5px] font-semibold tabular-nums text-h-ink transition-colors duration-300 hover:bg-h-accent hover:text-h-void"
-                              >
-                                {etykietaGodziny(new Date(wpis.start))}
-                              </button>
-                            ))}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </>
-                ) : null}
-              </div>
-            </>
-          )}
-        </div>
+                  <div className="mt-4 grid grid-cols-3 gap-2 sm:grid-cols-4 lg:max-h-[404px] lg:grid-cols-2 lg:overflow-y-auto lg:pr-2">
+                    {dzienAktywny.terminy.map((wpis) => (
+                      <button
+                        key={wpis.start}
+                        type="button"
+                        onClick={() => wybierzTermin(wpis.start)}
+                        className={`py-3.5 text-[14px] font-semibold tabular-nums transition-colors duration-300 ${t.kafelek} ${t.kafelekAkcent}`}
+                      >
+                        {etykietaGodziny(new Date(wpis.start))}
+                      </button>
+                    ))}
+                  </div>
+                </>
+              ) : null}
+            </div>
+          </div>
+        )}
       </Karta>
 
       {komunikat ? (
-        <p className="mt-4 bg-h-accent/[0.10] px-5 py-3.5 text-[13px] text-h-ink-soft">
-          {komunikat}
-        </p>
+        <p className={`mt-4 px-5 py-3.5 text-[13px] ${t.poswiata} ${t.slaby}`}>{komunikat}</p>
       ) : null}
 
       <div className="mt-7 flex flex-wrap gap-x-9 gap-y-3">
         {[
-          { ikona: UserRound, tekst: "Bez zakładania konta i bez logowania" },
-          { ikona: CalendarCheck, tekst: "Potwierdzenie mailem z wpisem do kalendarza" },
-          { ikona: CalendarX, tekst: "Termin można odwołać jednym kliknięciem" },
-        ].map((punkt) => (
-          <p
-            key={punkt.tekst}
-            className="flex items-center gap-2.5 text-[13px] text-h-ink-soft"
-          >
-            <punkt.ikona className="h-4 w-4 shrink-0 text-h-accent/70" strokeWidth={1.75} />
-            {punkt.tekst}
+          "Bez zakładania konta i bez logowania",
+          "Potwierdzenie mailem z wpisem do kalendarza",
+          "Termin można odwołać jednym kliknięciem",
+        ].map((tekst) => (
+          <p key={tekst} className={`flex items-center gap-2.5 text-[13px] ${t.slaby}`}>
+            <Check className={`h-4 w-4 shrink-0 ${akcentTekst}`} strokeWidth={2} />
+            {tekst}
           </p>
         ))}
       </div>
 
-      <p className="mt-4 text-[13px] text-h-ink-soft">
+      <p className={`mt-4 text-[13px] ${t.slaby}`}>
         Wolisz od razu zadzwonić{" "}
         <a
           href={`tel:${COMPANY_PHONE_HREF}`}
-          className="font-medium text-h-ink transition-colors duration-300 hover:text-h-accent"
+          className={`font-medium transition-colors duration-300 ${t.mocny} ${t.linkHover}`}
         >
           {COMPANY_PHONE}
         </a>{" "}
         lub napisz na{" "}
         <a
           href={`mailto:${COMPANY_EMAIL}`}
-          className="font-medium text-h-ink transition-colors duration-300 hover:text-h-accent"
+          className={`font-medium transition-colors duration-300 ${t.mocny} ${t.linkHover}`}
         >
           {COMPANY_EMAIL}
         </a>
@@ -499,17 +407,23 @@ export default function KalendarzRozmowy({
   );
 }
 
-/** Płyta kalendarza: o stopień jaśniejsza od tła, bez linii i bez cienia. */
-function Karta({ children }: { children: React.ReactNode }) {
+/** Płyta kalendarza: o stopień inna od tła, bez linii i bez cienia. */
+function Karta({
+  t,
+  children,
+}: {
+  t: (typeof TOKENY)[MotywKalendarza];
+  children: React.ReactNode;
+}) {
   return (
-    <div className="animate-[fade-up_0.6s_ease-out_both] overflow-hidden bg-h-night">
+    <div className={`animate-[fade-up_0.6s_ease-out_both] overflow-hidden ${t.karta}`}>
       {children}
     </div>
   );
 }
 
 /** Dokąd prowadzimy klienta po rezerwacji i po ilu sekundach. */
-const STRONA_PRZYGOTOWANIA = "/oferta";
+const STRONA_PRZYGOTOWANIA = "/health";
 // Siedem sekund nie starczało na przeczytanie tego, o co prosimy, dwadzieścia
 // też było za mało. Kto nie chce czekać, ma przycisk nad odliczaniem.
 const SEKUND_DO_PRZEJSCIA = 40;

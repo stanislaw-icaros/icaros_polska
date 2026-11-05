@@ -6,9 +6,9 @@
  * src/lib/products.ts. Film promocyjny jest tylko jednym z nich, nie kanwą
  * całej strony.
  *
- * Każda liczba ma przy sobie badanie i ośrodek. Nic tu nie jest szacunkiem.
- * Uwaga przy liczbach: nie wszystkie dotyczą Healtha. Wynik "+41% siły nóg
- * u seniorów" pochodzi z badania ICAROS Guardian i stoi przy Guardianie.
+ * Każda liczba ma przy sobie badanie i ośrodek. Nic tu nie jest szacunkiem,
+ * i każda dotyczy Healtha: wyniki innych urządzeń ciągnęły rozmowę w stronę,
+ * której ta strona nie prowadzi.
  *
  * Zasada projektu: bez em-dashy, cudzysłowy „ i ".
  */
@@ -33,25 +33,13 @@ export const sesja: KrokSesji[] = [
   {
     nazwa: "Wejście",
     opis:
-      "Podpórki i stopnie pozwalają zająć pozycję bez dźwigania pacjenta. Terapeuta ustawia urządzenie pod jego wzrost i zakres ruchu.",
+      "Podpórki i stopnie pozwalają zająć pozycję bez dźwigania pacjenta. Terapeuta ustawia urządzenie pod wzrost pacjenta i dobiera ćwiczenia do jego możliwości.",
     obraz: "/health/sesja-wejscie.webp",
     obrazAlt: "ICAROS Health bez pacjenta, ze stopniami wejściowymi, oświetlony na czarnym tle",
     parametry: [
       { etykieta: "Pozycja", wartosc: "Podpór na brzuchu" },
       { etykieta: "Wzrost", wartosc: "140 do 200 cm" },
       { etykieta: "Masa", wartosc: "do 130 kg" },
-    ],
-  },
-  {
-    nazwa: "Kalibracja",
-    opis:
-      "Aplikacja odczytuje, jak daleko pacjent jest w stanie przechylić tułów, i do tego dobiera czułość sterowania. Przy niedowładzie wystarczy ruch, którego z boku prawie nie widać.",
-    obraz: "/health/sesja-kalibracja.webp",
-    obrazAlt: "Pacjentka w goglach VR ułożona w podporze na urządzeniu ICAROS Health, w ciemnej sali",
-    parametry: [
-      { etykieta: "Mierzony", wartosc: "Zakres ruchu tułowia" },
-      { etykieta: "Dobierane", wartosc: "Czułość sterowania" },
-      { etykieta: "Decyduje", wartosc: "Terapeuta" },
     ],
   },
   {
@@ -69,7 +57,7 @@ export const sesja: KrokSesji[] = [
   {
     nazwa: "Wynik",
     opis:
-      "Czas, kalorie i wynik testu sprawności zapisują się w profilu pacjenta. Terapeuta prowadzi sesję z tabletu i widzi postęp między wizytami, bez osobnego arkusza.",
+      "Czas, kalorie i wynik testu sprawności zapisują się w profilu pacjenta. Terapeuta i pacjent widzą postęp między wizytami, bez osobnego arkusza.",
     obraz: "/health/panel.webp",
     obrazAlt:
       "Aplikacja ICAROS: dzisiejsza sesja, ostatnie treningi, tygodniowy cel i wykres aktywności",
@@ -77,7 +65,7 @@ export const sesja: KrokSesji[] = [
     parametry: [
       { etykieta: "Zapisywane", wartosc: "Czas, kalorie, test" },
       { etykieta: "Widok", wartosc: "Sesja i historia" },
-      { etykieta: "Obsługa", wartosc: "Tablet terapeuty" },
+      { etykieta: "Gdzie", wartosc: "Profil w aplikacji" },
     ],
   },
 ];
@@ -118,9 +106,9 @@ export const doswiadczenia: Doswiadczenie[] = [
   },
   {
     nazwa: "EXPLORE",
-    miejsce: "Manhattan, Rzym, Wenecja, Monachium",
+    miejsce: "Manhattan, Rzym, Wenecja i wiele więcej",
     opis:
-      "Zwiedzanie miast z lotu ptaka dzięki Google 3D Tiles. Zamiast liczyć powtórzenia, pacjent wybiera, dokąd leci.",
+      "Zwiedzanie miast z lotu ptaka dzięki Google 3D Tiles. Zamiast liczyć powtórzenia, pacjent wybiera, dokąd leci. Tam, gdzie Google ma model 3D, da się domówić własną trasę, choćby nad okolicą placówki.",
     obraz: "/health/vr-manhattan.webp",
     obrazAlt: "Lot między wieżowcami Manhattanu w złotym świetle",
   },
@@ -222,8 +210,8 @@ export const glosy = {
   },
 };
 
-/** Urządzenia ICAROS Circle w kolejności od najmniejszego obciążenia. */
-export const circle = [
+/** Cztery urządzenia systemu ICAROS, od najmniejszego obciążenia. */
+export const urzadzeniaSystemu = [
   {
     nazwa: "I.S.T. Board",
     slug: "ist-board",
@@ -257,21 +245,6 @@ export const circle = [
     obrazAlt: "ICAROS Cloud, okrągła platforma treningowa",
   },
 ];
-
-/** Liczba z badania Guardiana. Stoi przy Circle, nie przy Healcie. */
-export const wynikGuardian: Wynik = {
-  wartosc: "+41%",
-  opis: "siły nóg u seniorów po programie treningowym na ICAROS Guardian",
-  zrodlo: "Massing i wsp., Dtsch Z Sportmed 2026",
-};
-
-/** Gotowe programy Circle z karty produktu. */
-export const programyCircle = [
-  { nazwa: "Circle Sprint", czas: "15 minut", opis: "5 na urządzenie" },
-  { nazwa: "Circle Full", czas: "30 minut", opis: "10 na urządzenie" },
-  { nazwa: "Circle Endurance", czas: "45 minut", opis: "15 na urządzenie" },
-];
-
 
 export const pytania = [
   {

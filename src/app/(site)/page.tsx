@@ -3,6 +3,7 @@ import TrustBar from "@/components/TrustBar";
 import LocationsTeaser from "@/components/LocationsTeaser";
 import KnowledgeBaseIndex from "@/components/KnowledgeBaseIndex";
 import NewsletterStrip from "@/components/NewsletterStrip";
+import BannerHealth from "@/components/BannerHealth";
 import References from "@/components/References";
 import { getLocations } from "@/lib/mapa/getLocations";
 
@@ -18,6 +19,7 @@ export default async function Home() {
       <Hero locationCount={locations.length} />
       <TrustBar />
       <LocationsTeaser locations={locations} />
+      <BannerHealth />
       <NewsletterStrip form source="strona-glowna" />
       <KnowledgeBaseIndex />
       <References />

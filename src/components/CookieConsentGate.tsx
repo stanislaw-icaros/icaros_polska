@@ -10,6 +10,7 @@ import {
   readCookieConsent,
   type CookieConsentPreferences,
 } from "@/lib/cookie-consent";
+import { czyPotwierdzony } from "@/lib/profesjonalista";
 
 const NECESSARY_ONLY: CookieConsentPreferences = {
   necessary: true,
@@ -73,10 +74,26 @@ export default function CookieConsentGate() {
       document.documentElement.dataset.cookieConsent = "granted";
       return;
     }
-    // Pierwszy ekran dostaje chwilę dla siebie. Brama wjeżdża zaraz po nim,
+
+    let licznik = 0;
+    // Pierwszy ekran dostaje chwilę dla siebie. Pas wjeżdża zaraz po nim,
     // zamiast witać odwiedzającego oknem zanim cokolwiek zobaczy.
-    const licznik = window.setTimeout(() => setIsOpen(true), 1100);
-    return () => window.clearTimeout(licznik);
+    const odlicz = () => {
+      licznik = window.setTimeout(() => setIsOpen(true), 1100);
+    };
+
+    // Najpierw pytamy o status profesjonalisty, dopiero potem o cookies.
+    // Dwa okna naraz na dole ekranu to jedno okno za dużo.
+    if (czyPotwierdzony()) {
+      odlicz();
+      return () => window.clearTimeout(licznik);
+    }
+
+    window.addEventListener("status-profesjonalisty", odlicz, { once: true });
+    return () => {
+      window.removeEventListener("status-profesjonalisty", odlicz);
+      window.clearTimeout(licznik);
+    };
   }, []);
 
   // Dopóki brama stoi, klawiatura zostaje w środku. Tak zachowuje się okno

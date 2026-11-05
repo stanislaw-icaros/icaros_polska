@@ -64,12 +64,12 @@ export type KluczHandlowca = "jarek" | "sebastian";
  */
 export const PREFEROWANY_HANDLOWIEC: KluczHandlowca | null = "jarek";
 
-/**
- * Czy na stronie pokazujemy listę osób do wyboru. Przy wyłączonej liście
- * klient widzi jeden kalendarz, a osobę można nadal wskazać adresem
- * `/kalendarz?osoba=jarek`, na przykład w SMS-ie do leada.
+/*
+ * Listy osób do wyboru na stronie nie ma: klient, który trafia tu z reklamy,
+ * nie wie, kto to Jarosław i kto Sebastian, a każdy dodatkowy krok zniechęca.
+ * Osobę nadal da się wskazać adresem `/kalendarz?osoba=jarek`, na przykład
+ * w SMS-ie do leada.
  */
-export const WYBOR_OSOBY_NA_STRONIE = true;
 
 export type Handlowiec = {
   klucz: KluczHandlowca;

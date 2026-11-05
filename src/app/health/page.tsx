@@ -11,20 +11,21 @@ import Badacze from "@/components/health/Badacze";
 import Badania from "@/components/health/Badania";
 import Glos from "@/components/health/Glos";
 import Film from "@/components/health/Film";
-import Circle from "@/components/health/Circle";
+import Urzadzenia from "@/components/health/Urzadzenia";
 import Pytania from "@/components/health/Pytania";
+import PrzyciskWRogu from "@/components/health/PrzyciskWRogu";
 import Ladowanie, { Stopka } from "@/components/health/Ladowanie";
 
 export const metadata: Metadata = {
-  title: "ICAROS Circle | Nowoczesne technologie VR w rehabilitacji",
+  title: "ICAROS Health | Nowoczesne technologie VR w rehabilitacji",
   description:
-    "System czterech urządzeń do rehabilitacji ruchowej. ICAROS Health to wyrób medyczny klasy I do treningu stabilności tułowia i równowagi. Zobacz, jak to działa.",
-  alternates: { canonical: "/oferta" },
+    "ICAROS Health to wyrób medyczny klasy I do treningu stabilności tułowia i równowagi. Zobacz przebieg sesji, trasy VR, badania i cztery urządzenia systemu ICAROS.",
+  alternates: { canonical: "/health" },
   openGraph: {
-    title: "ICAROS Circle | Nowoczesne technologie VR w rehabilitacji",
+    title: "ICAROS Health | Nowoczesne technologie VR w rehabilitacji",
     description:
-      "System czterech urządzeń do rehabilitacji ruchowej. ICAROS Health to wyrób medyczny klasy I do treningu stabilności tułowia i równowagi.",
-    url: "/oferta",
+      "Wyrób medyczny klasy I do treningu stabilności tułowia i równowagi. Przebieg sesji, trasy VR i wyniki badań.",
+    url: "/health",
     type: "website",
     locale: "pl_PL",
     images: [
@@ -44,9 +45,13 @@ export const viewport = {
 };
 
 /**
- * Landing kampanijny ICAROS Circle. Celowo nie ma tu nawigacji ani stopki
+ * Landing kampanijny ICAROS Health. Celowo nie ma tu nawigacji ani stopki
  * serwisu: jedyną nawigacją jest suwak horyzontu, a jedyną akcją przycisk
- * prowadzący na /kalendarz.
+ * prowadzący do kalendarza.
+ *
+ * Kolejność sekcji po uwagach z 4 listopada 2026: zestawienie, zaraz po nim
+ * film, potem przebieg sesji. Cztery urządzenia systemu zjechały na sam dół,
+ * pod pytania o Healtha, bo to już propozycja „może zainteresuje Cię też".
  */
 export default function HealthPage() {
   return (
@@ -62,6 +67,7 @@ export default function HealthPage() {
       <main className="relative">
         <Horyzont />
         <Porownanie />
+        <Film />
         <Sesja />
         <Budowa />
         <Perspektywa />
@@ -70,12 +76,12 @@ export default function HealthPage() {
         <Badacze />
         <Badania />
         <Glos />
-        <Film />
-        <Circle />
         <Pytania />
+        <Urzadzenia />
         <Ladowanie />
         <Stopka />
       </main>
+      <PrzyciskWRogu />
       </ScenaProvider>
     </>
   );

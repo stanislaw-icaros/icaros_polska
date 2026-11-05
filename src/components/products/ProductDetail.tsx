@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import VideoEmbed from "@/components/VideoEmbed";
+import { CEL_KONTAKTU, CEL_PACJENTA } from "@/lib/kontakt";
 import type { IcarosProduct } from "@/lib/products";
 
 type Theme = "light" | "dark";
@@ -405,15 +406,15 @@ export default function ProductDetail({
         <div className={`mt-14 flex flex-col items-start gap-4 border-t ${t.border} pt-10 sm:flex-row sm:items-center sm:justify-between`}>
           <p className={`text-[15px] ${t.body}`}>
             {variant === "business"
-              ? `Chcesz zobaczyć ${product.shortName} na żywo? Umów bezpłatną prezentację.`
-              : `Chcesz dowiedzieć się więcej o ${product.shortName}? Napisz do nas lub znajdź placówkę z ICAROS w pobliżu.`}
+              ? `Chcesz zobaczyć ${product.shortName} na żywo? Umów 15-minutową rozmowę.`
+              : "Zobacz na osobnej stronie, jak wygląda trening: przebieg sesji, trasy w wirtualnej rzeczywistości i film."}
           </p>
           <a
-            href={variant === "business" ? "#kontakt" : "/kontakt"}
+            href={variant === "business" ? CEL_KONTAKTU : CEL_PACJENTA}
             className="inline-flex shrink-0 items-center gap-2 px-7 py-3 text-[13px] font-semibold text-white transition-opacity duration-300 hover:opacity-90"
             style={{ background: "linear-gradient(135deg, #ff6600, #ff7b1f)" }}
           >
-            {variant === "business" ? "Umów prezentację" : "Skontaktuj się"}
+            {variant === "business" ? "Umów rozmowę" : "Zobacz ICAROS Health"}
           </a>
         </div>
       </div>

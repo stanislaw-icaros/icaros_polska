@@ -1,15 +1,28 @@
 import type { Metadata } from "next";
 import ContactInfo from "@/components/ContactInfo";
+import SekcjaKalendarza from "@/components/kalendarz/SekcjaKalendarza";
 import { getLocations } from "@/lib/mapa/getLocations";
 
 export const metadata: Metadata = {
   title: "Kontakt | ICAROS Polska",
   description:
-    "Skontaktuj się z ICAROS Polska - oficjalnym dystrybutorem technologii ICAROS. E-mail, telefon +48 32 30 77 444, dane spółki i social media.",
+    "Umów 15-minutową rozmowę telefoniczną o ICAROS albo napisz do nas. E-mail, telefon +48 32 30 77 444, dane spółki i mapa placówek.",
   alternates: { canonical: "/kontakt" },
 };
 
-export default async function KontaktPage() {
-  const locations = await getLocations();
-  return <ContactInfo variant="patient" locations={locations} />;
+// Wolne godziny w kalendarzu czytamy z Google przy każdym wejściu.
+export const dynamic = "force-dynamic";
+
+export default async function KontaktPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ osoba?: string }>;
+}) {
+  const [locations, parametry] = await Promise.all([getLocations(), searchParams]);
+  return (
+    <>
+      <ContactInfo variant="patient" locations={locations} />
+      <SekcjaKalendarza wariant="patient" osoba={parametry.osoba} />
+    </>
+  );
 }

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { ArrowRight, CalendarCheck, Loader2 } from "lucide-react";
 import ConsentFields from "@/components/ConsentFields";
+import { AKCENT_TEKST, TOKENY, type MotywKalendarza } from "@/components/kalendarz/motyw";
 import { useSpamGuard } from "@/hooks/useSpamGuard";
 import { trackMetaEvent } from "@/lib/meta/track";
 import { etykietaPelna } from "@/lib/kalendarz/formaty";
@@ -37,21 +38,23 @@ function parametryZrodla() {
 }
 
 const POLE =
-  "w-full bg-white/[0.05] px-4 py-3.5 text-[14.5px] text-h-ink outline-none transition-colors duration-300 placeholder:text-white/35 focus:bg-white/[0.09] focus-visible:ring-2 focus-visible:ring-h-accent focus-visible:ring-inset";
+  "w-full px-4 py-3.5 text-[14.5px] outline-none transition-colors duration-300 focus-visible:ring-2 focus-visible:ring-inset";
 
 function Etykieta({
   dla,
+  slaby,
   children,
   opcjonalne = false,
 }: {
   dla: string;
+  slaby: string;
   children: React.ReactNode;
   opcjonalne?: boolean;
 }) {
   return (
     <label className="mb-2 flex items-baseline gap-2" htmlFor={dla}>
-      <span className="text-[13px] font-medium text-h-ink-soft">{children}</span>
-      {opcjonalne ? <span className="text-[11px] text-h-ink-soft">opcjonalnie</span> : null}
+      <span className={`text-[13px] font-medium ${slaby}`}>{children}</span>
+      {opcjonalne ? <span className={`text-[11px] ${slaby}`}>opcjonalnie</span> : null}
     </label>
   );
 }
@@ -59,6 +62,8 @@ function Etykieta({
 export default function FormularzRozmowy({
   termin,
   dlugoscMin,
+  motyw = "ciemny",
+  wariant = "business",
   wybranaOsoba,
   onZmienTermin,
   onSukces,
@@ -66,11 +71,18 @@ export default function FormularzRozmowy({
 }: {
   termin: string;
   dlugoscMin: number;
+  motyw?: MotywKalendarza;
+  /** Strefa pacjenta nie pyta o placówkę. */
+  wariant?: "patient" | "business";
   wybranaOsoba?: string;
   onZmienTermin: () => void;
   onSukces: (wynik: WynikRezerwacji) => void;
   onZajety: () => void;
 }) {
+  const t = TOKENY[motyw];
+  const biznes = wariant === "business";
+  const akcentTekst = AKCENT_TEKST[motyw];
+  const pole = `${POLE} ${t.pole}`;
   const { spamFields, getSpamSignals } = useSpamGuard();
   const [dane, setDane] = useState({
     imie: "",
@@ -163,32 +175,32 @@ export default function FormularzRozmowy({
     <form onSubmit={wyslij} className="animate-[fade-up_0.45s_ease-out_both]">
       {spamFields}
 
-      <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-3 bg-h-accent/[0.10] px-5 py-4">
+      <div className={`flex flex-wrap items-center justify-between gap-x-4 gap-y-3 px-5 py-4 ${t.poswiata}`}>
         <div className="flex items-center gap-3">
-          <CalendarCheck className="h-[18px] w-[18px] shrink-0 text-h-accent" strokeWidth={1.75} />
-          <span className="text-[15px] font-semibold tracking-[-0.01em] text-h-ink">
+          <CalendarCheck className={`h-[18px] w-[18px] shrink-0 ${akcentTekst}`} strokeWidth={1.75} />
+          <span className={`text-[15px] font-semibold tracking-[-0.01em] ${t.mocny}`}>
             {etykietaPelna(new Date(termin))}
           </span>
         </div>
         <button
           type="button"
           onClick={onZmienTermin}
-          className="text-[12.5px] font-medium text-h-ink-soft underline underline-offset-[3px] transition-colors duration-300 hover:text-h-accent"
+          className={`text-[12.5px] font-medium underline underline-offset-[3px] transition-colors duration-300 ${t.slaby} ${t.linkHover}`}
         >
           Zmień termin
         </button>
       </div>
 
-      <h3 className="mt-8 text-[16px] font-semibold tracking-[-0.015em] text-h-ink">
+      <h3 className={`mt-8 text-[16px] font-semibold tracking-[-0.015em] ${t.mocny}`}>
         Dane do rozmowy
       </h3>
 
       <div className="mt-4 grid grid-cols-1 gap-x-5 gap-y-5 sm:grid-cols-2">
         <div>
-          <Etykieta dla="rozmowa-imie">Imię i nazwisko</Etykieta>
+          <Etykieta dla="rozmowa-imie" slaby={t.slaby}>Imię i nazwisko</Etykieta>
           <input
             id="rozmowa-imie"
-            className={POLE}
+            className={pole}
             value={dane.imie}
             onChange={ustaw("imie")}
             required
@@ -198,10 +210,10 @@ export default function FormularzRozmowy({
         </div>
 
         <div>
-          <Etykieta dla="rozmowa-telefon">Numer, na który zadzwonimy</Etykieta>
+          <Etykieta dla="rozmowa-telefon" slaby={t.slaby}>Numer, na który zadzwonimy</Etykieta>
           <input
             id="rozmowa-telefon"
-            className={POLE}
+            className={pole}
             value={dane.telefon}
             onChange={ustaw("telefon")}
             required
@@ -213,12 +225,12 @@ export default function FormularzRozmowy({
         </div>
 
         <div>
-          <Etykieta dla="rozmowa-email" opcjonalne>
+          <Etykieta dla="rozmowa-email" slaby={t.slaby} opcjonalne>
             E-mail
           </Etykieta>
           <input
             id="rozmowa-email"
-            className={POLE}
+            className={pole}
             value={dane.email}
             onChange={ustaw("email")}
             type="email"
@@ -226,41 +238,45 @@ export default function FormularzRozmowy({
             spellCheck={false}
             placeholder="jan.kowalski@placowka.pl…"
           />
-          <p className="mt-2 text-[13px] text-h-ink-soft">
-            Wyślemy potwierdzenie i przypomnienie
-          </p>
+          <p className={`mt-2 text-[13px] ${t.slaby}`}>Wyślemy potwierdzenie i przypomnienie</p>
         </div>
 
-        <div>
-          <Etykieta dla="rozmowa-firma" opcjonalne>
-            Placówka lub firma
-          </Etykieta>
-          <input
-            id="rozmowa-firma"
-            className={POLE}
-            value={dane.firma}
-            onChange={ustaw("firma")}
-            autoComplete="organization"
-            placeholder="Centrum Rehabilitacji Kraków…"
-          />
-        </div>
+        {biznes ? (
+          <div>
+            <Etykieta dla="rozmowa-firma" slaby={t.slaby} opcjonalne>
+              Placówka lub firma
+            </Etykieta>
+            <input
+              id="rozmowa-firma"
+              className={pole}
+              value={dane.firma}
+              onChange={ustaw("firma")}
+              autoComplete="organization"
+              placeholder="Centrum Rehabilitacji Kraków…"
+            />
+          </div>
+        ) : null}
 
         <div className="sm:col-span-2">
-          <Etykieta dla="rozmowa-temat" opcjonalne>
+          <Etykieta dla="rozmowa-temat" slaby={t.slaby} opcjonalne>
             O czym porozmawiać
           </Etykieta>
           <textarea
             id="rozmowa-temat"
-            className={`${POLE} min-h-[88px] resize-y`}
+            className={`${pole} min-h-[88px] resize-y`}
             value={dane.temat}
             onChange={ustaw("temat")}
-            placeholder="Interesuje mnie ICAROS Cloud do oddziału neurologii…"
+            placeholder={
+              biznes
+                ? "Interesuje mnie ICAROS Cloud do oddziału neurologii…"
+                : "Szukam miejsca, w którym mogę spróbować treningu…"
+            }
           />
         </div>
       </div>
 
       <ConsentFields
-        tone="dark"
+        tone={t.zgody}
         className="mt-6"
         dataConsent={zgodaDanych}
         onDataConsentChange={setZgodaDanych}
@@ -271,7 +287,7 @@ export default function FormularzRozmowy({
 
       <div aria-live="polite">
         {blad ? (
-          <p className="mt-5 bg-red-500/10 px-4 py-3 text-[13px] text-red-300">
+          <p className={`mt-5 px-4 py-3 text-[13px] ${t.blad}`}>
             {blad}
           </p>
         ) : null}
@@ -282,7 +298,7 @@ export default function FormularzRozmowy({
           type="submit"
           disabled={wysylanie}
           aria-busy={wysylanie}
-          className="group inline-flex min-h-[52px] w-full items-center justify-center gap-2.5 bg-h-accent px-8 text-[15px] font-semibold tracking-[0.01em] text-h-void transition-colors duration-300 hover:bg-[#ff7b1f] disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
+          className={`group inline-flex min-h-[52px] w-full items-center justify-center gap-2.5 px-8 text-[15px] font-semibold tracking-[0.01em] transition-colors duration-300 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto ${t.akcent}`}
         >
           Potwierdź termin
           {wysylanie ? (
@@ -294,7 +310,7 @@ export default function FormularzRozmowy({
             />
           )}
         </button>
-        <p className="text-[13px] text-h-ink-soft">
+        <p className={`text-[13px] ${t.slaby}`}>
           Rozmowa trwa {dlugoscMin} minut, nic nie trzeba instalować
         </p>
       </div>

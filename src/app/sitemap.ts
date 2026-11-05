@@ -28,7 +28,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/raport", priority: 0.6 },
     { path: "/kalendarz", priority: 0.7 },
     // Landing kampanijny ICAROS Health: cel reklam i linków z filmu.
-    { path: "/oferta", priority: 0.8 },
+    { path: "/health", priority: 0.8 },
     { path: "/newsletter", priority: 0.6 },
     { path: "/newsletter-partner", priority: 0.5 },
   ];

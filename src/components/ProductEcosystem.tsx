@@ -208,15 +208,15 @@ export default function ProductEcosystem({
           transition={{ delay: 0.8, duration: 0.6 }}
           className="mt-16 text-center"
         >
-          <a
-            href="#kontakt"
+          <Link
+            href={`${basePath}/circle`}
             className="group inline-flex items-center gap-3 text-[13px] font-semibold text-white/85 hover:text-white transition-colors duration-500 tracking-[0.02em]"
           >
             Dowiedz się więcej o ICAROS Circle
             <svg className="w-4 h-4 transition-transform duration-500 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
             </svg>
-          </a>
+          </Link>
         </motion.div>
       </div>
     </section>

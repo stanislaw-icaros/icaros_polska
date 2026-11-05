@@ -19,7 +19,7 @@ export default function Pytania() {
 
       <div className="mx-auto grid max-w-[1320px] grid-cols-1 gap-x-16 gap-y-[clamp(2.5rem,5vw,4rem)] lg:grid-cols-12">
         <Wejscie className="lg:col-span-4">
-          <Naglowek className="max-w-[8ch]">Pytania</Naglowek>
+          <Naglowek className="max-w-[12ch]">Pytania o ICAROS Health</Naglowek>
         </Wejscie>
 
         <div className="lg:col-span-8">

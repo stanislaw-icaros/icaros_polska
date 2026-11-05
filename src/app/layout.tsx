@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Geist } from "next/font/google";
+import BramaProfesjonalisty from "@/components/BramaProfesjonalisty";
+import { SKRYPT_BRAMY } from "@/lib/profesjonalista";
 import CookieConsentGate from "@/components/CookieConsentGate";
 import MetaPixel from "@/components/MetaPixel";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
@@ -83,11 +85,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pl" className={`${geistSans.variable} h-full`}>
+    // Skrypt bramy dopisuje <html> atrybut, zanim React zdąży się podłączyć,
+    // więc hydratacja musi to przepuścić.
+    <html lang="pl" className={`${geistSans.variable} h-full`} suppressHydrationWarning>
       <body className="min-h-full flex flex-col antialiased">
+        {/* Zanim przeglądarka cokolwiek narysuje: kto nie potwierdził statusu
+            profesjonalisty, nie widzi treści strony. Resztę robi reguła
+            `html[data-brama]` w globals.css. */}
+        <script dangerouslySetInnerHTML={{ __html: SKRYPT_BRAMY }} />
         <div id="site-content" className="flex min-h-full flex-col">
           {children}
         </div>
+        <BramaProfesjonalisty />
         <CookieConsentGate />
         <MetaPixel />
         <GoogleAnalytics />

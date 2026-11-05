@@ -14,7 +14,6 @@
 
 import { useEffect, useRef } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import { motion } from "framer-motion";
 import { products } from "@/lib/products";
 
@@ -172,12 +171,15 @@ export default function OknoUrzadzenia({
           </div>
 
           <p className="mt-9 text-[17px] leading-[1.6]">
-            <Link
+            <a
               href={`/produkty/${produkt.slug}`}
+              target="_blank"
+              rel="noopener"
               className="text-h-ink underline decoration-h-dark/35 underline-offset-4 transition-colors hover:decoration-h-dark"
             >
               Pełny opis urządzenia
-            </Link>
+              <span className="sr-only"> (otwiera się w nowej karcie)</span>
+            </a>
           </p>
         </div>
       </motion.div>
