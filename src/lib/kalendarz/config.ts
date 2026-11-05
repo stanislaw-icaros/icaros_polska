@@ -111,6 +111,7 @@ export const HANDLOWCY: Handlowiec[] = [
     pelneImie: "Sebastian Wilk",
     kontoGoogle: process.env.GCAL_KONTO_SEBASTIAN?.trim() || "",
     emailPowiadomien: "sebastian.wilk@icaros.com.pl",
+    buforMin: 15,
     zmiennaTokenu: "GCAL_REFRESH_TOKEN_SEBASTIAN",
     zmiennaPipedrive: "PIPEDRIVE_OWNER_B_ID",
     godziny: GODZINY_SEBASTIAN,
