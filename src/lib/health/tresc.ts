@@ -361,14 +361,14 @@ export const porownanie = [
   },
   {
     cecha: "Praca mięśni",
-    bez: "Punkt odniesienia",
-    icaros: "Dwukrotnie większa niż w planku na kolanach",
+    bez: "Tyle, ile w planku na kolanach",
+    icaros: "Dwa razy tyle",
     zrodlo: "Politechnika w Monachium, 2017",
   },
   {
     cecha: "Wydatek energetyczny",
-    bez: "Punkt odniesienia",
-    icaros: "Wyższy o 30 procent",
+    bez: "Tyle, ile w klasycznym planku",
+    icaros: "O 30 procent więcej",
     zrodlo: "Politechnika w Monachium, 2017",
   },
   {

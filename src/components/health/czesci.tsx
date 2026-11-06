@@ -358,17 +358,23 @@ export function Wynik({
  * z boku każdego wiersza i zabierało miejsce, a czyta je co setny czytelnik.
  * Teraz jest pod ręką: najechanie myszą albo dotknięcie pokazuje przypis.
  */
-export function Zrodlo({ tekst }: { tekst: string }) {
+export function Zrodlo({ tekst, jasno = false }: { tekst: string; jasno?: boolean }) {
   return (
     <span className="group relative ml-2 inline-flex align-middle">
       <button
         type="button"
         aria-label={`Źródło: ${tekst}`}
-        className="-m-3 flex h-11 w-11 items-center justify-center rounded-full outline-none focus-visible:ring-2 focus-visible:ring-h-accent focus-visible:ring-offset-2 focus-visible:ring-offset-h-void"
+        className={`-m-3 flex h-11 w-11 items-center justify-center rounded-full outline-none focus-visible:ring-2 focus-visible:ring-h-accent focus-visible:ring-offset-2 ${
+          jasno ? "focus-visible:ring-offset-h-paper" : "focus-visible:ring-offset-h-void"
+        }`}
       >
         <span
           aria-hidden
-          className="flex h-5 w-5 items-center justify-center rounded-full bg-h-ink/15 text-[12px] font-semibold leading-none text-h-ink-soft transition-colors duration-200 group-hover:bg-h-accent group-hover:text-h-void"
+          className={`flex h-5 w-5 items-center justify-center rounded-full text-[12px] font-semibold leading-none transition-colors duration-200 group-hover:bg-h-accent ${
+            jasno
+              ? "bg-h-dark/15 text-h-dark-soft group-hover:text-h-paper"
+              : "bg-h-ink/15 text-h-ink-soft group-hover:text-h-void"
+          }`}
         >
           i
         </span>
