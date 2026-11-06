@@ -20,6 +20,14 @@
 /** Kalendarz w zakładce kontaktu dla partnerów: główny krok w strefie biznes. */
 export const CEL_KONTAKTU = "/kontakt-partner#kalendarz";
 
+/**
+ * Ta sama zakładka, ale od góry. Pozycja „Kontakt" w pasku i w stopce to
+ * zwykła nawigacja, a nie wezwanie do działania: kto ją klika, chce najpierw
+ * zobaczyć dane kontaktowe, a nie wylądować od razu w kalendarzu.
+ * Uwaga Sebastiana z 5 listopada 2026.
+ */
+export const KONTAKT_BIZNESU = "/kontakt-partner";
+
 /** Landing o urządzeniu: główny krok w strefie pacjenta. */
 export const CEL_PACJENTA = "/health";
 

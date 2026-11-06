@@ -269,7 +269,10 @@ export default function KalendarzRozmowy({
         ) : (
           <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_300px]">
             <div className="p-7 sm:p-9">
-              <div className="flex items-center justify-between gap-3">
+              {/* Strzałki stoją przy nazwie miesiąca, nie przy prawej krawędzi:
+                  przy krawędzi nikt ich nie wiązał z „Listopad 2026".
+                  Uwaga Sebastiana z 5 listopada 2026. */}
+              <div className="flex items-center gap-2">
                 <p className={`text-[16px] font-semibold tracking-[-0.02em] ${t.mocny}`}>
                   {nazwaMiesiaca(miesiac)}
                 </p>
@@ -288,7 +291,7 @@ export default function KalendarzRozmowy({
                         onClick={() => wybierzMiesiac(docelowy)}
                         className={`flex h-11 w-11 items-center justify-center transition-colors duration-300 disabled:cursor-not-allowed ${t.kafelek} ${t.wygaszony}`}
                       >
-                        <strzalka.ikona className="h-[18px] w-[18px]" strokeWidth={2.25} />
+                        <strzalka.ikona className="h-[21px] w-[21px]" strokeWidth={2.5} />
                       </button>
                     );
                   })}

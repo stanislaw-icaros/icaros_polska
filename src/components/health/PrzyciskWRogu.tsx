@@ -17,8 +17,12 @@ import { ArrowRight } from "lucide-react";
 /** Identyfikator przycisku z otwarcia, który ten tutaj obserwuje. */
 export const AKCJA_OTWARCIA = "akcja-otwarcia";
 
+/** Ostatni ekran strony. Stoi tam już zwykły przycisk, więc ten z rogu schodzi. */
+export const SEKCJA_KONCOWA = "kontakt";
+
 export default function PrzyciskWRogu() {
-  const [widoczny, ustawWidoczny] = useState(false);
+  const [poOtwarciu, ustawPoOtwarciu] = useState(false);
+  const [przyKoncu, ustawPrzyKoncu] = useState(false);
   const mniejRuchu = useReducedMotion();
 
   useEffect(() => {
@@ -26,19 +30,40 @@ export default function PrzyciskWRogu() {
 
     // Bez przycisku z otwarcia (np. gdyby sekcja zniknęła) zostaje prosty próg.
     if (!cel) {
-      const sprawdz = () => ustawWidoczny(window.scrollY > window.innerHeight * 0.8);
+      const sprawdz = () => ustawPoOtwarciu(window.scrollY > window.innerHeight * 0.8);
       sprawdz();
       window.addEventListener("scroll", sprawdz, { passive: true });
       return () => window.removeEventListener("scroll", sprawdz);
     }
 
     const obserwator = new IntersectionObserver(
-      ([wpis]) => ustawWidoczny(!wpis.isIntersecting),
+      ([wpis]) => ustawPoOtwarciu(!wpis.isIntersecting),
       { threshold: 0 }
     );
     obserwator.observe(cel);
     return () => obserwator.disconnect();
   }, []);
+
+  /**
+   * Na ostatnim ekranie przycisk schodzi: stoi tam już ten sam przycisk
+   * w treści, a krążek w rogu zasłaniał tekst w stopce. Chowamy go też niżej,
+   * czyli w całej stopce, stąd sprawdzenie krawędzi zamiast samego przecięcia.
+   * Uwagi Jarka z 5 listopada 2026.
+   */
+  useEffect(() => {
+    const koniec = document.getElementById(SEKCJA_KONCOWA);
+    if (!koniec) return;
+
+    const obserwator = new IntersectionObserver(
+      ([wpis]) =>
+        ustawPrzyKoncu(wpis.isIntersecting || wpis.boundingClientRect.top < 0),
+      { threshold: 0 }
+    );
+    obserwator.observe(koniec);
+    return () => obserwator.disconnect();
+  }, []);
+
+  const widoczny = poOtwarciu && !przyKoncu;
 
   return (
     <AnimatePresence>

@@ -20,8 +20,16 @@ export const ODSTEP_MIN = 10;
 export const MIN_WYPRZEDZENIE_H = 12;
 export const NAJWCZESNIEJ_OD_JUTRA = true;
 
-/** Jak daleko w przyszłość pokazujemy terminy. */
-export const HORYZONT_DNI = 21;
+/**
+ * Jak daleko w przyszłość pokazujemy terminy.
+ *
+ * Trzy tygodnie to było za mało: na początku miesiąca horyzont kończył się
+ * przed następnym, więc w kalendarzu stał jeden miesiąc, obie strzałki były
+ * wygaszone i nie dało się wybrać grudnia. Dwa miesiące dają zawsze co
+ * najmniej dwa miesiące do wyboru, niezależnie od tego, którego jest dzisiaj.
+ * Uwaga Sebastiana z 5 listopada 2026.
+ */
+export const HORYZONT_DNI = 60;
 
 /** Maksymalna liczba rozmów jednej osoby w jednym dniu. 0 wyłącza limit. */
 export const LIMIT_ROZMOW_NA_DZIEN = 6;

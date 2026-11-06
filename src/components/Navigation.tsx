@@ -9,7 +9,7 @@ import { ChevronDown, Map as MapIcon } from "lucide-react";
 import AudienceSwitch from "@/components/AudienceSwitch";
 import SocialLinks from "@/components/SocialLinks";
 import { products } from "@/lib/products";
-import { CEL_KONTAKTU, KONTAKT_PACJENTA } from "@/lib/kontakt";
+import { KONTAKT_BIZNESU, KONTAKT_PACJENTA } from "@/lib/kontakt";
 import { trackBookingClick, trackMapClick } from "@/lib/analytics/track";
 
 type NavLink = { href: string; label: string };
@@ -70,7 +70,7 @@ const businessNav: NavEntry[] = [
   },
 ];
 
-const KONTAKT_BIZNES = { href: CEL_KONTAKTU, label: "Kontakt" };
+const KONTAKT_BIZNES = { href: KONTAKT_BIZNESU, label: "Kontakt" };
 
 function NavItemLink({
   href,
