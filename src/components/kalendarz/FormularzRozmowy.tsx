@@ -6,6 +6,8 @@ import ConsentFields from "@/components/ConsentFields";
 import { AKCENT_TEKST, TOKENY, type MotywKalendarza } from "@/components/kalendarz/motyw";
 import { useSpamGuard } from "@/hooks/useSpamGuard";
 import { trackMetaEvent } from "@/lib/meta/track";
+import { trackEvent } from "@/lib/analytics/track";
+import { odczytajUtm } from "@/lib/analytics/utm";
 import { etykietaPelna } from "@/lib/kalendarz/formaty";
 
 /**
@@ -25,15 +27,13 @@ export type WynikRezerwacji = {
 function parametryZrodla() {
   if (typeof window === "undefined") return { strona: undefined, zrodlo: undefined, utm: {} };
   const parametry = new URLSearchParams(window.location.search);
+  // UTM z adresu, a gdy go nie ma, z początku wizyty (np. wejście z reklamy na /health).
+  const { utm, wejscie } = odczytajUtm();
+  const strona = window.location.pathname;
   return {
-    strona: window.location.pathname,
+    strona: wejscie && wejscie !== strona ? `${strona} (wejście: ${wejscie})` : strona,
     zrodlo: parametry.get("zrodlo") || undefined,
-    utm: {
-      utm_source: parametry.get("utm_source") || undefined,
-      utm_medium: parametry.get("utm_medium") || undefined,
-      utm_campaign: parametry.get("utm_campaign") || undefined,
-      utm_content: parametry.get("utm_content") || undefined,
-    },
+    utm,
   };
 }
 
@@ -152,10 +152,13 @@ export default function FormularzRozmowy({
         return;
       }
 
-      trackMetaEvent("CompleteRegistration", {
+      // Osobne zdarzenie dla rezerwacji, żeby w Meta nie mieszało się
+      // z zapisem na newsletter (ten dalej wysyła CompleteRegistration).
+      trackMetaEvent("Schedule", {
         email: dane.email.trim() || undefined,
         phone: dane.telefon.trim() || undefined,
       });
+      trackEvent("booking_complete", { page: window.location.pathname });
 
       onSukces({
         start: wynik.start || termin,

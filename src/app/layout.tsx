@@ -5,6 +5,7 @@ import { SKRYPT_BRAMY } from "@/lib/profesjonalista";
 import CookieConsentGate from "@/components/CookieConsentGate";
 import MetaPixel from "@/components/MetaPixel";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
+import ZapamietajUtm from "@/components/ZapamietajUtm";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -100,6 +101,7 @@ export default function RootLayout({
         <CookieConsentGate />
         <MetaPixel />
         <GoogleAnalytics />
+        <ZapamietajUtm />
       </body>
     </html>
   );

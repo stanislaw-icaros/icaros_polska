@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import crypto from "node:crypto";
 
 const API_VERSION = "v21.0";
-const ALLOWED_EVENTS = ["ViewContent", "Contact", "CompleteRegistration"];
+const ALLOWED_EVENTS = ["ViewContent", "Contact", "CompleteRegistration", "Schedule"];
 
 type MetaEventPayload = {
   eventName?: string;

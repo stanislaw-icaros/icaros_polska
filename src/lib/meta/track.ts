@@ -6,7 +6,7 @@ declare global {
   }
 }
 
-export type MetaEventName = "ViewContent" | "Contact" | "CompleteRegistration";
+export type MetaEventName = "ViewContent" | "Contact" | "CompleteRegistration" | "Schedule";
 
 /**
  * Wysyła zdarzenie Meta jednocześnie przez Pixel (client-side) oraz Conversions
