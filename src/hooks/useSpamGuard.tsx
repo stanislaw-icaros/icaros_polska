@@ -30,14 +30,22 @@ export function useSpamGuard() {
         overflow: "hidden",
       }}
     >
-      {/* Pole-pułapka: prawdziwi użytkownicy go nie widzą i nie wypełniają. */}
-      <label htmlFor="company_website">Nie wypełniaj tego pola</label>
+      {/* Pole-pułapka: prawdziwi użytkownicy go nie widzą i nie wypełniają.
+          Nazwa nie może przypominać żadnego pola, które przeglądarka zna
+          (firma, strona, adres), bo Chrome wypełnia takie pola autouzupełnianiem
+          mimo autoComplete="off". Tak było z „company_website”: 16.11 test
+          Stanisława w kalendarzu został po cichu zablokowany jako spam. */}
+      <label htmlFor="pole_kontrolne_zx">Pozostaw puste</label>
       <input
-        id="company_website"
-        name="company_website"
+        id="pole_kontrolne_zx"
+        name="pole_kontrolne_zx"
         type="text"
         tabIndex={-1}
         autoComplete="off"
+        data-lpignore="true"
+        data-1p-ignore="true"
+        data-bwignore="true"
+        data-form-type="other"
         value={honeypot}
         onChange={(e) => setHoneypot(e.target.value)}
       />

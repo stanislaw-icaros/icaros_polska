@@ -136,6 +136,7 @@ export default function FormularzRozmowy({
         success?: boolean;
         error?: string;
         zajety?: boolean;
+        cichaBlokada?: boolean;
         start?: string;
         osoba?: { imie: string; pelneImie: string };
         dlugoscMin?: number;
@@ -154,11 +155,15 @@ export default function FormularzRozmowy({
 
       // Osobne zdarzenie dla rezerwacji, żeby w Meta nie mieszało się
       // z zapisem na newsletter (ten dalej wysyła CompleteRegistration).
-      trackMetaEvent("Schedule", {
-        email: dane.email.trim() || undefined,
-        phone: dane.telefon.trim() || undefined,
-      });
-      trackEvent("booking_complete", { page: window.location.pathname });
+      // Zgłoszenie zablokowane przez antyspam niczego nie zapisało, więc nie
+      // może liczyć się w Meta jako rezerwacja (kampania uczy się na Schedule).
+      if (!wynik.cichaBlokada) {
+        trackMetaEvent("Schedule", {
+          email: dane.email.trim() || undefined,
+          phone: dane.telefon.trim() || undefined,
+        });
+        trackEvent("booking_complete", { page: window.location.pathname });
+      }
 
       onSukces({
         start: wynik.start || termin,
