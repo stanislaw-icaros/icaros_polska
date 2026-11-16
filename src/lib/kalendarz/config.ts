@@ -95,8 +95,6 @@ export type Handlowiec = {
   buforMin?: number;
   /** Zmienna środowiskowa z tokenem odświeżania Google dla tej osoby. */
   zmiennaTokenu: string;
-  /** Identyfikator użytkownika w Pipedrive. */
-  zmiennaPipedrive: string;
   godziny: GodzinyPracy;
 };
 
@@ -110,7 +108,6 @@ export const HANDLOWCY: Handlowiec[] = [
     // Jarek dojeżdża na spotkania, więc wokół każdego wpisu zostaje mu godzina.
     buforMin: 60,
     zmiennaTokenu: "GCAL_REFRESH_TOKEN_JAREK",
-    zmiennaPipedrive: "PIPEDRIVE_OWNER_A_ID",
     godziny: GODZINY_JAREK,
   },
   {
@@ -121,7 +118,6 @@ export const HANDLOWCY: Handlowiec[] = [
     emailPowiadomien: "sebastian.wilk@icaros.com.pl",
     buforMin: 15,
     zmiennaTokenu: "GCAL_REFRESH_TOKEN_SEBASTIAN",
-    zmiennaPipedrive: "PIPEDRIVE_OWNER_B_ID",
     godziny: GODZINY_SEBASTIAN,
   },
 ];

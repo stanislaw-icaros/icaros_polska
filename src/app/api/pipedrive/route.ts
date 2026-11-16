@@ -5,12 +5,12 @@ import {
   createPerson,
   dealUrl,
   findPerson,
+  etykietyZHandlowcem,
   getEnv,
+  handlowiecZEtykiet,
+  KONTO_PIPEDRIVE,
+  type KluczEtykiety,
   nextBusinessDay,
-  OWNER_A,
-  OWNER_B,
-  ownerEmails,
-  FALLBACK_OWNER,
   PIPELINE_ID,
   resolveOrganization,
   STAGE_ID_NEW_LEAD,
@@ -19,6 +19,7 @@ import { sendContactConfirmationEmail } from "@/lib/email/contactConfirmation";
 import { sendLeadNotificationEmail } from "@/lib/email/leadNotification";
 import { addContactToAudience } from "@/lib/email/audience";
 import { evaluateSubmission, getClientIp, isRateLimited } from "@/lib/antispam";
+import { HANDLOWCY } from "@/lib/kalendarz/config";
 
 type ContactPayload = {
   name?: string;
@@ -43,7 +44,7 @@ type ContactPayload = {
 };
 
 type DealListItem = {
-  owner_id?: { id: number };
+  label?: unknown;
 };
 
 function toErrorMessage(error: unknown, fallback: string) {
@@ -51,33 +52,31 @@ function toErrorMessage(error: unknown, fallback: string) {
   return fallback;
 }
 
-function getHashBasedOwner(seed: string) {
+/**
+ * Obaj handlowcy pracują na jednym koncie Pipedrive, więc kolejkę prowadzimy
+ * po etykietach „Jarek” i „Sebastian”, nie po właścicielu deala.
+ */
+function handlowiecZSkrotu(seed: string): KluczEtykiety {
   const hash = [...seed.toLowerCase()].reduce(
     (acc, char) => ((acc << 5) - acc + char.charCodeAt(0)) | 0,
     0
   );
-  return Math.abs(hash) % 2 === 0 ? OWNER_A : OWNER_B;
+  return Math.abs(hash) % 2 === 0 ? "jarek" : "sebastian";
 }
 
-async function chooseOwnerId() {
+async function wybierzHandlowca(): Promise<KluczEtykiety | undefined> {
   try {
-    // Stateless round-robin: look at the most recently created deal owner
-    // and alternate between two configured owners.
+    // Kolejka bez stanu: ostatni deal z etykietą handlowca decyduje, kto teraz.
     const recentDeals = await callPipedrive<DealListItem[]>(
       `/deals?limit=20&sort=add_time DESC`
     );
-
-    const deals = Array.isArray(recentDeals?.data)
-      ? (recentDeals.data as DealListItem[])
-      : [];
-    const lastAssigned = deals.find((deal) => deal?.owner_id?.id === OWNER_A || deal?.owner_id?.id === OWNER_B);
-
-    if (lastAssigned?.owner_id?.id === OWNER_A) return OWNER_B;
-    if (lastAssigned?.owner_id?.id === OWNER_B) return OWNER_A;
+    const deals = Array.isArray(recentDeals?.data) ? recentDeals.data : [];
+    const ostatni = deals.map((deal) => handlowiecZEtykiet(deal?.label)).find(Boolean);
+    if (ostatni === "jarek") return "sebastian";
+    if (ostatni === "sebastian") return "jarek";
   } catch {
-    // fallback below
+    // niżej skrót z danych zgłoszenia
   }
-
   return undefined;
 }
 
@@ -121,7 +120,9 @@ export async function POST(request: Request) {
 
     let personId: number | undefined;
     let orgId: number | undefined;
-    const ownerId = (await chooseOwnerId()) || getHashBasedOwner(ownerSeed) || FALLBACK_OWNER;
+    const ownerId = KONTO_PIPEDRIVE;
+    const prowadzi = (await wybierzHandlowca()) || handlowiecZSkrotu(ownerSeed);
+    const handlowiecLeada = HANDLOWCY.find((osoba) => osoba.klucz === prowadzi);
 
     // 1) Resolve the organization first, independently of the person. This way the
     // deal is always linked to the placówka, also when the person already exists.
@@ -188,6 +189,7 @@ export async function POST(request: Request) {
       body: JSON.stringify({
         title: dealTitle,
         user_id: ownerId,
+        label: etykietyZHandlowcem(undefined, prowadzi),
         person_id: personId,
         org_id: orgId,
         pipeline_id: PIPELINE_ID,
@@ -245,7 +247,7 @@ export async function POST(request: Request) {
         await callPipedrive("/activities", {
           method: "POST",
           body: JSON.stringify({
-            subject: `Oddzwoń do leada - ${payload.company?.trim() || name}`,
+            subject: `[${handlowiecLeada?.imie || "Zespół"}] Oddzwoń do leada - ${payload.company?.trim() || name}`,
             type: "call",
             deal_id: dealId,
             person_id: personId,
@@ -265,13 +267,16 @@ export async function POST(request: Request) {
       // Powiadomienie e-mail do zespołu sprzedaży - trafia do obu handlowców,
       // z wyraźnym oznaczeniem, kto obsługuje tego leada (round-robin).
       try {
-        const { users, emails } = await ownerEmails();
-        const ownerUser = users.find((user) => user.id === ownerId);
-        const recipients = [...new Set([...emails, ...ALWAYS_NOTIFY_EMAILS])];
+        const recipients = [
+          ...new Set([
+            ...HANDLOWCY.map((osoba) => osoba.emailPowiadomien.toLowerCase()),
+            ...ALWAYS_NOTIFY_EMAILS,
+          ]),
+        ];
 
         await sendLeadNotificationEmail({
           to: recipients,
-          ownerName: ownerUser?.name || "Zespół ICAROS",
+          ownerName: handlowiecLeada?.pelneImie || "Zespół ICAROS",
           leadName: name,
           phone,
           email,

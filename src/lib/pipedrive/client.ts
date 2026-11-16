@@ -38,9 +38,45 @@ const BASE_URL = DOMAIN ? `https://${DOMAIN}.pipedrive.com/api/v1` : "";
 export const PIPELINE_ID = Number(getEnv("PIPEDRIVE_PIPELINE_ID") || "2");
 export const STAGE_ID_NEW_LEAD = Number(getEnv("PIPEDRIVE_STAGE_ID_NEW_LEAD") || "6");
 
-export const OWNER_A = Number(getEnv("PIPEDRIVE_OWNER_A_ID") || "25511085"); // Jaroslaw Lupiezowiec
-export const OWNER_B = Number(getEnv("PIPEDRIVE_OWNER_B_ID") || "25511096"); // Sebastian Wilk
-export const FALLBACK_OWNER = Number(getEnv("PIPEDRIVE_OWNER_FALLBACK_ID") || "25511096");
+/**
+ * Jedno konto Pipedrive (Sebastian Wilk, 25510876), na które logują się
+ * Sebastian i Jarosław. Osobne konta handlowców są wyłączone, a przypisanie
+ * deala lub zadania do nieistniejącego albo nieaktywnego użytkownika kończy się
+ * błędem 403 („Specified user can not be assigned”). Wszystko idzie więc na to
+ * konto, a kto prowadzi sprawę, mówią etykiety deala „Jarek” i „Sebastian”.
+ */
+export const KONTO_PIPEDRIVE = Number(getEnv("PIPEDRIVE_ACCOUNT_ID") || "25510876");
+
+export const ETYKIETY_HANDLOWCOW = {
+  jarek: Number(getEnv("PIPEDRIVE_LABEL_JAREK") || "119"),
+  sebastian: Number(getEnv("PIPEDRIVE_LABEL_SEBASTIAN") || "118"),
+} as const;
+
+export type KluczEtykiety = keyof typeof ETYKIETY_HANDLOWCOW;
+
+/** Etykiety deala z odpowiedzi API: „118,120”, liczba albo lista. */
+export function etykietyDeala(label: unknown): number[] {
+  const surowe = Array.isArray(label) ? label : String(label ?? "").split(",");
+  return surowe.map((wartosc) => Number(String(wartosc).trim())).filter((id) => id > 0);
+}
+
+/** Który handlowiec prowadzi sprawę, według etykiety deala. */
+export function handlowiecZEtykiet(label: unknown): KluczEtykiety | undefined {
+  const etykiety = etykietyDeala(label);
+  return (Object.keys(ETYKIETY_HANDLOWCOW) as KluczEtykiety[]).find((klucz) =>
+    etykiety.includes(ETYKIETY_HANDLOWCOW[klucz])
+  );
+}
+
+/**
+ * Etykiety po przypisaniu sprawy handlowcowi: zostają inne etykiety
+ * (targi, newsletter), znika etykieta drugiego handlowca.
+ */
+export function etykietyZHandlowcem(obecne: unknown, klucz: KluczEtykiety): string {
+  const handlowcy = Object.values(ETYKIETY_HANDLOWCOW) as number[];
+  const pozostale = etykietyDeala(obecne).filter((id) => !handlowcy.includes(id));
+  return [...pozostale, ETYKIETY_HANDLOWCOW[klucz]].join(",");
+}
 
 /** Adresy zawsze powiadamiane o nowym leadzie (oprócz przypisanego handlowca). */
 export const ALWAYS_NOTIFY_EMAILS = (
@@ -206,12 +242,3 @@ export async function createPerson(options: {
 }
 
 /** Adresy e-mail obu handlowców, do powiadomień o leadzie. */
-export async function ownerEmails(): Promise<{ users: PipedriveUser[]; emails: string[] }> {
-  const response = await callPipedrive<PipedriveUser[]>("/users");
-  const users = Array.isArray(response?.data) ? response.data : [];
-  const emails = [OWNER_A, OWNER_B]
-    .map((id) => users.find((user) => user.id === id)?.email)
-    .filter((value): value is string => Boolean(value))
-    .map((address) => address.toLowerCase());
-  return { users, emails };
-}

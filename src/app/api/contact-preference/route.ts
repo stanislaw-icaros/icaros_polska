@@ -47,7 +47,8 @@ const DOMAIN = getEnv("PIPEDRIVE_COMPANY_DOMAIN");
 const BASE_URL = DOMAIN ? `https://${DOMAIN}.pipedrive.com/api/v1` : "";
 
 // Strona /poznaj-system jest obsługiwana przez dyrektora krajowego (Sebastian Wilk).
-const PREFERENCE_OWNER = Number(getEnv("PIPEDRIVE_OWNER_FALLBACK_ID") || "25511096");
+// Jedno wspólne konto Pipedrive (Sebastian Wilk); 25511096 nie istnieje i dawało błąd 403.
+const PREFERENCE_OWNER = Number(getEnv("PIPEDRIVE_ACCOUNT_ID") || "25510876");
 
 // Powiadomienie trafia do zespołu; Sebastian (właściciel) jest dodawany dynamicznie z Pipedrive.
 const ALWAYS_NOTIFY_EMAILS = (

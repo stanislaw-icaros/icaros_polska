@@ -4,14 +4,13 @@ import {
   createPerson,
   dealUrl,
   findPerson,
+  etykietyZHandlowcem,
   getEnv,
-  OWNER_A,
-  OWNER_B,
-  ownerEmails,
+  handlowiecZEtykiet,
+  KONTO_PIPEDRIVE,
   PIPELINE_ID,
   resolveOrganization,
   STAGE_ID_NEW_LEAD,
-  type PipedriveUser,
 } from "./client";
 import { HANDLOWCY, type Handlowiec, type KluczHandlowca } from "@/lib/kalendarz/config";
 import { etykietaPelna } from "@/lib/kalendarz/czas";
@@ -24,40 +23,23 @@ import { etykietaPelna } from "@/lib/kalendarz/czas";
  * na wybraną godzinę, przypisane do handlowca, który tę rozmowę prowadzi.
  */
 
-/**
- * Identyfikatory handlowców w Pipedrive. Bierzemy je z tych samych stałych,
- * z których korzystają formularze kontaktowe, bo one mają wpisane wartości
- * domyślne. Czytanie samej zmiennej środowiskowej zostawiało kalendarz bez
- * właściciela sprawy i wywracało cały zapis rezerwacji.
- */
-const ID_W_PIPEDRIVE: Record<string, number> = {
-  PIPEDRIVE_OWNER_A_ID: OWNER_A,
-  PIPEDRIVE_OWNER_B_ID: OWNER_B,
-};
-
-export function idPipedrive(osoba: Handlowiec): number | undefined {
-  const wartosc = ID_W_PIPEDRIVE[osoba.zmiennaPipedrive];
-  return Number.isFinite(wartosc) && wartosc > 0 ? wartosc : undefined;
-}
-
-/** Odwrotne przypisanie: z właściciela deala na handlowca z kalendarza. */
-export function handlowiecZIdPipedrive(idWlasciciela?: number): KluczHandlowca | undefined {
-  if (!idWlasciciela) return undefined;
-  return HANDLOWCY.find((osoba) => idPipedrive(osoba) === idWlasciciela)?.klucz;
+/** Adresy obu handlowców do powiadomień, z konfiguracji kalendarza. */
+function emaileHandlowcow(): string[] {
+  return HANDLOWCY.map((osoba) => osoba.emailPowiadomien.toLowerCase()).filter(Boolean);
 }
 
 type OtwartaSprawa = {
   id: number;
   title?: string;
   stage_id?: number;
-  user_id?: { id: number } | number;
+  label?: unknown;
 };
 
 export type KontekstLeada = {
   personId?: number;
   orgId?: number;
   dealId?: number;
-  /** Właściciel otwartej sprawy, jeśli lead jest już w systemie. */
+  /** Handlowiec z etykiety otwartej sprawy, jeśli lead jest już w systemie. */
   wlascicielSprawy?: KluczHandlowca;
 };
 
@@ -77,14 +59,12 @@ export async function rozpoznajLeada(options: {
       `/persons/${osoba.id}/deals?status=open&limit=5&sort=update_time DESC`
     );
     const otwarta = (Array.isArray(sprawy.data) ? sprawy.data : [])[0];
-    const idWlasciciela =
-      typeof otwarta?.user_id === "object" ? otwarta?.user_id?.id : otwarta?.user_id;
 
     return {
       personId: osoba.id,
       orgId: osoba.organization?.id,
       dealId: otwarta?.id,
-      wlascicielSprawy: handlowiecZIdPipedrive(idWlasciciela),
+      wlascicielSprawy: handlowiecZEtykiet(otwarta?.label) as KluczHandlowca | undefined,
     };
   } catch (blad) {
     console.error(
@@ -214,12 +194,8 @@ async function uzupelnijKontakt(
 
 /** Zakłada lub aktualizuje sprawę, dopisuje notatkę i zadanie telefoniczne. */
 export async function zapiszRozmowe(dane: DaneRozmowy): Promise<WynikPipedrive> {
-  const ownerId = idPipedrive(dane.handlowiec);
-  if (!ownerId) {
-    throw new Error(
-      `Brak identyfikatora Pipedrive dla ${dane.handlowiec.imie} (${dane.handlowiec.zmiennaPipedrive}).`
-    );
-  }
+  // Jedno konto dla obu handlowców; kto prowadzi, mówi etykieta deala.
+  const ownerId = KONTO_PIPEDRIVE;
 
   let orgId = dane.kontekst.orgId;
   if (dane.firma?.trim()) {
@@ -250,10 +226,12 @@ export async function zapiszRozmowe(dane: DaneRozmowy): Promise<WynikPipedrive> 
   let dealId = dane.kontekst.dealId;
 
   if (dealId) {
+    const obecna = await callPipedrive<{ label?: unknown }>(`/deals/${dealId}`);
     await callPipedrive(`/deals/${dealId}`, {
       method: "PUT",
       body: JSON.stringify({
         user_id: ownerId,
+        label: etykietyZHandlowcem(obecna.data?.label, dane.handlowiec.klucz),
         ...(etapUmowionejRozmowy > 0 ? { stage_id: etapUmowionejRozmowy } : {}),
         ...pola,
       }),
@@ -267,6 +245,7 @@ export async function zapiszRozmowe(dane: DaneRozmowy): Promise<WynikPipedrive> 
       body: JSON.stringify({
         title: tytul,
         user_id: ownerId,
+        label: etykietyZHandlowcem(undefined, dane.handlowiec.klucz),
         person_id: personId,
         org_id: orgId,
         pipeline_id: PIPELINE_ID,
@@ -294,7 +273,8 @@ export async function zapiszRozmowe(dane: DaneRozmowy): Promise<WynikPipedrive> 
     await callPipedrive("/activities", {
       method: "POST",
       body: JSON.stringify({
-        subject: `Rozmowa z ${dane.imie}${dane.firma?.trim() ? ` (${dane.firma.trim()})` : ""}`,
+        // Imię handlowca w temacie, bo obaj widzą te same zadania na wspólnym koncie.
+        subject: `[${dane.handlowiec.imie}] Rozmowa z ${dane.imie}${dane.firma?.trim() ? ` (${dane.firma.trim()})` : ""}`,
         type: "call",
         deal_id: dealId,
         person_id: personId,
@@ -321,24 +301,13 @@ export async function zapiszRozmowe(dane: DaneRozmowy): Promise<WynikPipedrive> 
     );
   }
 
-  let emaileHandlowcow: string[] = [...ALWAYS_NOTIFY_EMAILS];
-  let nazwaWlasciciela: string | undefined;
-  try {
-    const { users, emails } = await ownerEmails();
-    nazwaWlasciciela = users.find((user: PipedriveUser) => user.id === ownerId)?.name;
-    emaileHandlowcow = [...new Set([...emails, ...ALWAYS_NOTIFY_EMAILS])];
-  } catch (blad) {
-    console.error(
-      "[kalendarz] nie udalo sie pobrac adresow handlowcow:",
-      blad instanceof Error ? blad.message : blad
-    );
-  }
+  const adresy = [...new Set([...emaileHandlowcow(), ...ALWAYS_NOTIFY_EMAILS])];
 
   return {
     dealId,
     link: dealId ? dealUrl(dealId) : undefined,
-    emaileHandlowcow,
-    nazwaWlasciciela,
+    emaileHandlowcow: adresy,
+    nazwaWlasciciela: dane.handlowiec.pelneImie,
   };
 }
 
