@@ -222,6 +222,8 @@ html:has(.cl) body {
 .cl-hero {
   --p: 0;
   --mx: 0;
+  /* O ile platforma stoi niżej od osi napisu, w em sceny. */
+  --dy: 0.27;
   position: relative;
   isolation: isolate;
   display: grid;
@@ -324,7 +326,7 @@ html:has(.cl) body {
 .cl-hero__produkt {
   position: relative;
   width: 2.58em;
-  transform: translate3d(calc(var(--mx) * 0.016em), calc(0.27em + var(--p) * 0.1em), 0) scale(calc(1 + var(--p) * 0.05));
+  transform: translate3d(calc(var(--mx) * 0.016em), calc(var(--dy) * 1em + var(--p) * 0.1em), 0) scale(calc(1 + var(--p) * 0.05));
   will-change: transform;
 }
 
@@ -1151,22 +1153,94 @@ html[data-cl-wejscie] .cl-dok {
   border-radius: 24px;
 }
 
-.cl-lista {
+/* Pozycja pakietu: nazwa krojem nagłówków i jedno zdanie szczegółu pod nią.
+   Linie stoją tylko między pozycjami, nie nad pierwszą i nie pod ostatnią. */
+.cl-poz {
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
-.cl-lista li {
-  padding: 16px 0;
+.cl-poz li {
+  padding: 18px 0;
+}
+
+.cl-poz li + li {
   border-top: 1px solid var(--line);
-  font-size: clamp(17px, 1.35vw, 19px);
-  line-height: 1.45;
+}
+
+.cl-poz li:first-child {
+  padding-top: 0;
+}
+
+.cl-poz li:last-child {
+  padding-bottom: 0;
+}
+
+.cl-poz strong {
+  display: block;
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: clamp(20px, 1.7vw, 24px);
+  line-height: 1.2;
+  letter-spacing: -0.012em;
+}
+
+.cl-poz span {
+  display: block;
+  margin-top: 5px;
+  color: var(--ink-2);
+  font-size: 16px;
+  line-height: 1.5;
   text-wrap: pretty;
 }
 
-.cl-lista li:last-child {
-  border-bottom: 1px solid var(--line);
+/* Dodatki do zamówienia: jedyny panel w tej sekcji, bo to coś ponad zestaw
+   ze zdjęcia. Znak plus przy każdej pozycji mówi to samo co nagłówek. */
+.cl-bonus {
+  margin-top: clamp(32px, 3.6vw, 48px);
+  padding: clamp(22px, 2.4vw, 32px);
+  border-radius: 28px;
+  border: 1px solid var(--line-2);
+  background: var(--bg-1);
+}
+
+.cl-bonus .cl-poz {
+  margin-top: clamp(18px, 2vw, 24px);
+}
+
+.cl-poz--plus li,
+.cl-poz--plus li + li,
+.cl-poz--plus li:first-child,
+.cl-poz--plus li:last-child {
+  position: relative;
+  padding: 14px 0 14px 30px;
+  border-top: 1px solid var(--line-2);
+}
+
+.cl-poz--plus li:last-child {
+  padding-bottom: 0;
+}
+
+.cl-poz--plus li::before {
+  content: "";
+  position: absolute;
+  left: 1px;
+  top: 19px;
+  width: 13px;
+  height: 13px;
+  background:
+    linear-gradient(var(--accent), var(--accent)) center / 100% 1.5px no-repeat,
+    linear-gradient(var(--accent), var(--accent)) center / 1.5px 100% no-repeat;
+}
+
+.cl-poz--plus strong {
+  font-size: clamp(18px, 1.4vw, 20px);
+}
+
+.cl-poz--plus span {
+  margin-top: 3px;
+  font-size: 15px;
 }
 
 .cl-cena {
@@ -1216,45 +1290,39 @@ html[data-cl-wejscie] .cl-dok {
   gap: 16px;
 }
 
-/* Dodatki stoją pod listą pakietu, nad ceną. */
-.cl-pakiet__dodatki {
-  margin-top: clamp(36px, 4vw, 56px);
-  margin-bottom: 14px;
-}
-
-.cl-lista--cicha li {
-  padding: 12px 0;
-  color: var(--ink-2);
-  font-size: 16px;
-  border-top-color: var(--line-2);
-}
-
-.cl-lista--cicha li:last-child {
-  border-bottom-color: var(--line-2);
-}
-
-/* Drugi wariant: jeden cichy wiersz pod ceną, wyraźnie poza pakietem. */
+/* Drugi wariant: jeden cichy wiersz pod ceną, wyraźnie poza pakietem.
+   Nazwa i cena w jednej linii, opis pod nimi. */
 .cl-pakiet__sam {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
   align-items: baseline;
-  justify-content: space-between;
-  gap: 6px 32px;
-  margin: clamp(48px, 6vw, 88px) 0 0;
+  gap: 4px 24px;
+  margin: clamp(40px, 6vw, 88px) 0 0;
   padding: 20px 0;
   border-block: 1px solid var(--line);
-  color: var(--ink-2);
-  font-size: 17px;
-  line-height: 1.5;
 }
 
-.cl-pakiet__sam strong {
-  color: var(--ink);
+.cl-pakiet__sam strong,
+.cl-pakiet__sam em {
   font-family: var(--display);
   font-weight: 600;
-  font-size: clamp(21px, 1.9vw, 27px);
+  font-size: clamp(20px, 1.7vw, 24px);
+  line-height: 1.2;
+  letter-spacing: -0.012em;
+}
+
+.cl-pakiet__sam em {
+  font-style: normal;
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
+}
+
+.cl-pakiet__sam span {
+  grid-column: 1 / -1;
+  color: var(--ink-2);
+  font-size: 16px;
+  line-height: 1.5;
+  text-wrap: pretty;
 }
 
 /* ---------- kalkulator ---------- */
@@ -2248,16 +2316,46 @@ html[data-cl-wejscie] .cl-dok {
   }
 
 
+  /* Cena na wąskim ekranie: kwota, pod nią druga kwota z przełącznikiem
+     w jednej linii, potem przycisk na całą szerokość. Oba opakowania
+     znikają z układu, żeby ich dzieci dało się ustawić w jednej siatce. */
   .cl-cena {
-    grid-template-columns: minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 0 16px;
   }
 
-  .cl-cena__akcje {
-    align-items: stretch;
+  .cl-cena > div {
+    display: contents;
   }
 
-  .cl-cena__akcje .cl-link {
-    justify-content: center;
+  .cl-cena__kwota {
+    grid-column: 1 / -1;
+  }
+
+  .cl-cena__druga,
+  .cl-cena .cl-tryb {
+    margin-top: 14px;
+  }
+
+  .cl-cena__druga {
+    font-size: 16px;
+    white-space: nowrap;
+  }
+
+  .cl-cena .cl-btn {
+    grid-column: 1 / -1;
+    margin-top: 28px;
+  }
+
+  .cl-cena .cl-link {
+    grid-column: 1 / -1;
+    justify-self: center;
+    margin-top: 10px;
+  }
+
+  .cl-pakiet__uklad {
+    gap: 28px;
   }
 
   .cl-gry__rzad {
@@ -2285,9 +2383,14 @@ html[data-cl-wejscie] .cl-dok {
     font-size: 16px;
   }
 
+  /* Pierwszy ekran wypełnia wysokość telefonu, a wolne miejsce bierze scena
+     z platformą, nie pusty pas pod tekstem. Platforma stoi odrobinę niżej
+     niż na dużym ekranie i ma pod sobą więcej powietrza. Dolne dopełnienie
+     to miejsce na dok i zarazem odstęp przed następną sekcją. */
   .cl-hero {
-    min-height: auto;
-    padding-bottom: 104px;
+    --dy: 0.33;
+    min-height: 100svh;
+    padding-bottom: 100px;
   }
 
   .cl-pasek__rozmowa {
@@ -2296,7 +2399,7 @@ html[data-cl-wejscie] .cl-dok {
 
   .cl-hero__scena {
     font-size: calc((100vw - 2 * var(--pad)) / 3.38);
-    padding: 0.5em 0 0.86em;
+    padding: 0.6em 0 1.06em;
   }
 
   .cl-hero__produkt {
@@ -2305,8 +2408,8 @@ html[data-cl-wejscie] .cl-dok {
 
   .cl-hero__dol {
     grid-template-columns: minmax(0, 1fr);
-    gap: 26px;
-    padding-bottom: 8px;
+    gap: 32px;
+    padding-bottom: 0;
   }
 
   .cl-hero__h1 {
@@ -2317,19 +2420,26 @@ html[data-cl-wejscie] .cl-dok {
   .cl-hero__opis {
     font-size: 17px;
     max-width: 30ch;
+    margin-top: 14px;
   }
 
   .cl-hero__dane {
     justify-self: stretch;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 16px;
-    padding-top: 20px;
+    padding-top: 22px;
     border-top: 1px solid var(--line);
     text-align: left;
   }
 
   .cl-hero__rozmowa {
     display: inline-flex;
+    margin-top: 6px;
+  }
+
+  /* Odstęp nad pierwszą sekcją daje już dolne dopełnienie pierwszego ekranu. */
+  .cl-st {
+    padding-top: 16px;
   }
 
   .cl-dok {
@@ -2405,6 +2515,77 @@ html[data-cl-wejscie] .cl-dok {
     right: 48px;
   }
 
+  /* Tabela trzyma jedną szerokość kolumny dla wszystkich wierszy, więc długa
+     etykieta w jednym wierszu łamała długą wartość w innym. Na telefonie
+     każdy wiersz dzieli miejsce sam: etykieta w jednej linii, wartość obok.
+     Role w znacznikach zostawiają czytnikom ekranu strukturę tabeli. */
+  .cl-tabela,
+  .cl-tabela tbody {
+    display: block;
+  }
+
+  .cl-tabela tr {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 14px 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .cl-tabela tr:last-child {
+    border-bottom: 1px solid var(--line);
+  }
+
+  .cl-tabela th,
+  .cl-tabela td,
+  .cl-tabela tr:last-child th,
+  .cl-tabela tr:last-child td {
+    width: auto;
+    padding: 0;
+    border: 0;
+  }
+
+  .cl-tabela th {
+    flex: none;
+  }
+
+  .cl-wariant small {
+    text-wrap: pretty;
+  }
+
+  .cl-pakiet__zdjecie {
+    border-radius: 20px;
+  }
+
+  .cl-bonus {
+    border-radius: 24px;
+  }
+
+  /* Wariant w formularzu: nazwa i opis na całą szerokość, pod nimi cena
+     po lewej i licznik sztuk po prawej. */
+  .cl-wariant__rzad {
+    gap: 0 16px;
+  }
+
+  .cl-wariant__rzad > div:first-child {
+    display: contents;
+  }
+
+  .cl-wariant strong,
+  .cl-wariant small {
+    grid-column: 1 / -1;
+  }
+
+  .cl-wariant em {
+    align-self: center;
+    margin-top: 12px;
+  }
+
+  .cl-wariant .cl-licznik {
+    margin-top: 12px;
+  }
+
   .cl-form__siatka {
     grid-template-columns: minmax(0, 1fr);
   }
@@ -2422,9 +2603,24 @@ html[data-cl-wejscie] .cl-dok {
     grid-template-columns: minmax(0, 1fr);
   }
 
-  /* Na wąskim ekranie lista pozycji staje się rzędem pigułek nad zdjęciem. */
+  /* Na wąskim ekranie lista pozycji staje się rzędem pigułek nad zdjęciem,
+     a dopisek schodzi pod zdjęcie, żeby nie rozdzielał wyboru i obrazu.
+     Kolumna tekstu znika z układu, więc jej dzieci da się przestawić. */
   .cl-cw {
-    gap: 12px;
+    gap: 0;
+  }
+
+  .cl-cw__tekst {
+    display: contents;
+  }
+
+  .cl-cw__scena {
+    margin-top: 12px;
+  }
+
+  .cl-cw__przypis {
+    order: 1;
+    margin-top: 4px;
   }
 
   .cl-cw__lista {
@@ -2467,8 +2663,38 @@ html[data-cl-wejscie] .cl-dok {
     display: none;
   }
 
+  /* Oś czasu zwrotu na wąskim ekranie biegnie w pionie: kropki po lewej
+     połączone linią, treść kroku obok. */
   .cl-gw__os {
-    gap: 28px;
+    gap: 0;
+  }
+
+  .cl-gw__os li {
+    gap: 6px;
+    padding: 0 0 30px 32px;
+    border-top: 0;
+  }
+
+  .cl-gw__os li:last-child {
+    padding-bottom: 0;
+  }
+
+  .cl-gw__os li::before {
+    top: 9px;
+  }
+
+  .cl-gw__os li::after {
+    content: "";
+    position: absolute;
+    left: 5px;
+    top: 28px;
+    bottom: -1px;
+    width: 1px;
+    background: var(--line);
+  }
+
+  .cl-gw__os li:last-child::after {
+    display: none;
   }
 
   .cl-gw__os span {
@@ -2477,6 +2703,14 @@ html[data-cl-wejscie] .cl-dok {
 
   .cl-war__siatka {
     gap: 8px;
+  }
+}
+
+/* Najwęższe telefony: przełącznik przy cenie musi zmieścić się obok drugiej kwoty. */
+@media (max-width: 360px) {
+  .cl-cena .cl-tryb button {
+    min-width: 64px;
+    padding: 0 10px;
   }
 }
 
@@ -2506,7 +2740,7 @@ html[data-cl-wejscie] .cl-dok {
   }
 
   .cl-hero__produkt {
-    transform: translate3d(0, 0.27em, 0);
+    transform: translate3d(0, calc(var(--dy) * 1em), 0);
   }
 
   .cl-hero__dol {

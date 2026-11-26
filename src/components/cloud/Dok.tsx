@@ -10,19 +10,47 @@ import { CENY, CTA } from "@/lib/cloud/tresc";
  *
  * Chowa się, kiedy widać sekcję zamówienia, bo tam przycisk prowadziłby
  * do miejsca, w którym odwiedzający już jest, i zasłaniałby pola formularza.
+ *
+ * Na telefonie i tablecie chowa się też przy cenie pakietu: tam stoi ten sam przycisk
+ * na całą szerokość, więc dwa identyczne byłyby jeden pod drugim.
  */
 export default function Dok() {
   const [ukryty, ustawUkryty] = useState(false);
 
   useEffect(() => {
-    const cel = document.getElementById("zamowienie");
-    if (!cel) return;
-    const obserwator = new IntersectionObserver(
-      ([wpis]) => ustawUkryty(wpis.isIntersecting),
+    const formularz = document.getElementById("zamowienie");
+    const przyciskCeny = document.querySelector("[data-cl-cena]");
+    // Ten sam próg, od którego przycisk przy cenie zajmuje całą szerokość.
+    const waski = window.matchMedia("(max-width: 900px)");
+    let przyFormularzu = false;
+    let przyCenie = false;
+    const odswiez = () => ustawUkryty(przyFormularzu || (przyCenie && waski.matches));
+
+    const obserwatorFormularza = new IntersectionObserver(
+      ([wpis]) => {
+        przyFormularzu = wpis.isIntersecting;
+        odswiez();
+      },
       { rootMargin: "0px 0px -35% 0px" }
     );
-    obserwator.observe(cel);
-    return () => obserwator.disconnect();
+    // Dolny margines to wysokość doku: przycisk przy cenie liczy się jako
+    // widoczny dopiero wtedy, gdy wyjdzie ponad dok.
+    const obserwatorCeny = new IntersectionObserver(
+      ([wpis]) => {
+        przyCenie = wpis.isIntersecting;
+        odswiez();
+      },
+      { rootMargin: "0px 0px -88px 0px" }
+    );
+    if (formularz) obserwatorFormularza.observe(formularz);
+    if (przyciskCeny) obserwatorCeny.observe(przyciskCeny);
+    waski.addEventListener("change", odswiez);
+
+    return () => {
+      obserwatorFormularza.disconnect();
+      obserwatorCeny.disconnect();
+      waski.removeEventListener("change", odswiez);
+    };
   }, []);
 
   return (

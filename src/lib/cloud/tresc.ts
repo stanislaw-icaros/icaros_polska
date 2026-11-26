@@ -164,20 +164,19 @@ export const PAKIET = {
     src: "/cloud/zestaw.webp",
     alt: "Zestaw z góry: platforma ICAROS Cloud, dwie taśmy oporowe, uchwyt na tablet, wąż, pompka, dwa podnóżki i tablet",
   },
+  /** Każda pozycja to krótka nazwa i jedno zdanie szczegółu pod nią. */
   lista: [
-    "ICAROS Cloud z pompką, uchwytem na tablet, podnóżkami i taśmami oporowymi",
-    "iPad z zainstalowaną aplikacją",
-    "ICAROS App PRO bez abonamentu, dożywotnio: 5 urządzeń i 250 użytkowników",
-    "Instrukcje i filmy po polsku",
-    "Wsparcie telefoniczne",
+    { nazwa: "ICAROS Cloud", opis: "Platforma z pompką, uchwytem na tablet, podnóżkami i taśmami oporowymi" },
+    { nazwa: "iPad", opis: "Z zainstalowaną aplikacją" },
+    { nazwa: "ICAROS App PRO", opis: "Licencja dożywotnia bez abonamentu na 5 urządzeń i 250 użytkowników" },
+    { nazwa: "Wsparcie po polsku", opis: "Instrukcje, filmy i pomoc przez telefon" },
   ],
-  samCloud: "Sam Cloud, czyli platforma z akcesoriami bez iPada i aplikacji PRO",
   dodatkiNaglowek: "Do każdego zamówienia dokładamy",
   dodatki: [
-    "Materiały do social mediów gabinetu: 5 grafik, 3 krótkie filmy i tekst do cennika",
-    "Wpis na mapie placówek ICAROS w Polsce",
-    "Gotowe programy w aplikacji na start",
-    "30-minutową rozmowę wdrożeniową online",
+    { nazwa: "Materiały do social mediów", opis: "5 grafik, 3 krótkie filmy i tekst do cennika" },
+    { nazwa: "Wpis na mapie placówek", opis: "Mapa ICAROS w Polsce" },
+    { nazwa: "Programy na start", opis: "Gotowe w aplikacji" },
+    { nazwa: "Rozmowa wdrożeniowa", opis: "30 minut online" },
   ],
 } as const;
 

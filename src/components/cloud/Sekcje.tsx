@@ -14,6 +14,7 @@ import {
   PAKIET,
   PYTANIA,
   SESJA,
+  WARIANTY,
   WARUNKI,
 } from "@/lib/cloud/tresc";
 
@@ -62,7 +63,9 @@ export function Sesja() {
 }
 
 /**
- * Pakiet: co w nim jest, co dokładamy, cena. Wariant bez iPada stoi osobno
+ * Pakiet: co w nim jest, co dokładamy, cena. Każda pozycja to nazwa i jedno
+ * zdanie szczegółu. Dodatki stoją w osobnym panelu ze znakiem plus, żeby było
+ * widać, że to coś ponad zestaw ze zdjęcia. Wariant bez iPada stoi osobno
  * na samym końcu, pod ceną, żeby dodatki nie wyglądały na jego część.
  */
 export function Pakiet() {
@@ -83,17 +86,25 @@ export function Pakiet() {
             sizes="(max-width: 900px) 100vw, 56vw"
           />
           <div>
-            <ul className="cl-lista">
+            <ul className="cl-poz">
               {PAKIET.lista.map((pozycja) => (
-                <li key={pozycja}>{pozycja}</li>
+                <li key={pozycja.nazwa}>
+                  <strong>{pozycja.nazwa}</strong>
+                  <span>{pozycja.opis}</span>
+                </li>
               ))}
             </ul>
-            <h3 className="cl-h3 cl-pakiet__dodatki">{PAKIET.dodatkiNaglowek}</h3>
-            <ul className="cl-lista cl-lista--cicha">
-              {PAKIET.dodatki.map((pozycja) => (
-                <li key={pozycja}>{pozycja}</li>
-              ))}
-            </ul>
+            <div className="cl-bonus">
+              <h3 className="cl-h3">{PAKIET.dodatkiNaglowek}</h3>
+              <ul className="cl-poz cl-poz--plus">
+                {PAKIET.dodatki.map((pozycja) => (
+                  <li key={pozycja.nazwa}>
+                    <strong>{pozycja.nazwa}</strong>
+                    <span>{pozycja.opis}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </div>
 
@@ -111,7 +122,8 @@ export function Pakiet() {
           </div>
           <div className="cl-cena__akcje">
             <PrzelacznikTrybu etykieta="Cena pakietu netto albo brutto" />
-            <a className="cl-btn cl-btn--duzy" href="#zamowienie">
+            {/* Po tym atrybucie dok poznaje, że na ekranie jest już przycisk zamówienia. */}
+            <a className="cl-btn cl-btn--duzy" href="#zamowienie" data-cl-cena>
               {CTA}
             </a>
             <a className="cl-link" href="#kalendarz">
@@ -121,10 +133,11 @@ export function Pakiet() {
         </div>
 
         <p className="cl-pakiet__sam">
-          <span>{PAKIET.samCloud}</span>
-          <strong>
+          <strong>{WARIANTY.sam.nazwa}</strong>
+          <em>
             <Kwota netto={CENY.samCloudNetto} brutto={CENY.samCloudBrutto} /> <NazwaTrybu />
-          </strong>
+          </em>
+          <span>{WARIANTY.sam.opis}</span>
         </p>
       </div>
     </section>
@@ -259,12 +272,16 @@ export function Dane() {
             </figure>
           </div>
 
-          <table className="cl-tabela">
-            <tbody>
+          {/* Role są jawne, bo na telefonie wiersze dostają display: flex,
+              a część przeglądarek gubi wtedy strukturę tabeli. */}
+          <table className="cl-tabela" role="table">
+            <tbody role="rowgroup">
               {DANE.tabela.map((wiersz) => (
-                <tr key={wiersz.etykieta}>
-                  <th scope="row">{wiersz.etykieta}</th>
-                  <td>{wiersz.wartosc}</td>
+                <tr key={wiersz.etykieta} role="row">
+                  <th scope="row" role="rowheader">
+                    {wiersz.etykieta}
+                  </th>
+                  <td role="cell">{wiersz.wartosc}</td>
                 </tr>
               ))}
             </tbody>
