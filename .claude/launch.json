@@ -4,8 +4,24 @@
     {
       "name": "icaros-dev",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "dev"],
+      "runtimeArgs": [
+        "run",
+        "dev"
+      ],
       "port": 3040
+    },
+    {
+      "name": "icaros-cloud",
+      "runtimeExecutable": "env",
+      "runtimeArgs": [
+        "NEXT_DIST_DIR=.next-cloud",
+        "npx",
+        "next",
+        "dev",
+        "-p",
+        "3041"
+      ],
+      "port": 3041
     }
   ]
 }

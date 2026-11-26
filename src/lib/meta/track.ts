@@ -6,7 +6,13 @@ declare global {
   }
 }
 
-export type MetaEventName = "ViewContent" | "Contact" | "CompleteRegistration" | "Schedule";
+export type MetaEventName =
+  | "ViewContent"
+  | "Contact"
+  | "CompleteRegistration"
+  | "Schedule"
+  /** Zgłoszenie ze strony: formularz zamówienia ICAROS Cloud. */
+  | "Lead";
 
 /**
  * Wysyła zdarzenie Meta jednocześnie przez Pixel (client-side) oraz Conversions
@@ -19,6 +25,18 @@ export function trackMetaEvent(
 ): void {
   if (typeof window === "undefined") return;
   if (!hasCookieConsent("marketing")) return;
+  // To samo zabezpieczenie co w MetaPixel: testy z localhost nie zaśmiecają
+  // produkcyjnego piksela ani Conversions API.
+  const host = window.location.hostname;
+  if (
+    host === "localhost" ||
+    host === "127.0.0.1" ||
+    host === "::1" ||
+    host.endsWith(".local") ||
+    host.endsWith(".localhost")
+  ) {
+    return;
+  }
 
   const eventId =
     typeof crypto !== "undefined" && typeof crypto.randomUUID === "function"

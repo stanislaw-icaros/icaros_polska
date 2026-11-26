@@ -7,13 +7,31 @@ import { hasCookieConsent } from "@/lib/cookie-consent";
  * Meta Pixel - ładowany dopiero po zgodzie marketingowej (RODO).
  * Ustaw NEXT_PUBLIC_FB_PIXEL_ID w env, aby aktywować. Bez tej zmiennej
  * komponent nic nie robi - strona jest gotowa na podpięcie pixela później.
+ *
+ * Z maszyny lokalnej nic nie wysyłamy. W listopadzie 2026 ok. 16% zdarzeń
+ * PageView w produkcyjnym pikselu pochodziło z testów na localhost, co psuje
+ * i raporty, i uczenie się kampanii.
  */
 const PIXEL_ID = process.env.NEXT_PUBLIC_FB_PIXEL_ID;
+
+/** Adresy, z których zdarzenia nie mają trafiać do produkcyjnego piksela. */
+function ruchLokalny(): boolean {
+  if (typeof window === "undefined") return true;
+  const host = window.location.hostname;
+  return (
+    host === "localhost" ||
+    host === "127.0.0.1" ||
+    host === "::1" ||
+    host.endsWith(".local") ||
+    host.endsWith(".localhost")
+  );
+}
 
 export default function MetaPixel() {
   useEffect(() => {
     const pixelId = PIXEL_ID?.trim();
     if (!pixelId || !/^\d+$/.test(pixelId)) return;
+    if (ruchLokalny()) return;
 
     let injected = false;
 

@@ -16,10 +16,16 @@
  */
 
 import { useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ArrowLeft } from "lucide-react";
 import { COMPANY_EMAIL, COMPANY_PHONE, COMPANY_PHONE_HREF } from "@/lib/legal";
-import { czyPotwierdzony, zapiszPotwierdzenie } from "@/lib/profesjonalista";
+import {
+  czyPotwierdzony,
+  czyPozaBrama,
+  zapiszPotwierdzenie,
+  czyHostPozaBrama,
+} from "@/lib/profesjonalista";
 
 const PRZYCISK =
   "inline-flex min-h-[52px] items-center justify-center gap-2 px-7 text-[15px] font-semibold outline-none transition-colors duration-300 focus-visible:ring-2 focus-visible:ring-brand-orange focus-visible:ring-offset-2 focus-visible:ring-offset-white";
@@ -31,15 +37,20 @@ export default function BramaProfesjonalisty() {
   const [wyjasnienie, ustawWyjasnienie] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
   const mniejRuchu = useReducedMotion();
+  const sciezka = usePathname();
+  const pozaBrama = czyPozaBrama(sciezka ?? "/");
 
   // Treść strony jest już schowana przez skrypt z layoutu, więc brama nie musi
-  // czekać: stawiamy ją w pierwszej wolnej klatce po wejściu.
+  // czekać: stawiamy ją w pierwszej wolnej klatce po wejściu. Na ścieżkach
+  // poza bramą (landing ICAROS Cloud, patrz src/lib/profesjonalista.ts) nie
+  // pytamy w ogóle.
   useEffect(() => {
+    if (pozaBrama || czyHostPozaBrama(window.location.hostname)) return;
     const klatka = requestAnimationFrame(() => {
       if (!czyPotwierdzony()) ustawOtwarta(true);
     });
     return () => cancelAnimationFrame(klatka);
-  }, []);
+  }, [pozaBrama]);
 
   // Dopóki brama stoi, strona pod spodem się nie przewija, a klawiatura
   // zostaje w oknie.

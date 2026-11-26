@@ -42,3 +42,6 @@ next-env.d.ts
 
 # Zrzuty i raporty z inspektora taste (generowane)
 .taste-skill/
+
+# drugi serwer deweloperski (NEXT_DIST_DIR)
+/.next-cloud/
