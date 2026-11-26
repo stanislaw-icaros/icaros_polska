@@ -44,4 +44,4 @@ next-env.d.ts
 .taste-skill/
 
 # drugi serwer deweloperski (NEXT_DIST_DIR)
-/.next-cloud/
+/.next-cloud*/

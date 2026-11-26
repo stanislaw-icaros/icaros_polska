@@ -22,27 +22,46 @@ export const VAT = 0.23;
 export const CENY = {
   pakietNetto: 9844,
   pakietBrutto: 12108,
-  /** Robocze, do potwierdzenia przez Sebastiana. */
-  samCloudNetto: 5600,
-  samCloudBrutto: 6888,
+  /**
+   * Robocze, do potwierdzenia przez Sebastiana. Cloud z aplikacją PRO na
+   * miesiąc to 5 600 zł za platformę z dostawą plus 100 EUR za miesiąc
+   * aplikacji po kursie 4,44 z kosztorysu z 18.11.2026.
+   */
+  cloudMiesiacNetto: 6044,
+  cloudMiesiacBrutto: 7434,
+  /** Miesiąc aplikacji PRO kupowany osobno: 100 EUR netto po kursie 4,44. */
+  appMiesiacNetto: 444,
+  appMiesiacBrutto: 546,
   montazNetto: 2000,
   montazZaKm: 2,
 } as const;
 
-export type Wariant = "pakiet" | "sam";
+export type Wariant = "pakiet" | "miesiac";
 
-export const WARIANTY: Record<Wariant, { nazwa: string; opis: string; netto: number; brutto: number }> = {
+/**
+ * Oba warianty mają aplikację PRO. Platformy bez aplikacji nie sprzedajemy
+ * (uwaga z 26.11.2026): bez PRO nie ma gier, testów ani raportów, a licencja
+ * dożywotnia w tej cenie jest tylko przy zakupie z Cloud.
+ *
+ * `dalej` to opłata za każdy kolejny miesiąc aplikacji. Stoi przy wariancie,
+ * żeby nikt nie dowiadywał się o niej po zakupie.
+ */
+export const WARIANTY: Record<
+  Wariant,
+  { nazwa: string; opis: string; netto: number; brutto: number; dalej?: { netto: number; brutto: number } }
+> = {
   pakiet: {
     nazwa: "Pakiet ICAROS Cloud",
     opis: "Cloud, iPad i aplikacja PRO bez abonamentu",
     netto: CENY.pakietNetto,
     brutto: CENY.pakietBrutto,
   },
-  sam: {
-    nazwa: "Sam Cloud",
-    opis: "Platforma z akcesoriami, bez iPada i aplikacji PRO",
-    netto: CENY.samCloudNetto,
-    brutto: CENY.samCloudBrutto,
+  miesiac: {
+    nazwa: "Cloud z aplikacją PRO na miesiąc",
+    opis: "Platforma z akcesoriami i pierwszy miesiąc aplikacji PRO, bez iPada",
+    netto: CENY.cloudMiesiacNetto,
+    brutto: CENY.cloudMiesiacBrutto,
+    dalej: { netto: CENY.appMiesiacNetto, brutto: CENY.appMiesiacBrutto },
   },
 };
 
@@ -53,6 +72,9 @@ export function zl(kwota: number): string {
     .replace(/\B(?=(\d{3})+(?!\d))/g, " ");
   return `${calosc} zł`;
 }
+
+/** Podpis opłaty za kolejne miesiące aplikacji, stoi przed kwotą. */
+export const DALEJ_ETYKIETA = "Każdy kolejny miesiąc aplikacji:";
 
 export const CTA = "Zamów pakiet";
 export const CTA_DRUGIE = "Umów rozmowę";
@@ -168,7 +190,7 @@ export const PAKIET = {
   lista: [
     { nazwa: "ICAROS Cloud", opis: "Platforma z pompką, uchwytem na tablet, podnóżkami i taśmami oporowymi" },
     { nazwa: "iPad", opis: "Z zainstalowaną aplikacją" },
-    { nazwa: "ICAROS App PRO", opis: "Licencja dożywotnia bez abonamentu na 5 urządzeń i 250 użytkowników" },
+    { nazwa: "ICAROS App PRO", opis: "Licencja dożywotnia bez abonamentu na 250 użytkowników" },
     { nazwa: "Wsparcie po polsku", opis: "Instrukcje, filmy i pomoc przez telefon" },
   ],
   dodatkiNaglowek: "Do każdego zamówienia dokładamy",
@@ -216,13 +238,19 @@ export const BADANIA = {
 export const DANE = {
   naglowek: "Dane techniczne",
   wymiary: { dlugosc: "155 cm", szerokosc: "123 cm", wysokosc: "40 cm" },
+  /** Cloud postawiony na dłuższym boku i oparty o ścianę. */
+  przySciane: {
+    podpis: "Oparty o ścianę zajmuje 155 × 40 cm podłogi",
+    alt: "Platforma ICAROS Cloud postawiona na dłuższym boku i oparta o ścianę",
+  },
   tabela: [
     { etykieta: "Waga", wartosc: "12 kg" },
     { etykieta: "Miejsce do ćwiczeń", wartosc: "ok. 1,5 × 2,5 m" },
     { etykieta: "Maks. waga ćwiczącego", wartosc: "110 kg" },
     { etykieta: "Wzrost ćwiczącego", wartosc: "140 do 200 cm" },
     { etykieta: "Zasilanie", wartosc: "nie wymaga" },
-    { etykieta: "Sterowanie", wartosc: "czujniki tabletu, Bluetooth" },
+    { etykieta: "Sterowanie", wartosc: "czujniki tabletu" },
+    { etykieta: "Internet", wartosc: "do logowania i aktualizacji aplikacji" },
     { etykieta: "Obraz na telewizorze", wartosc: "Apple TV albo HDMI" },
     { etykieta: "Materiał", wartosc: "PVC 1 mm, wyściółka EVA 10 mm" },
     { etykieta: "Karton", wartosc: "60 × 80 × 33 cm" },
@@ -279,7 +307,7 @@ export const PYTANIA = {
     {
       pytanie: "Co znaczy „dożywotnio” przy aplikacji PRO?",
       odpowiedz:
-        "Za licencję płacisz raz, w cenie pakietu. Obejmuje 5 urządzeń i 250 użytkowników, a opłat miesięcznych ani rocznych nie ma.",
+        "Za licencję płacisz raz, w cenie pakietu. Obejmuje 250 użytkowników, a opłat miesięcznych ani rocznych nie ma.",
     },
     {
       pytanie: "Nie jestem płatnikiem VAT. Ile zapłacę?",
@@ -288,17 +316,17 @@ export const PYTANIA = {
     {
       pytanie: "Ile miejsca potrzeba?",
       odpowiedz:
-        "Platforma ma 155 × 123 cm. Producent podaje ok. 1,5 × 2,5 m wolnej podłogi. Do ćwiczeń z wyprostowanymi rękami i nogami wygodniej mieć 2,5 × 2,5 m.",
+        "Platforma ma 155 × 123 cm. Producent podaje ok. 1,5 × 2,5 m wolnej podłogi. Do ćwiczeń z wyprostowanymi rękami i nogami wygodniej mieć 2,5 × 2,5 m. Po sesji możesz oprzeć Cloud o ścianę, zajmuje wtedy 155 × 40 cm podłogi.",
     },
     {
       pytanie: "Czy potrzebny jest internet?",
       odpowiedz:
-        "Do treningu nie. Tablet łączy się przez Bluetooth, a platforma nie ma elektroniki. Internet jest potrzebny do aktualizacji aplikacji.",
+        "Tak. Tablet musi mieć dostęp do internetu, bo aplikacja wymaga zalogowania na konto i pobiera aktualizacje. Sama platforma nie ma elektroniki. Ruch odczytują czujniki tabletu, więc niczego nie trzeba z nią łączyć.",
     },
     {
       pytanie: "Gdzie trzymać Cloud po sesji?",
       odpowiedz:
-        "Cloud waży 12 kg. Możesz go oprzeć o ścianę albo spuścić powietrze i schować do kartonu 60 × 80 × 33 cm.",
+        "Cloud waży 12 kg. Możesz go oprzeć o ścianę, zajmuje wtedy 155 × 40 cm podłogi, albo spuścić powietrze i schować do kartonu 60 × 80 × 33 cm.",
     },
     {
       pytanie: "Czy mogę najpierw przetestować?",
@@ -318,7 +346,7 @@ export const ZAMOWIENIE = {
   lead: "Wypełniasz formularz, dzwonimy tego samego dnia roboczego, potwierdzamy dane i wysyłamy proformę. Jeśli masz pytania, najpierw zadzwoń albo umów rozmowę.",
   ileNaglowek: "Co i ile zamawiasz",
   pomocIlosc:
-    "Licencja PRO z pakietu obejmuje 5 urządzeń, więc do kolejnych platform możesz dobrać sam Cloud i używać ich z własnymi tabletami. Przy większym zamówieniu zadzwoń, dobierzemy liczbę tabletów i licencji.",
+    "Jeśli zamawiasz kilka platform albo masz własny tablet, zadzwoń. Dobierzemy liczbę tabletów i licencji.",
   maksSztuk: 20,
   wstep: "Zamówienie nie jest płatnością.",
   zgoda:
@@ -334,9 +362,11 @@ export const ZAMOWIENIE = {
  * potwierdzeniem.
  */
 export const DO_POTWIERDZENIA = [
-  "Cena samego Cloud: 5 600 zł netto (Sebastian)",
-  "Zakres licencji PRO: 5 urządzeń, 250 użytkowników, co przy zmianie wersji aplikacji (Sebastian, GmbH)",
-  "Czy jedna licencja PRO z pakietu obsłuży kilka platform kupionych jako sam Cloud: tak wynika z „5 urządzeń”, ale to wniosek, nie potwierdzenie (GmbH)",
+  "Cena wariantu Cloud z aplikacją PRO na miesiąc: 6 044 zł netto, czyli 5 600 zł za platformę z dostawą plus 100 EUR za miesiąc aplikacji po kursie 4,44 z kosztorysu z 18.11. Czy ten wariant jest bez iPada (Sebastian, Jarosław)",
+  "Opłata za kolejne miesiące aplikacji PRO: 444 zł netto, czyli 100 EUR z kosztorysu. App Store w Polsce pokazuje 399,99 zł miesięcznie, a sklep ICAROS daje trzy pierwsze miesiące PRO za darmo (Sebastian)",
+  "Zakres licencji PRO: 250 użytkowników, co przy zmianie wersji aplikacji. O 5 urządzeniach strona nie pisze od 26.11 (Sebastian, GmbH)",
+  "Internet: strona mówi, że jest potrzebny do logowania i aktualizacji. Czy po zalogowaniu trening działa bez sieci. Producent pisze „No Wi-Fi required, Bluetooth connection is sufficient”, ale Cloud nie ma elektroniki, więc o Bluetooth strona nie pisze (Sebastian)",
+  "Cloud oparty o ścianę: 155 × 40 cm podłogi, czyli stoi na dłuższym boku. Rysunek w danych technicznych tak go pokazuje (Sebastian)",
   "Czy historia z pierwszych 30 dni zostaje po aktywacji licencji (GmbH)",
   "Czas dostawy do Polski: 2 do 4 dni roboczych od wpłaty (Sebastian, GmbH)",
   "Maksymalna waga ćwiczącego: na stronie 110 kg, FAQ producenta podaje 150 kg (GmbH)",

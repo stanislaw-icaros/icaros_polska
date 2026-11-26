@@ -34,7 +34,7 @@ export default async function Zamowienie() {
   const terminy = await pobierzTerminy();
 
   return (
-    <section className="cl-sek cl-zam" id="zamowienie" aria-labelledby="cl-zamowienie">
+    <section className="cl-sek cl-zam" aria-labelledby="cl-zamowienie">
       <div className="cl-w">
         <Image
           className="cl-zam__obraz"
@@ -45,30 +45,35 @@ export default async function Zamowienie() {
           sizes="(max-width: 1240px) 100vw, 1180px"
         />
 
-        <h2 className="cl-h2" id="cl-zamowienie">
-          {ZAMOWIENIE.naglowek}
-        </h2>
-        <p className="cl-lead">{ZAMOWIENIE.lead}</p>
+        {/* Kotwica przycisków „Zamów pakiet” stoi na nagłówku, a nie na sekcji:
+            sekcję otwiera zdjęcie, więc skok kończył się na nim, a formularz
+            zostawał pod ekranem. Tego samego elementu pilnuje dok. */}
+        <div id="zamowienie">
+          <h2 className="cl-h2" id="cl-zamowienie">
+            {ZAMOWIENIE.naglowek}
+          </h2>
+          <p className="cl-lead">{ZAMOWIENIE.lead}</p>
 
-        <div className="cl-zam__uklad">
-          <FormularzZamowienia />
+          <div className="cl-zam__uklad">
+            <FormularzZamowienia />
 
-          <div className="cl-zam__bok">
-            <h3 className="cl-h3">{ZAMOWIENIE.rozmowaNaglowek}</h3>
-            <p>{ZAMOWIENIE.rozmowaTekst}</p>
-            <Telefon className="cl-zam__tel" />
-            <p>
-              <a className="cl-link" href="#kalendarz">
-                {CTA_DRUGIE}
-              </a>
-            </p>
+            <div className="cl-zam__bok">
+              <h3 className="cl-h3">{ZAMOWIENIE.rozmowaNaglowek}</h3>
+              <p>{ZAMOWIENIE.rozmowaTekst}</p>
+              <Telefon className="cl-zam__tel" />
+              <p>
+                <a className="cl-link" href="#kalendarz">
+                  {CTA_DRUGIE}
+                </a>
+              </p>
+            </div>
           </div>
-        </div>
 
-        <div className="cl-zam__kal" id="kalendarz">
-          <KotwicaKalendarza id="kalendarz" />
-          <h3 className="cl-h3">{CTA_DRUGIE}</h3>
-          <KalendarzRozmowy poczatkowe={terminy} motyw="ciemny" wariant="business" />
+          <div className="cl-zam__kal" id="kalendarz">
+            <KotwicaKalendarza id="kalendarz" />
+            <h3 className="cl-h3">{CTA_DRUGIE}</h3>
+            <KalendarzRozmowy poczatkowe={terminy} motyw="ciemny" wariant="business" />
+          </div>
         </div>
       </div>
     </section>

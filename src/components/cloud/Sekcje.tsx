@@ -9,6 +9,7 @@ import {
   CENY,
   CTA,
   CTA_DRUGIE,
+  DALEJ_ETYKIETA,
   DANE,
   GRY,
   PAKIET,
@@ -65,8 +66,10 @@ export function Sesja() {
 /**
  * Pakiet: co w nim jest, co dokładamy, cena. Każda pozycja to nazwa i jedno
  * zdanie szczegółu. Dodatki stoją w osobnym panelu ze znakiem plus, żeby było
- * widać, że to coś ponad zestaw ze zdjęcia. Wariant bez iPada stoi osobno
- * na samym końcu, pod ceną, żeby dodatki nie wyglądały na jego część.
+ * widać, że to coś ponad zestaw ze zdjęcia. Wariant z aplikacją na miesiąc
+ * stoi osobno na samym końcu, pod ceną, żeby dodatki nie wyglądały na jego
+ * część. Pod nim jest opłata za kolejne miesiące: po niej widać, ile daje
+ * licencja dożywotnia z pakietu.
  */
 export function Pakiet() {
   return (
@@ -133,11 +136,14 @@ export function Pakiet() {
         </div>
 
         <p className="cl-pakiet__sam">
-          <strong>{WARIANTY.sam.nazwa}</strong>
+          <strong>{WARIANTY.miesiac.nazwa}</strong>
           <em>
-            <Kwota netto={CENY.samCloudNetto} brutto={CENY.samCloudBrutto} /> <NazwaTrybu />
+            <Kwota netto={CENY.cloudMiesiacNetto} brutto={CENY.cloudMiesiacBrutto} /> <NazwaTrybu />
           </em>
-          <span>{WARIANTY.sam.opis}</span>
+          <span>
+            {WARIANTY.miesiac.opis}. {DALEJ_ETYKIETA}{" "}
+            <Kwota netto={CENY.appMiesiacNetto} brutto={CENY.appMiesiacBrutto} /> <NazwaTrybu />.
+          </span>
         </p>
       </div>
     </section>
@@ -233,7 +239,12 @@ export function Badania() {
   );
 }
 
-/** Rzut z góry i z boku z liniami wymiarowymi oraz tabela danych. */
+/**
+ * Rzut z góry i z boku z liniami wymiarowymi, tabela danych, a pod nimi
+ * na całą szerokość Cloud oparty o ścianę. Zdjęcia Clouda stojącego pionowo
+ * producent nie ma, więc to ten sam wycinek co rzut z góry, postawiony
+ * na linii podłogi: tak wygląda platforma oparta o ścianę dłuższym bokiem.
+ */
 export function Dane() {
   return (
     <section className="cl-sek" aria-labelledby="cl-dane">
@@ -286,6 +297,31 @@ export function Dane() {
               ))}
             </tbody>
           </table>
+
+          <figure className="cl-stoi">
+            <div className="cl-stoi__scena">
+              <div className="cl-stoi__sciana">
+                <Image
+                  src="/cloud/platforma-plan.webp"
+                  alt={DANE.przySciane.alt}
+                  width={1600}
+                  height={1220}
+                  sizes="(max-width: 900px) 58vw, 30vw"
+                />
+                {/* Odbicie w podłodze, jak na pierwszym ekranie: po nim widać, że platforma stoi. */}
+                <div className="cl-stoi__odbicie" aria-hidden="true">
+                  <Image
+                    src="/cloud/platforma-plan.webp"
+                    alt=""
+                    width={1600}
+                    height={1220}
+                    sizes="(max-width: 900px) 58vw, 30vw"
+                  />
+                </div>
+              </div>
+              <figcaption>{DANE.przySciane.podpis}</figcaption>
+            </div>
+          </figure>
         </div>
       </div>
     </section>

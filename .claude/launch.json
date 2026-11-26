@@ -22,6 +22,19 @@
         "3041"
       ],
       "port": 3041
+    },
+    {
+      "name": "icaros-cloud-b",
+      "runtimeExecutable": "env",
+      "runtimeArgs": [
+        "NEXT_DIST_DIR=.next-cloud-b",
+        "npx",
+        "next",
+        "dev",
+        "-p",
+        "3043"
+      ],
+      "port": 3043
     }
   ]
 }

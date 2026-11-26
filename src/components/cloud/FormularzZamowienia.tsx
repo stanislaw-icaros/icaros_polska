@@ -6,7 +6,7 @@ import { useTryb } from "@/components/cloud/Tryb";
 import { useSpamGuard } from "@/hooks/useSpamGuard";
 import { odczytajUtm } from "@/lib/analytics/utm";
 import { trackMetaEvent } from "@/lib/meta/track";
-import { WARIANTY, ZAMOWIENIE, zl, type Wariant } from "@/lib/cloud/tresc";
+import { DALEJ_ETYKIETA, WARIANTY, ZAMOWIENIE, zl, type Wariant } from "@/lib/cloud/tresc";
 
 type Pole = "ilosc" | "firma" | "imie" | "telefon" | "email" | "adres" | "zgoda";
 type Bledy = Partial<Record<Pole, string>>;
@@ -18,14 +18,14 @@ const KLUCZE = Object.keys(WARIANTY) as Wariant[];
  * Formularz zamówienia. Nie bierze płatności: zbiera dane do proformy
  * i zakłada deal w Pipedrive ze źródłem „Cloud", UTM i adresem wejścia.
  *
- * Każdy wariant ma własny licznik sztuk, bo siłownia może chcieć jeden pakiet
- * i kilka samych platform. Pola tekstowe są niekontrolowane, wartości czytamy
+ * Każdy wariant ma własny licznik sztuk, bo siłownia może chcieć kilka
+ * platform. Pola tekstowe są niekontrolowane, wartości czytamy
  * przy wysyłce. Błędy stoją przy polach, a po nieudanej próbie kursor wraca
  * do pierwszego błędnego pola.
  */
 export default function FormularzZamowienia() {
   const { tryb } = useTryb();
-  const [sztuki, ustawSztuki] = useState<Record<Wariant, number>>({ pakiet: 1, sam: 0 });
+  const [sztuki, ustawSztuki] = useState<Record<Wariant, number>>({ pakiet: 1, miesiac: 0 });
   const [bledy, ustawBledy] = useState<Bledy>({});
   const [bladWysylki, ustawBladWysylki] = useState("");
   const [wysylam, ustawWysylam] = useState(false);
@@ -33,7 +33,7 @@ export default function FormularzZamowienia() {
   const formularz = useRef<HTMLFormElement>(null);
   const { spamFields, getSpamSignals } = useSpamGuard();
 
-  const razemSztuk = sztuki.pakiet + sztuki.sam;
+  const razemSztuk = sztuki.pakiet + sztuki.miesiac;
   const razemNetto = KLUCZE.reduce((suma, klucz) => suma + sztuki[klucz] * WARIANTY[klucz].netto, 0);
   const razemBrutto = KLUCZE.reduce((suma, klucz) => suma + sztuki[klucz] * WARIANTY[klucz].brutto, 0);
   const razem = tryb === "netto" ? razemNetto : razemBrutto;
@@ -162,7 +162,12 @@ export default function FormularzZamowienia() {
               <div className="cl-wariant__rzad" key={klucz} data-wybrany={ile > 0}>
                 <div>
                   <strong>{wariant.nazwa}</strong>
-                  <small>{wariant.opis}</small>
+                  <small>
+                    {wariant.opis}
+                    {wariant.dalej
+                      ? `. ${DALEJ_ETYKIETA} ${zl(tryb === "netto" ? wariant.dalej.netto : wariant.dalej.brutto)} ${tryb}.`
+                      : null}
+                  </small>
                   <em>
                     {zl(tryb === "netto" ? wariant.netto : wariant.brutto)} {tryb}
                   </em>
