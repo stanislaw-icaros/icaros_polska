@@ -1,4 +1,4 @@
-import Image from "next/image";
+import PowiekszZdjecie from "@/components/products/PowiekszZdjecie";
 import Link from "next/link";
 import VideoEmbed from "@/components/VideoEmbed";
 import { CEL_KONTAKTU, CEL_PACJENTA } from "@/lib/kontakt";
@@ -124,11 +124,9 @@ export default function ProductDetail({
           </div>
 
           <div className={`relative aspect-[4/3] overflow-hidden border ${t.border}`}>
-            <Image
+            <PowiekszZdjecie
               src={product.image}
               alt={product.imageAlt}
-              fill
-              className="object-cover"
               sizes="(max-width: 1024px) 100vw, 560px"
               priority
             />
@@ -203,13 +201,7 @@ export default function ProductDetail({
                     t.dark ? "bg-white/[0.03]" : "bg-foreground/[0.02]"
                   }`}
                 >
-                  <Image
-                    src={photo.src}
-                    alt={photo.alt}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 640px) 50vw, 280px"
-                  />
+                  <PowiekszZdjecie src={photo.src} alt={photo.alt} sizes="(max-width: 640px) 50vw, 280px" />
                 </div>
               ))}
             </div>
