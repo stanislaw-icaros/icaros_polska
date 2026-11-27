@@ -251,6 +251,13 @@ html:has(.cl) body {
   padding: clamp(18px, 2.4vw, 30px) 0 0;
 }
 
+/* Odnośnik wokół logo: pole dotyku na 44 px wysokości, samo logo bez zmian. */
+.cl-pasek__marka {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
+
 .cl-pasek__logo {
   display: block;
   width: clamp(104px, 9vw, 132px);
@@ -1222,6 +1229,19 @@ html[data-cl-wejscie] .cl-dok {
   padding-bottom: 0;
 }
 
+.cl .cl-poz a {
+  text-decoration: underline;
+  text-decoration-color: var(--ink-3);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+  transition: color 0.18s ease, text-decoration-color 0.18s ease;
+}
+
+.cl .cl-poz a:hover {
+  color: var(--ink);
+  text-decoration-color: currentColor;
+}
+
 .cl-poz--plus li::before {
   content: "";
   position: absolute;
@@ -1283,6 +1303,13 @@ html[data-cl-wejscie] .cl-dok {
   font-variant-numeric: tabular-nums;
 }
 
+.cl-cena__opis {
+  margin: 6px 0 0;
+  color: var(--ink-2);
+  font-size: 15px;
+  line-height: 1.4;
+}
+
 .cl-cena__akcje {
   display: flex;
   flex-direction: column;
@@ -1323,6 +1350,10 @@ html[data-cl-wejscie] .cl-dok {
   font-size: 16px;
   line-height: 1.5;
   text-wrap: pretty;
+}
+
+.cl-pakiet__uwaga {
+  margin: 14px 0 0;
 }
 
 /* ---------- kalkulator ---------- */
@@ -1742,15 +1773,16 @@ html[data-cl-wejscie] .cl-dok {
   bottom: 0;
 }
 
-/* Cloud oparty o ścianę: pas pod rzutami i tabelą, w tych samych dwóch
-   kolumnach. Po lewej platforma na tle ściany, po prawej jedno zdanie,
-   a linia podłogi biegnie pod obiema. Odbicie pod linią jest takie samo
-   jak na pierwszym ekranie. */
+/* Cloud postawiony pionowo: pas pod rzutami i tabelą, w tych samych dwóch
+   kolumnach. Po lewej dwa obrazy tej samej wysokości na linii podłogi,
+   widok skośny z odbiciem i rzut z boku z wymiarami, po prawej jedno
+   zdanie. Linia podłogi biegnie pod obiema kolumnami. */
 .cl-stoi {
-  --odbicie: clamp(36px, 5vw, 68px);
+  --pod-linia: clamp(60px, 6vw, 72px);
+  --wys: clamp(300px, 33vw, 460px);
   grid-column: 1 / -1;
   margin: clamp(12px, 2vw, 28px) 0 0;
-  padding-bottom: var(--odbicie);
+  padding-bottom: var(--pod-linia);
 }
 
 .cl-stoi__scena {
@@ -1769,23 +1801,31 @@ html[data-cl-wejscie] .cl-dok {
   background: var(--line);
 }
 
-.cl-stoi__sciana {
-  position: relative;
+.cl-stoi__obraz {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: clamp(44px, 8vw, 112px);
   padding-top: clamp(24px, 3.4vw, 44px);
   background: radial-gradient(ellipse 58% 96% at 50% 100%, rgba(196, 210, 240, 0.11), rgba(196, 210, 240, 0) 72%);
 }
 
+.cl-stoi__widok,
+.cl-stoi__rzut {
+  position: relative;
+  flex: none;
+}
+
 .cl-stoi img {
   display: block;
-  width: 62%;
-  height: auto;
-  margin-inline: auto;
+  width: auto;
+  height: var(--wys);
 }
 
 .cl-stoi__odbicie {
   position: absolute;
   inset: 100% 0 auto;
-  height: var(--odbicie);
+  height: var(--pod-linia);
   overflow: hidden;
   opacity: 0.3;
   filter: blur(1.5px);
@@ -1798,15 +1838,41 @@ html[data-cl-wejscie] .cl-dok {
   transform: scaleY(-1);
 }
 
+/* Wysokość liczona od podłogi do górnej krawędzi platformy, bez uchwytu
+   na tablet, który wystaje ponad nią. */
+.cl-stoi .cl-wymiar--pion {
+  top: 11%;
+  bottom: 0;
+  right: auto;
+  left: calc(100% + 14px);
+}
+
+/* Głębokość pod linią podłogi. Rysunek jest za wąski, żeby liczba zmieściła
+   się w linii wymiarowej, więc stoi pod nią. */
+.cl-stoi .cl-wymiar--poziom {
+  left: 26%;
+  right: 2%;
+  top: calc(100% + 12px);
+  bottom: auto;
+  height: 12px;
+}
+
+.cl-stoi .cl-wymiar--poziom span {
+  position: absolute;
+  top: calc(100% + 4px);
+  padding: 0;
+  background: none;
+}
+
 .cl-stoi figcaption {
   padding-bottom: clamp(16px, 2vw, 26px);
-  max-width: 24ch;
+  max-width: 26ch;
   font-family: var(--display);
   font-weight: 600;
   font-size: clamp(20px, 1.7vw, 24px);
   line-height: 1.25;
   letter-spacing: -0.012em;
-  text-wrap: balance;
+  text-wrap: pretty;
 }
 
 .cl-tabela {
@@ -2159,6 +2225,21 @@ html[data-cl-wejscie] .cl-dok {
   font-variant-numeric: tabular-nums;
 }
 
+/* Podpis grupy i przełącznik netto i brutto w jednym rzędzie. */
+.cl-form__gora {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 10px;
+}
+
+.cl-form__gora > span {
+  color: var(--ink-2);
+  font-size: 15px;
+  line-height: 1.3;
+}
+
 .cl-form__razem {
   display: flex;
   align-items: baseline;
@@ -2410,6 +2491,15 @@ html[data-cl-wejscie] .cl-dok {
     white-space: nowrap;
   }
 
+  /* Podpis ceny w trzecim rzędzie, pod drugą kwotą i przełącznikiem. Rząd
+     jest podany wprost, bo w kolejności znaczników podpis stoi przed
+     przełącznikiem i zepchnąłby go do osobnej linii. */
+  .cl-cena__opis {
+    grid-column: 1 / -1;
+    grid-row: 3;
+    margin-top: 10px;
+  }
+
   .cl-cena .cl-btn {
     grid-column: 1 / -1;
     margin-top: 28px;
@@ -2490,9 +2580,12 @@ html[data-cl-wejscie] .cl-dok {
     margin-top: 14px;
   }
 
+  /* Pozycje dzielą rząd po równo. Jedna zajmuje całą szerokość, więc jej
+     wartość nie łamie się w połowie ekranu. */
   .cl-hero__dane {
     justify-self: stretch;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(0, 1fr);
     gap: 16px;
     padding-top: 22px;
     border-top: 1px solid var(--line);
@@ -2591,12 +2684,12 @@ html[data-cl-wejscie] .cl-dok {
     content: none;
   }
 
-  .cl-stoi__sciana {
+  .cl-stoi__obraz {
     border-bottom: 1px solid var(--line);
   }
 
   .cl-stoi figcaption {
-    margin-top: calc(var(--odbicie) + 4px);
+    margin-top: calc(var(--pod-linia) + 4px);
     padding-bottom: 0;
   }
 

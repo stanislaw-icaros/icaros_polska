@@ -2,11 +2,11 @@
 
 import Link from "next/link";
 import { useRef, useState } from "react";
-import { useTryb } from "@/components/cloud/Tryb";
+import { PrzelacznikTrybu, useTryb } from "@/components/cloud/Tryb";
 import { useSpamGuard } from "@/hooks/useSpamGuard";
 import { odczytajUtm } from "@/lib/analytics/utm";
 import { trackMetaEvent } from "@/lib/meta/track";
-import { DALEJ_ETYKIETA, WARIANTY, ZAMOWIENIE, zl, type Wariant } from "@/lib/cloud/tresc";
+import { DALEJ_ETYKIETA, UWAGA_CENY, WARIANTY, ZAMOWIENIE, zl, type Wariant } from "@/lib/cloud/tresc";
 
 type Pole = "ilosc" | "firma" | "imie" | "telefon" | "email" | "adres" | "zgoda";
 type Bledy = Partial<Record<Pole, string>>;
@@ -152,8 +152,15 @@ export default function FormularzZamowienia() {
     <form className="cl-form" ref={formularz} onSubmit={wyslij} noValidate>
       {spamFields}
 
-      <fieldset>
-        <legend>{ZAMOWIENIE.ileNaglowek}</legend>
+      {/* Grupa zamiast fieldset z legend: w jednym rzędzie z podpisem stoi
+          przełącznik netto i brutto, a legend nie daje się tak ułożyć. Dok
+          z przełącznikiem jest przy formularzu schowany, więc bez tego nie
+          było tu jak zmienić kwot. */}
+      <div role="group" aria-labelledby="cl-form-ile">
+        <div className="cl-form__gora">
+          <span id="cl-form-ile">{ZAMOWIENIE.ileNaglowek}</span>
+          <PrzelacznikTrybu etykieta="Kwoty w zamówieniu netto albo brutto" />
+        </div>
         <div className="cl-wariant">
           {KLUCZE.map((klucz, i) => {
             const wariant = WARIANTY[klucz];
@@ -210,7 +217,7 @@ export default function FormularzZamowienia() {
           </strong>
         </p>
         <p className="cl-maly cl-form__pomoc">{ZAMOWIENIE.pomocIlosc}</p>
-      </fieldset>
+      </div>
 
       <div className="cl-form__siatka">
         <label className="cl-pole">
@@ -264,7 +271,7 @@ export default function FormularzZamowienia() {
       </button>
 
       <p className="cl-maly cl-form__stopka">
-        {ZAMOWIENIE.wstep} Administratorem danych jest LILAZEN sp. z o.o.{" "}
+        {ZAMOWIENIE.wstep} {UWAGA_CENY} Administratorem danych jest LILAZEN sp. z o.o.{" "}
         <Link href="/polityka-prywatnosci">Polityka prywatności</Link>.
       </p>
     </form>

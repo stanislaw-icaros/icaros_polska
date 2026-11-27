@@ -15,6 +15,7 @@ import {
   PAKIET,
   PYTANIA,
   SESJA,
+  UWAGA_CENY,
   WARIANTY,
   WARUNKI,
 } from "@/lib/cloud/tresc";
@@ -103,7 +104,16 @@ export function Pakiet() {
                 {PAKIET.dodatki.map((pozycja) => (
                   <li key={pozycja.nazwa}>
                     <strong>{pozycja.nazwa}</strong>
-                    <span>{pozycja.opis}</span>
+                    {/* Mapa otwiera się w nowej karcie, żeby zamówienie zostało otwarte. */}
+                    <span>
+                      {"href" in pozycja ? (
+                        <a href={pozycja.href} target="_blank" rel="noopener">
+                          {pozycja.opis}
+                        </a>
+                      ) : (
+                        pozycja.opis
+                      )}
+                    </span>
                   </li>
                 ))}
               </ul>
@@ -122,6 +132,7 @@ export function Pakiet() {
             <p className="cl-cena__druga">
               <KwotaDruga netto={CENY.pakietNetto} brutto={CENY.pakietBrutto} />
             </p>
+            <p className="cl-cena__opis">{PAKIET.cenaOpis}</p>
           </div>
           <div className="cl-cena__akcje">
             <PrzelacznikTrybu etykieta="Cena pakietu netto albo brutto" />
@@ -145,6 +156,7 @@ export function Pakiet() {
             <Kwota netto={CENY.appMiesiacNetto} brutto={CENY.appMiesiacBrutto} /> <NazwaTrybu />.
           </span>
         </p>
+        <p className="cl-maly cl-pakiet__uwaga">{UWAGA_CENY}</p>
       </div>
     </section>
   );
@@ -241,9 +253,11 @@ export function Badania() {
 
 /**
  * Rzut z góry i z boku z liniami wymiarowymi, tabela danych, a pod nimi
- * na całą szerokość Cloud oparty o ścianę. Zdjęcia Clouda stojącego pionowo
- * producent nie ma, więc to ten sam wycinek co rzut z góry, postawiony
- * na linii podłogi: tak wygląda platforma oparta o ścianę dłuższym bokiem.
+ * na całą szerokość Cloud postawiony pionowo. Stoi na krótszym boku, oparty
+ * na podnóżkach, i nie potrzebuje ściany. Zdjęcia w tej pozycji producent
+ * nie ma, więc oba obrazy to wycinki z pierwszego ekranu i z rzutu z boku
+ * obrócone o 90 stopni: widok skośny pokazuje podnóżki, a rzut z boku
+ * niesie wymiary.
  */
 export function Dane() {
   return (
@@ -300,26 +314,43 @@ export function Dane() {
 
           <figure className="cl-stoi">
             <div className="cl-stoi__scena">
-              <div className="cl-stoi__sciana">
-                <Image
-                  src="/cloud/platforma-plan.webp"
-                  alt={DANE.przySciane.alt}
-                  width={1600}
-                  height={1220}
-                  sizes="(max-width: 900px) 58vw, 30vw"
-                />
-                {/* Odbicie w podłodze, jak na pierwszym ekranie: po nim widać, że platforma stoi. */}
-                <div className="cl-stoi__odbicie" aria-hidden="true">
+              <div className="cl-stoi__obraz">
+                <div className="cl-stoi__widok">
                   <Image
-                    src="/cloud/platforma-plan.webp"
-                    alt=""
-                    width={1600}
-                    height={1220}
-                    sizes="(max-width: 900px) 58vw, 30vw"
+                    src="/cloud/platforma-pion.webp"
+                    alt={DANE.pionowo.altWidok}
+                    width={714}
+                    height={1800}
+                    sizes="(max-width: 900px) 36vw, 16vw"
                   />
+                  {/* Odbicie w podłodze, jak na pierwszym ekranie. */}
+                  <div className="cl-stoi__odbicie" aria-hidden="true">
+                    <Image
+                      src="/cloud/platforma-pion.webp"
+                      alt=""
+                      width={714}
+                      height={1800}
+                      sizes="(max-width: 900px) 36vw, 16vw"
+                    />
+                  </div>
+                </div>
+                <div className="cl-stoi__rzut">
+                  <Image
+                    src="/cloud/platforma-pion-bok.webp"
+                    alt={DANE.pionowo.altBok}
+                    width={406}
+                    height={2000}
+                    sizes="(max-width: 900px) 18vw, 8vw"
+                  />
+                  <div className="cl-wymiar cl-wymiar--pion" aria-hidden="true">
+                    <span>{DANE.wymiary.dlugosc}</span>
+                  </div>
+                  <div className="cl-wymiar cl-wymiar--poziom" aria-hidden="true">
+                    <span>{DANE.wymiary.wysokosc}</span>
+                  </div>
                 </div>
               </div>
-              <figcaption>{DANE.przySciane.podpis}</figcaption>
+              <figcaption>{DANE.pionowo.podpis}</figcaption>
             </div>
           </figure>
         </div>

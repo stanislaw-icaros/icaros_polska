@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useRef } from "react";
 import Telefon from "@/components/cloud/Telefon";
 import { CTA_DRUGIE, H1, HERO_DANE, OPIS_POD_H1 } from "@/lib/cloud/tresc";
@@ -82,15 +83,19 @@ export default function Hero() {
       <div className="cl-hero__swiatlo" aria-hidden="true" />
 
       <div className="cl-pasek">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          className="cl-pasek__logo"
-          src="/icaros-logo.webp"
-          alt="ICAROS"
-          width={1000}
-          height={135}
-          translate="no"
-        />
+        {/* Logo prowadzi na stronę główną serwisu, jak na każdej stronie
+            (uwaga Jarosława z 27.11.2026). */}
+        <Link className="cl-pasek__marka" href="/" aria-label="ICAROS Polska, strona główna">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            className="cl-pasek__logo"
+            src="/icaros-logo.webp"
+            alt=""
+            width={1000}
+            height={135}
+            translate="no"
+          />
+        </Link>
         <div className="cl-pasek__prawa">
           <Telefon className="cl-pasek__tel" />
           <a className="cl-link cl-pasek__rozmowa" href="#kalendarz">

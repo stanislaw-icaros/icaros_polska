@@ -73,17 +73,25 @@ export function zl(kwota: number): string {
   return `${calosc} zł`;
 }
 
+/**
+ * Kwoty na stronie liczymy z cen w euro, a proforma idzie po kursie z dnia
+ * (Sebastian, 26.11.2026). Stoi pod cenami w pakiecie i pod przyciskiem
+ * formularza.
+ */
+export const UWAGA_CENY = "Ceny są orientacyjne. Ostateczna kwota na proformie zależy od aktualnego kursu euro.";
+
 /** Podpis opłaty za kolejne miesiące aplikacji, stoi przed kwotą. */
 export const DALEJ_ETYKIETA = "Każdy kolejny miesiąc aplikacji:";
 
 export const CTA = "Zamów pakiet";
 export const CTA_DRUGIE = "Umów rozmowę";
 
-/** Dane przypięte do rogów pierwszego ekranu. */
-export const HERO_DANE = [
-  { etykieta: "Zwrot", wartosc: "30 dni od dostawy" },
-  { etykieta: "Dostawa", wartosc: "2 do 4 dni roboczych od wpłaty" },
-] as const;
+/**
+ * Dane przypięte do rogu pierwszego ekranu. Zwrotu tu nie ma: stoi już
+ * w opisie pod nagłówkiem, a powtórzony dwa razy na jednym ekranie wyglądał
+ * jak zachęta do odsyłania (uwaga Jarosława z 27.11.2026).
+ */
+export const HERO_DANE = [{ etykieta: "Dostawa", wartosc: "2 do 4 dni roboczych od wpłaty" }] as const;
 
 export const STEROWANIE = {
   naglowek: "Ruch ciała steruje grą",
@@ -147,7 +155,7 @@ export const CWICZENIA = {
 export const GRY = {
   naglowek: "Gry i testy w aplikacji",
   tekst:
-    "Pacjent albo klient widzi wynik i chce go poprawić na następnej sesji. W trybie rywalizacji może grać naraz do czterech osób. Playlisty układasz pod konkretną osobę, a postęp pokazujesz na raporcie PDF z testów równowagi i koordynacji.",
+    "Pacjent albo klient widzi wynik i chce go poprawić na następnej sesji. W trybie rywalizacji może grać jednocześnie do czterech osób, każda na swojej platformie. Playlisty układasz pod konkretną osobę, a postęp pokazujesz na raporcie PDF z testów równowagi i koordynacji.",
   lista: [
     { src: "/cloud/gra-ski-2.webp", nazwa: "XR Ski", alt: "Gra XR Ski: narciarz na trasie slalomu, obok kobieta na platformie Cloud" },
     { src: "/cloud/gra-space-2.webp", nazwa: "Space Battle", alt: "Gra Space Battle: statek kosmiczny, obok mężczyzna w klęku na platformie Cloud" },
@@ -193,10 +201,12 @@ export const PAKIET = {
     { nazwa: "ICAROS App PRO", opis: "Licencja dożywotnia bez abonamentu na 250 użytkowników" },
     { nazwa: "Wsparcie po polsku", opis: "Instrukcje, filmy i pomoc przez telefon" },
   ],
+  /** Stoi pod dużą ceną, żeby było widać, czym różni się od wariantu z aplikacją na miesiąc. */
+  cenaOpis: "Pakiet z dożywotnią licencją aplikacji PRO",
   dodatkiNaglowek: "Do każdego zamówienia dokładamy",
   dodatki: [
     { nazwa: "Materiały do social mediów", opis: "5 grafik, 3 krótkie filmy i tekst do cennika" },
-    { nazwa: "Wpis na mapie placówek", opis: "Mapa ICAROS w Polsce" },
+    { nazwa: "Wpis na mapie placówek", opis: "Mapa ICAROS w Polsce", href: "/mapa" },
     { nazwa: "Programy na start", opis: "Gotowe w aplikacji" },
     { nazwa: "Rozmowa wdrożeniowa", opis: "30 minut online" },
   ],
@@ -238,14 +248,19 @@ export const BADANIA = {
 export const DANE = {
   naglowek: "Dane techniczne",
   wymiary: { dlugosc: "155 cm", szerokosc: "123 cm", wysokosc: "40 cm" },
-  /** Cloud postawiony na dłuższym boku i oparty o ścianę. */
-  przySciane: {
-    podpis: "Oparty o ścianę zajmuje 155 × 40 cm podłogi",
-    alt: "Platforma ICAROS Cloud postawiona na dłuższym boku i oparta o ścianę",
+  /**
+   * Cloud postawiony pionowo na krótszym boku. Opiera się na podnóżkach
+   * i stoi sam, bez ściany (Sebastian i Jarosław, 26.11.2026). Wysokość
+   * to wtedy długość platformy, a głębokość to jej wysokość na leżąco.
+   */
+  pionowo: {
+    podpis: "Po sesji stawiasz Cloud pionowo na podnóżkach. Stoi sam, więc nie musisz go opierać o ścianę.",
+    altWidok: "Platforma ICAROS Cloud postawiona pionowo: podnóżki na dole, uchwyt na tablet u góry",
+    altBok: "Platforma ICAROS Cloud stojąca pionowo, widok z boku: 155 cm wysokości i 40 cm głębokości",
   },
   tabela: [
     { etykieta: "Waga", wartosc: "12 kg" },
-    { etykieta: "Miejsce do ćwiczeń", wartosc: "ok. 1,5 × 2,5 m" },
+    { etykieta: "Miejsce do ćwiczeń", wartosc: "ok. 2,5 × 2 m" },
     { etykieta: "Maks. waga ćwiczącego", wartosc: "110 kg" },
     { etykieta: "Wzrost ćwiczącego", wartosc: "140 do 200 cm" },
     { etykieta: "Zasilanie", wartosc: "nie wymaga" },
@@ -316,7 +331,7 @@ export const PYTANIA = {
     {
       pytanie: "Ile miejsca potrzeba?",
       odpowiedz:
-        "Platforma ma 155 × 123 cm. Producent podaje ok. 1,5 × 2,5 m wolnej podłogi. Do ćwiczeń z wyprostowanymi rękami i nogami wygodniej mieć 2,5 × 2,5 m. Po sesji możesz oprzeć Cloud o ścianę, zajmuje wtedy 155 × 40 cm podłogi.",
+        "Platforma ma 155 × 123 cm. Optymalna przestrzeń do ćwiczeń to ok. 2,5 × 2 m wolnej podłogi. Po sesji stawiasz Cloud pionowo na podnóżkach, ma wtedy 155 cm wysokości i 40 cm głębokości.",
     },
     {
       pytanie: "Czy potrzebny jest internet?",
@@ -326,12 +341,7 @@ export const PYTANIA = {
     {
       pytanie: "Gdzie trzymać Cloud po sesji?",
       odpowiedz:
-        "Cloud waży 12 kg. Możesz go oprzeć o ścianę, zajmuje wtedy 155 × 40 cm podłogi, albo spuścić powietrze i schować do kartonu 60 × 80 × 33 cm.",
-    },
-    {
-      pytanie: "Czy mogę najpierw przetestować?",
-      odpowiedz:
-        "Nie wysyłamy sprzętu na test. Zamiast tego masz 30 dni na zwrot od dnia dostawy, więc sprawdzasz Cloud u siebie, z własnymi pacjentami albo klientami.",
+        "Cloud waży 12 kg i stoi sam na podnóżkach, więc po sesji stawiasz go pionowo. Ma wtedy 155 cm wysokości i 40 cm głębokości. Możesz też spuścić powietrze i schować go do kartonu 60 × 80 × 33 cm.",
     },
     {
       pytanie: "Czy pacjenci za to zapłacą?",
@@ -358,19 +368,19 @@ export const ZAMOWIENIE = {
 } as const;
 
 /**
- * Rzeczy, które stoją na stronie w wersji roboczej. Nie publikować przed
- * potwierdzeniem.
+ * Rzeczy, które stoją na stronie w wersji roboczej.
+ *
+ * Sebastian potwierdził 26.11.2026 na grupie: oba warianty z cenami
+ * (jako orientacyjne, zależne od kursu euro), odpowiedź o internecie,
+ * przestrzeń do ćwiczeń ok. 2,5 × 2 m i to, że Cloud stoi pionowo
+ * na krótszym boku, na podnóżkach.
  */
 export const DO_POTWIERDZENIA = [
-  "Cena wariantu Cloud z aplikacją PRO na miesiąc: 6 044 zł netto, czyli 5 600 zł za platformę z dostawą plus 100 EUR za miesiąc aplikacji po kursie 4,44 z kosztorysu z 18.11. Czy ten wariant jest bez iPada (Sebastian, Jarosław)",
-  "Opłata za kolejne miesiące aplikacji PRO: 444 zł netto, czyli 100 EUR z kosztorysu. App Store w Polsce pokazuje 399,99 zł miesięcznie, a sklep ICAROS daje trzy pierwsze miesiące PRO za darmo (Sebastian)",
+  "Opłata za kolejne miesiące aplikacji PRO: na stronie 444 zł netto, czyli 100 EUR z kosztorysu. App Store w Polsce pokazuje 399,99 zł miesięcznie, a sklep ICAROS daje trzy pierwsze miesiące PRO za darmo. Sebastian widział wariant i nie zgłosił uwag, ale o tę różnicę nikt go wprost nie zapytał",
   "Zakres licencji PRO: 250 użytkowników, co przy zmianie wersji aplikacji. O 5 urządzeniach strona nie pisze od 26.11 (Sebastian, GmbH)",
-  "Internet: strona mówi, że jest potrzebny do logowania i aktualizacji. Czy po zalogowaniu trening działa bez sieci. Producent pisze „No Wi-Fi required, Bluetooth connection is sufficient”, ale Cloud nie ma elektroniki, więc o Bluetooth strona nie pisze (Sebastian)",
-  "Cloud oparty o ścianę: 155 × 40 cm podłogi, czyli stoi na dłuższym boku. Rysunek w danych technicznych tak go pokazuje (Sebastian)",
   "Czy historia z pierwszych 30 dni zostaje po aktywacji licencji (GmbH)",
   "Czas dostawy do Polski: 2 do 4 dni roboczych od wpłaty (Sebastian, GmbH)",
   "Maksymalna waga ćwiczącego: na stronie 110 kg, FAQ producenta podaje 150 kg (GmbH)",
-  "Potrzebne miejsce: 1,5 × 2,5 m według producenta, 2,5 × 2,5 m według testów (GmbH)",
   "Warunki zwrotu w 30 dni (Sebastian, prawnik)",
   "Dodatki do zamówienia: materiały do social mediów, wpis na mapie, programy, rozmowa wdrożeniowa (Sebastian)",
   "Gwarancja i serwis przy przebiciu: na stronie nie ma o tym ani słowa (GmbH)",
